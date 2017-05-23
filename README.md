@@ -608,7 +608,7 @@ Antes de instalar o modulo do NTP, vamos primeiro entender o estado atual do nos
 
 O Puppet ira gerenciar tres recursos chave para deixar o servico do NTP rodando. A ferramenta `puppet resource` pode mostrar o estado atual de cada um desses recursos:
 
-Confira o estado do pacote:
+Verifique o estado do pacote:
 
 ```
     # puppet resource package ntp
@@ -667,6 +667,21 @@ Esse comando diz ao Puppet para obter o modulo direto do __Forge__ e colocado de
 `/etc/puppetlabs/code/environments/production/modules`
 
 ## Classificacao com o manifesto site.pp
+
+Agora que o modulo ntp esta instalado, todas suas classes ficam disponiveis para classificarmos os _nodes_. Na segunda quest (_Forca do Puppet_), fizemos uma classificacao via console do _Puppet Enterprise_. Iremos introduzir uma outra maneira nessa quest, o arquivo de manifesto `sites.pp`.
+
+`site.pp` e o primeiro manifesto que o agente do Puppet verifica ao conectar no _master_. Ele define configuracoes globais e padroes de recurso que se aplicam a __todos__ os nodes na infraestrutura. E tambem o local onde colocamos _definicoes de nos_ (tambem conhecidos como `node statements`).
+
+Uma _definicao de no_ e o equivalente a definicao em codigo do group de no que fizemos no _Puppet Enterprise_:
+
+```
+    node 'learning.puppetlabs.vm' {
+        ...
+    }
+```
+
+Como e mais acessivel monitorar com a ferramenta de `quest` do material, vamos utilizar principalmente o `site.pp` daqui em diante. O que aprendermos sobre definicao de nos e classes se aplica a qualquer metodo de classificacao escolhido, incluindo o classificador do PE.
+
 ### Tarefa 2
 ### Tarefa 3
 ## Padroes e parametros de Classe

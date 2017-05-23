@@ -672,7 +672,7 @@ Agora que o modulo ntp esta instalado, todas suas classes ficam disponiveis para
 
 `site.pp` e o primeiro manifesto que o agente do Puppet verifica ao conectar no _master_. Ele define configuracoes globais e padroes de recurso que se aplicam a __todos__ os nodes na infraestrutura. E tambem o local onde colocamos _definicoes de nos_ (tambem conhecidos como `node statements`).
 
-Uma _definicao de no_ e o equivalente a definicao em codigo do group de no que fizemos no _Puppet Enterprise_:
+Uma _definicao de no_ e o equivalente a definicao em codigo do que fizemos no _Puppet Enterprise_:
 
 ```
     node 'learning.puppetlabs.vm' {

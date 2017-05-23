@@ -169,6 +169,8 @@ Crie a estrutura de diretorio do nosso modulo (lembrando que entendemos modulo c
     mkdir -p cowsayings/{manifests,examples}
 ```
 
+__Nota:__ por convencao, o diretorio _manifests_ contem as classes, cada uma em seu respectivo arquivo homonimo. O diretorio _examples_ contem os testes para essas classes.
+
 Crie um manifesto com o vim:
 
 ```
@@ -311,20 +313,102 @@ Com ambos pacotes instalados, podemos combinar comandos, como `fortune | cowsay`
 ```
 
 ```
-fortune | cowsay
- _________________________________________ 
-| When in doubt, use brute force. -- Ken  |
-| Thompson                                |
- ----------------------------------------- 
-      \   ^__^
-       \  (oo)\_______
-          (__)\       )\/\
-              ||----w |
-              ||     ||
+    fortune | cowsay
+     _________________________________________ 
+    | When in doubt, use brute force. -- Ken  |
+    | Thompson                                |
+     ----------------------------------------- 
+          \   ^__^
+           \  (oo)\_______
+              (__)\       )\/\
+                  ||----w |
+                  ||     ||
 ```
 
 ## Classe principal: init.pp
 
+Um modulo geralmente reune varias classes que trabalham juntas assim declaramos tudo de uma vez. No entanto precisamos fazer uma ressalva em relacao ao __escopo__. As classes que escrevemos para cowsay, sao todas precedidas por `cowsayings::`. Quando declaramos uma classe, dizemos com essa sintaxe de escopo que essa classe pode ser encontrada no modulo _cowsayings_.
+
+No caso da classe principal de um modulo, as coisas mudam um pouco. Ao inves de nomearmos o manifesto utilizando o nome da classe que ele contem, o Puppet reconhece o arquivo especial __init.pp__ como contenedor do manifesto de nossa classe principal.
+
 ### Tarefa 7
+
+Para conter nossa classe `cowsayings`, crie um arquivo de manifesto `init.pp` no diretorio `cowsayings\manifests`:
+
+`vim cowsayings\manifests\init.pp`
+
+Nele, vamos definir a classe _cowsayings_, dentro da mesma utilizamos a mesma sintaxe (`include modulo::classe`) para declarar as classes contidas.
+
+```
+    class cowsayings {
+        include cowsayings::cowsay
+        include cowsayings::fortune
+    }
+```
+
+Salve o manifesto e teste com a ferramanta `puppert parser validate`.
+
 ### Tarefa 8
+
+Nesse estagio, tanto o pacote __fortune__ como o __cowsays__ ja estao instalados na VM. Aplicar nossas mudancas nao alteraria em nada, entao utilizaremos a ferramenta `puppet resource` para deletar esses pacotes e testarmos a funcionalidade da nossa classe __cowsays__ recem criada:
+
+```
+    #puppet resource package fortune-mod ensure=absent
+
+    Notice: /Package[fortune-mod]/ensure: removed
+    package { 'fortune-mod':
+      ensure => 'purged',
+    }
+
+    # puppet resource package cowsay ensure=absent provider=gem
+
+    Notice: /Package[cowsay]/ensure: removed
+    package { 'cowsay':
+      ensure => 'absent',
+    }
+```
+
+Agora crie um teste para o manifesto _init.pp_ no diretorio de exemplos:
+
+```
+    vim cowsayings/examples/init.pp
+```
+
+Agora inclua a classe:
+
+```
+    include cowsayings
+```
+
 ### Tarefa 9
+
+Agora que os pacotes foram removidos, execute o _init.pp_ com `--noop` e apos isso aplique-o caso esteja tudo ok.
+
+```
+    # puppet apply --noop cowsayings/examples/init.pp
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.17 seconds
+    Notice: /Stage[main]/Cowsayings::Cowsay/Package[cowsay]/ensure: current_value absent, should be present (noop)
+    Notice: Class[Cowsayings::Cowsay]: Would have triggered 'refresh' from 1 events
+    Notice: /Stage[main]/Cowsayings::Fortune/Package[fortune-mod]/ensure: current_value purged, should be present (noop)
+    Notice: Class[Cowsayings::Fortune]: Would have triggered 'refresh' from 1 events
+    Notice: Stage[main]: Would have triggered 'refresh' from 2 events
+    Notice: Applied catalog in 1.59 seconds
+
+    # puppet apply cowsayings/examples/init.pp 
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.16 seconds
+    Notice: /Stage[main]/Cowsayings::Cowsay/Package[cowsay]/ensure: created
+    Notice: /Stage[main]/Cowsayings::Fortune/Package[fortune-mod]/ensure: created
+    Notice: Applied catalog in 8.21 seconds
+    root@learning:/etc/puppetlabs/code/environments/production/modules # fortune | cowsay
+     _______________________________________ 
+    | CPU-angle has to be adjusted because  |
+    | of vibrations coming from the nearby  |
+    | road                                  |
+     --------------------------------------- 
+          \   ^__^
+           \  (oo)\_______
+              (__)\       )\/\
+                  ||----w |
+                  ||     ||
+```
+

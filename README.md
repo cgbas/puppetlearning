@@ -803,3 +803,16 @@ Exemplo do Puppet verificando alteracao no ntp.conf e alterando-o:
 
 Verifique que o arquivo `/etc/ntp.conf` foi alterado e que o servico `ntpd` foi reiniciado. 
 
+# MySQL
+
+## PorQueSQL?
+## Instalacao do Servidor
+### Tarefa 1
+### Tarefa 2
+### Tarefa 3
+## Escopo
+## Seguranca da Conta
+### Tarefa 4
+## Tipos e provedores
+## Base de dados, usuario, permissao
+### Tarefa 5

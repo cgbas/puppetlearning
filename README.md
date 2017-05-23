@@ -422,7 +422,7 @@ Modulos permitem que o codigo seja organizado em unidades reutilizaveis, testave
 
 Solucoes podem misturar e combinar modulos auto-contidos, que sao mais faceis de testar, manter e compartilhar. Em essencia, modulos sao pouco mais que uma estrutura de arquivos e diretorios que seguem as convencoes do Puppet. Essas convencoes dao ao Puppet uma maneira consistente de localizar classes, arquivos, templates, plugins e binarios destinados a realizar o objetivo desse modulo. Sao tambem importantes para gerenciar o escopo, ja que que tudo fica contido em seu modulo evita-se em muito os problemas de colisao.
 
-Como modulos sao padronizados e auto-contidos, o compartilhamento fica realmente facil, sendo o __Forge__ o servico gratuito de hospedagem de modulos desenvolvidos e mantidos por outros usuarios da comunidade.
+Como modulos sao padronizados e auto-contidos, o compartilhamento fica realmente facil, sendo o __Forge__ (Forja) o servico gratuito de hospedagem de modulos desenvolvidos e mantidos por outros usuarios da comunidade.
 
 ## O _modulepath_
 
@@ -588,10 +588,84 @@ Quando o Puppet gerencia um arquivo, ele compara o _hash_ do arquivo algo com o 
 
 # NTP
 
+O objetivo dessa quest e simples: utilizar um modulo Puppet para gerenciar o servico de NTP na nossa VM.
+
+Tanto quanto saber escrever modulos e importante para melhor integra-los em nossa infraestrutura, entender como utilizar modulos existentes tambem e muito importante (escolhendo entre modulos _Puppet Approved_ e _Puppet Supported_ como uma camada extra de seguranca). Ao utilizarmos codigo publico, estamos utilizando codigo ja executado e testado em centenas e ate milhares de infraestruturas diferentes.
+
+__Nota:__ independentemente da fonte do seu modulo, uma revisao externa jamais sera substituta de uma revisao feita em casa antes de utilizar o mesmo em producao.
+
 ## O que e NTP
+
+Diversos servicoes de uma infinidade de dominios dependem de relogios precisos e coordenados para funcionarem corretamente. Dada a variabilidade da latencia de rede e demais variaveis, precisamos de excelentes algoritmos para garantir isso.
+
+O Network Time Protocol (NTP, Protolo de Hora em Rede) garante precisao de milissegundos entre servidores enquanto mantem a sincronia com Coordinated Universal Time (UTC, Tempo Universal Coordenado ) atraves de servidores acessiveis publicamente.
+
+NTP e um dos servicos mais fundamentais a serem incluidos em uma infraestrutura. O modulo de gestao e configuracao desse servico e mantido pela Puppet Labs.
+
 ## Pacote/Arquivo/Servico
+
+Antes de instalar o modulo do NTP, vamos primeiro entender o estado atual do nosso sistema, assim mantemos registro do que o Puppet altera e porque o NTP faz o que faz.
+
+O Puppet ira gerenciar tres recursos chave para deixar o servico do NTP rodando. A ferramenta `puppet resource` pode mostrar o estado atual de cada um desses recursos:
+
+Confira o estado do pacote:
+
+```
+    # puppet resource package ntp
+
+    package { 'ntp':
+      ensure => 'purged',
+    }
+```
+
+O arquivo de configuracao:
+
+```
+    # puppet resource file /etc/ntp.conf
+
+    file { '/etc/ntp.conf':
+      ensure => 'absent',
+    }
+```
+
+O estado do servico:
+
+```
+    # puppet resource service ntpd
+
+    service { 'ntpd':
+      ensure => 'stopped',
+      enable => 'false',
+    }
+```
+
+O padrao package/file/service (pacote, arquivo e servico) e bem comum no Puppet. Esses tres tipos de recurso correspondem a sequencia de instalar um _package_, customizar sua funcionalidade com arquivos de configuracao e iniciar o servico que esse _package_ prove.
+
+Esse padrao tambem os relacionamentos tipocos de dependencia entre esses recursos: uma classe bem escrita define tais relacionamentos, dizendo ao Puppet pra reiniciar o servico se o arquivo de configuracao foi modificado e recriar o arquivo de configuracao quando o _package_ e instalado ou atualizado. Nessa quest nosso objetivo ainda nao e esse, e sim trabalar com modulos. Entao maos a obra!
+
 ## Instalacao
+
+Antes de classificar a nossa VM com a classe do NTP, precisamos  instalar o modulo de NTP direto do __Forge__. Por mais que o modulo chame `ntp`, lembre-se que modulos no __Forge__ tem o nome da conta associada no prefixo. Entao para obter o modulo, usaremos `puppetlabs-ntp`, mas ao conferir o _modulepath_ no nosso _Puppet Master_, veremos apenas `ntp`. __Tenha em mente isso__ ao instalar modulos com mesmo nome, para evitar conflitos.
+
 ### Tarefa 1
+
+Utilizar a ferramenta `puppet module` para instalar o `ntp` via __Forge__. (Caso voce tenha instalado os modulos do cache essa tarefa pode ja estar concluida e voce pode pular para o proximo passo)
+
+```
+    # puppet module install puppetlabs-ntp
+    
+    Notice: Preparing to install into /etc/puppetlabs/code/environments/production/modules ...
+    Notice: Downloading from http://localhost:8085 ...
+    Notice: Installing -- do not interrupt ...
+    /etc/puppetlabs/code/environments/production/modules
+    └─┬ puppetlabs-ntp (v6.0.0)
+      └── puppetlabs-stdlib (v4.15.0)
+```
+
+Esse comando diz ao Puppet para obter o modulo direto do __Forge__ e colocado dentro do nosso _modulepath_, no caso:
+
+`/etc/puppetlabs/code/environments/production/modules`
+
 ## Classificacao com o manifesto site.pp
 ### Tarefa 2
 ### Tarefa 3

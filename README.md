@@ -710,6 +710,96 @@ Teste o manifesto `site.pp` via  `puppet parser validate` e dispare uma execucao
 
 Utilize a ferramenta `puppet resource` para inspecionar o servico `ntpd` mais uma vez, caso a classe tenha sido aplicada com sucesso o servico estara no ar.
 
+### Sincronizando
+
+Para evitar a quebra de processos que dependem de horario consistente, o servico de NTP funciona gradualmente, adicionando/removendo microsegundos a cada ciclo do relogio ate que exista sincronia com o servidor NTP.
+
+Utilize o comando `ntpstat` para conferir o estado da sincronizacao. Nao se preocupe caso a VM demore algum tempo para sincronizar visto que seu horario esta atrelado ao horario de criacao da imagem (ou a ultima vez que ela foi suspensa).
+
 ## Padroes e parametros de Classe
+
+A classe `ntp`  inclui configuracoes padroes para a maioria dos seus parametros. A sintaxe de `include` utilizada ha pouco permite que voce declare a classe de maneira consisa sem modificar esses padroes.
+
+Um desses padroes, por exemplo, diz quais servidores de NTP devem ser incluidos no arquivo de configuracao. Para ver quais servidores foram especificados por padrao, podemos verificar direto no arquivo, via:
+
+`grep server /etc/ntp.conf`
+
+Voce vera a listagem de servidores:
+
+```
+    server 0.centos.pool.ntp.org
+    server 1.centos.pool.ntp.org
+    server 2.centos.pool.ntp.org
+```
+
+Esses nao sao servidores de hora e sim pontos de acesso que irao passar voce a servidores publicos. A maioria de tais servidores assinalados sao fornecidos por voluntarios rodando um servidor NTP como um servico extra em um servidor de e-mail ou web.
+
+Apesar de funcionarem bem, voce tera um horario mais preciso e utilizara menos rede caso utilize servidores publicos na sua regiao.
+
+Para especificar manualmente quais servidores o servico NTPD vai consultar, voce devera sobrescrever os servidores padroes definidos pelo modulo NTP.
+
+Nesse momento os _parametros de classe_ do Puppet entram em acao, fornecendo um metodo para definir variaveis em uma classe no momento em que e declarada. A sintaxe de classes parametrizadas e bem parecida com a da declaracao de recursos:
+
+```
+    class { 'ntp':
+        servers => [
+            'nist-time-server.eoni.com',
+            'nist1-lv.ustiming.org',
+            'ntp-nist.ldbsc.edu',
+        ]
+    }
+```
+
+O parametro `servers` na nossa declaracao de classes recebe uma lista de servidores como valor, nao apenas um. Trata-se de um array e permite atribuir uma lista de valores a uma variavel - sempre contidos entre colchetes "[" e "]", separados por virgula.
+
 ### Tarefa 4
+
+No seu `site.pp` substituia a declaracao `include ntp` por uma que seja parametrizada com outros servidores. Pode-se utilizar os tres do exemplo ou outros de sua preferencia, lembrando de declarar ao menos tres para garantir a confiabilidade do funcionamento do NTP.
+
+`vim /etc/puppetlabs/code/environments/production/manifests/site.pp`
+
+A declaracao deve ficar assim:
+
+```
+    node 'learning.puppetlabs.vm' {
+      class {'ntp':
+        servers => [
+          'nist-time-server.eoni.com',
+          'nist1-lv.ustiming.org',
+          'ntp-nist.ldbsc.edu'
+        ]
+      }
+    }
+```
+
 ### Tarefa 5
+
+Assim que efetuar a alteracao no manifesto `site.pp` utilize a ferramenta `puppet parser` para validar que esta tudo Ok e entao dispare uma execucao via ferramenta `puppet agent`.
+
+
+Exemplo do Puppet verificando alteracao no ntp.conf e alterando-o:
+
+```
+    Notice: /Stage[main]/Ntp::Config/File[/etc/ntp.conf]/content: content changed '{md5}1f44e40bd99abd89f0a209e823285332' to '{md5}4d816fab9d055ad275398a4a2fd47bd6'
+    Notice: /Stage[main]/Ntp::Config/File[/etc/ntp/step-tickers]/content: 
+    --- /etc/ntp/step-tickers       2017-05-23 18:44:35.727200823 -0700
+    +++ /tmp/puppet-file20170523-8109-77rxqk        2017-05-23 19:32:36.943200823 -0700
+    @@ -1,5 +1,5 @@
+     # List of NTP servers used by the ntpdate service.
+     
+    -0.centos.pool.ntp.org
+    -1.centos.pool.ntp.org
+    -2.centos.pool.ntp.org
+    +nist-time-server.eoni.com
+    +nist1-lv.ustiming.org
+    +ntp-nist.ldbsc.edu
+
+    Notice: /Stage[main]/Ntp::Config/File[/etc/ntp/step-tickers]/content: content changed '{md5}413c531d0533c4dba18b9acf7a29ad5d' to '{md5}ded69bf18df1fe1d9833f16f9f867e8a'
+    Info: Class[Ntp::Config]: Scheduling refresh of Class[Ntp::Service]
+    Info: Class[Ntp::Service]: Scheduling refresh of Service[ntp]
+    Notice: /Stage[main]/Ntp::Service/Service[ntp]: Triggered 'refresh' from 1 events
+    Notice: Applied catalog in 39.73 seconds
+```
+
+Verifique que o arquivo `/etc/ntp.conf` foi alterado e que o servico `ntpd` foi reiniciado. 
+

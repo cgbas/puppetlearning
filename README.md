@@ -153,7 +153,7 @@ Dentro de um _node_, classes sao _singletons_ portando so podem ser declaradas u
 
 # Cowsayings (Vacas Falantes)
 
-O objetivo aqui vai ser utilizar o recurso do tipo _package_ (pacote) e a VM ja preparou um diretorio no _modulepath_ do Puppet, com os diretorios _manifest_ e _examples_, em:
+O objetivo aqui vai ser utilizar o recurso do tipo _package_ (pacote) e a VM ja preparou um diretorio no _modulepath_ do Puppet, com os diretorios _manifests_ e _examples_, em:
 
 `/etc/puppetlabs/code/environments/production/modules`
 
@@ -192,7 +192,47 @@ Para validar o manifesto, usamos:
     puppet parser validate cowsayings/manifests/cowsay.pp
 ```
 
-O comando so retorna alguma saida caso exista algum erro (recomendo colocar algo errado no manifesto e testar).
+O comando so retorna alguma saida caso exista algum erro (recomendo colocar algo errado no manifesto e testar). Como a classe esta apenas definida e nao declarada, ficamos impossibilitados de aplica-la, apesar do comando de apply concluir, o resultado  de `puppet resource package cowsay` e:
+
+```
+    package { 'cowsay':
+      ensure => 'purged',
+    }
+```
+
+Resultado caso tentemos aplicar antes de declarar:
+
+```
+# puppet apply cowsayings/manifests/cowsay.pp 
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.08 seconds
+    Notice: Applied catalog in 0.80 seconds
+```
 
 ### Tarefa 2
+
+Arquivos de manifesto .pp contidos em _examples_ ou _tests_ geralmente sao utilizados para validarmos classes que estamos desenvolvendo em um modulo. Por convencao vamos utilizar o diretorio _examples_ que criamos anteriormente.
+
+`vim cowsayings/examples/cowsay.pp`
+
+Nesse manifesto, vamos _declarar_ a classe com a palavra chave __include__:
+
+`include cowsayings::cowsay`
+
+__Dica:__ a _flag_ `--noop` faz uma dry run (execucao enxuta) do agente, compilando o catalogo e notificando as mudancas que seriam aplicadas sem realmente aplicar nada ao sistema.
+
+Para testar, usamos entao:
+
+`puppet apply --noop cowsayings/examples/cowsay.pp`
+
+Exemplo da saida com `--noop`:
+
+```
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.12 seconds
+    Notice: /Stage[main]/Cowsayings::Cowsay/Package[cowsay]/ensure: current_value absent, should be present (noop)
+    Notice: Class[Cowsayings::Cowsay]: Would have triggered 'refresh' from 1 events
+    Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+    Notice: Applied catalog in 1.42 seconds
+```
+
+__Nota:__ em uma instalacao offline ou com um firewall voce pode necessitar instalar o gem de um cache local da VM. Em uma infra real, voce pode configurar um _mirror_ (espelho) de um _rubygems_ com uma ferramenta como o __Stickler__ (`gem install --local --no-rdoc --no-ri /var/cache/rubygems/gems/cowsay-*.gem`).
 

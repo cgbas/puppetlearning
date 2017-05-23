@@ -100,7 +100,7 @@ Note que ha uma virgula mesmo com apenas um recurso declarado no exemplo, isso e
 
 Percebemos entao que o outro esta em saber manipular bem os atributos de um recurso, para conhece-los melhor e explorar isso, utilizamos o comando describe. Como abaixo:
 
-`   puppet describe user | less`
+`puppet describe user | less`
 
 __Dica:__ executar o comando acima em uma sessao de ssh propria, no webshell o mesmo pode truncar.
 
@@ -112,11 +112,11 @@ A ferramenta `puppet apply` pode ser utilizada com a _flag_ (bandeira) -e (de --
 
 A _flag ensure_ serve para que o puppet confira no sistema se o recurso existe e, caso negativo, realize a criacao do mesmo.
 
-`   puppet apply -e "user { 'galatea': ensure => present, }" `
+`puppet apply -e "user { 'galatea': ensure => present, }" `
 
 Para conferir o usuario
 
-`   puppet resource user galatea`
+`puppet resource user galatea`
 
 O mesmo nao possui ainda o atributo _Comments_ como no caso do usuario root.
 
@@ -155,7 +155,7 @@ Dentro de um _node_, classes sao _singletons_ portando so podem ser declaradas u
 
 O objetivo aqui vai ser utilizar o recurso do tipo _package_ (pacote) e a VM ja preparou um diretorio no _modulepath_ do Puppet, com os diretorios _manifests_ e _examples_, em:
 
-`   /etc/puppetlabs/code/environments/production/modules`
+`/etc/puppetlabs/code/environments/production/modules`
 
 ## Cowsay
 
@@ -214,17 +214,17 @@ Resultado caso tentemos aplicar antes de declarar:
 
 Arquivos de manifesto .pp contidos em _examples_ ou _tests_ geralmente sao utilizados para validarmos classes que estamos desenvolvendo em um modulo. Por convencao vamos utilizar o diretorio _examples_ que criamos anteriormente.
 
-`   vim cowsayings/examples/cowsay.pp`
+`vim cowsayings/examples/cowsay.pp`
 
 Nesse manifesto, vamos _declarar_ a classe com a palavra chave __include__:
 
-`   include cowsayings::cowsay`
+`include cowsayings::cowsay`
 
 __Dica:__ a _flag_ `--noop` faz uma dry run (execucao enxuta) do agente, compilando o catalogo e notificando as mudancas que seriam aplicadas sem realmente aplicar nada ao sistema.
 
 Para testar, usamos entao:
 
-`   puppet apply --noop cowsayings/examples/cowsay.pp`
+`puppet apply --noop cowsayings/examples/cowsay.pp`
 
 Exemplo da saida com `--noop`:
 
@@ -286,7 +286,7 @@ E inserir a seguinte definicao (_atencao aqui ao titulo sendo customizado_):
 
 Precisamos validar nosso manifesto via `puppet parser validate`, caso tudo esteja ok, podemos criar nosso manifesto de teste.
 
-`   vim cowsayings/examples/fortune.pp`
+`vim cowsayings/examples/fortune.pp`
 
 Aqui, devemos adicionar o `include` para declarar nossa classe `cowsayings::fortune`.
 
@@ -442,7 +442,7 @@ Um modulo consiste em uma estrutura pre definida que permite que o Puppet encont
 
 Apenas para visualizar melhor a estrutura de diretorios de um modulo, vamos utilizar o comando `tree` com alguns parametros para limitar a profundidade de diretorios em dois niveis:
 
-`   tree -L 2 -d /etc/puppetlabs/code/environments/production/modules/`
+`tree -L 2 -d /etc/puppetlabs/code/environments/production/modules/`
 
 Exemplo da saida:
 
@@ -464,19 +464,19 @@ Para essa _quest_ iremos escrever um modulo que trabalha com o recurso do tipo _
 
 Antes de iniciar vamos para o diretorio do _modulepath_:
 
-`   cd /etc/puppetlabs/code/environments/production/modules`
+`cd /etc/puppetlabs/code/environments/production/modules`
 
 ### Tarefa 2
 
 O diretorio de topo sera o nome do nosso modulo, vamos utilizar _vimrc_:
 
-`   mkdir vimrc`
+`mkdir vimrc`
 
 ### Tarefa 3
 
 Agora iremos criar outros tres diretorios: um para manifestos, um para exemplos e outro para arquivos:
 
-`   mkdir -p vimrc/{manifests,examples,files}`
+`mkdir -p vimrc/{manifests,examples,files}`
 
 Para validar, podemos utilizar o `tree`:
 
@@ -498,17 +498,17 @@ A VM de aprendizagem ja possui algumas customizacoes para o Vim, ao inves de cri
 
 Copiando o _.vimrc_ para o diretorio _files_ do nosso modulo:
 
-`   cp ~/.vimrc vimrc/files/vimrc`
+`cp ~/.vimrc vimrc/files/vimrc`
 
 ### Tarefa 5
 
 Uma vez copiado, podemos fazer uma adicao as configuracoes. 
 
-`   vim vimrc/files/vimrc`
+`vim vimrc/files/vimrc`
 
 Por padrao no _Vim_ os numeros de linha estao desabilitados, entao iremos adicionar essa configuracao no arquivo com a linha:
 
-`   set number`
+`set number`
 
 Salve e saia.
 

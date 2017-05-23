@@ -60,11 +60,11 @@ Essa linguagem de declaracao possui tres elementos: tipo, titulo, par-valor do a
 
 ### Tipo
 
-    ```
+```
     user { 'root':
       ...
     }
-    ```
+```
 
 Outros tipos principais sao: _group, file, package, service, cron, exec e host_Para consultar todos os tipos, use: https://docs.puppet.com/puppet/latest/type.html ou utilize `puppet describe --list`
 

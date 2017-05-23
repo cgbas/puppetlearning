@@ -1,0 +1,6 @@
+production/hieradata/
+production/environment.conf
+modules/docker/
+modules/graphite/
+modules/dockeragent/
+modules/stdlib/

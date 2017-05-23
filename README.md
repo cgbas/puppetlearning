@@ -153,6 +153,46 @@ Dentro de um _node_, classes sao _singletons_ portando so podem ser declaradas u
 
 # Cowsayings (Vacas Falantes)
 
+O objetivo aqui vai ser utilizar o recurso do tipo _package_ (pacote) e a VM ja preparou um diretorio no _modulepath_ do Puppet, com os diretorios _manifest_ e _examples_, em:
 
+`/etc/puppetlabs/code/environments/production/modules`
 
+## Cowsay
+
+Para utilizar o comando `cowsay`, precisamos instalar o _package cowsay_. Podemos utilizar o recurso _package_ porem essa declaracao precisa ir para algum lugar.
+
+### Tarefa 1
+
+Crie a estrutura de diretorio do nosso modulo (lembrando que entendemos modulo como um abrigador de classes, com suas classes homonimas sendo responsaveis por instalar/conigurar os pacotes primarios desse modulo):
+
+```
+    mkdir -p cowsayings/{manifests,examples}
+```
+
+Crie um manifesto com o vim:
+
+```
+    vim cowsayings/manifests/cowsay.pp
+```
+
+Insira a seguinte definicao:
+
+```
+    class cowsayings::cowsay {
+      package { 'cowsay':
+        ensure   => present,
+        provider => 'gem',
+      }
+    }
+```
+
+Para validar o manifesto, usamos:
+
+```
+    puppet parser validate cowsayings/manifests/cowsay.pp
+```
+
+O comando so retorna alguma saida caso exista algum erro (recomendo colocar algo errado no manifesto e testar).
+
+### Tarefa 2
 

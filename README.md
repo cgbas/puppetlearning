@@ -236,3 +236,42 @@ Exemplo da saida com `--noop`:
 
 __Nota:__ em uma instalacao offline ou com um firewall voce pode necessitar instalar o gem de um cache local da VM. Em uma infra real, voce pode configurar um _mirror_ (espelho) de um _rubygems_ com uma ferramenta como o __Stickler__ (`gem install --local --no-rdoc --no-ri /var/cache/rubygems/gems/cowsay-*.gem`).
 
+### Tarefa 3
+
+Caso a execucao com `--noop` seja bem sucedida, aplique o manifesto removendo a _flag_ `--noop`:
+
+```
+    puppet apply cowsayings/examples/cowsay.pp 
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.14 seconds
+    Notice: /Stage[main]/Cowsayings::Cowsay/Package[cowsay]/ensure: created
+    Notice: Applied catalog in 2.25 seconds
+```
+
+Teste de execucao:
+
+```
+# cowsay Can I Haz Soy Milk?
+
+ _____________________ 
+| Can I Haz Soy Milk? |
+ --------------------- 
+      \   ^__^
+       \  (oo)\_______
+          (__)\       )\/\
+              ||----w |
+              ||     ||
+```
+
+## Sorte
+
+Esse modulo nao e inteiramente sobre nossa vaca, mas tambem sobre o que ela fala. Com o package `fortune` podemos fornecer uma base de dados com frases de sabedoria.
+
+### Tarefa 4
+### Tarefa 5
+### Tarefa 6
+
+## Classe principal: init.pp
+
+### Tarefa 7
+### Tarefa 8
+### Tarefa 9

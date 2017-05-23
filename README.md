@@ -1,4 +1,8 @@
 
+# Intuito desse repositorio
+
+Comecei a estudar puppet e me encantei pelas possibilidades que se abriram. Como o material da VM de aprendizagem esta em ingles, resolvi compartilhar todas minhas notas e demais itens que forem criados no processo de estudo da mesma. As notas estarao divididas pelas buscas (quests) do material oficial, todo e qualquer artefato estarao divididos nessa mesma hierarquia.
+
 
 # Forca do Puppet
 

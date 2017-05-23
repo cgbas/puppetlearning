@@ -412,3 +412,18 @@ Agora que os pacotes foram removidos, execute o _init.pp_ com `--noop` e apos is
                   ||     ||
 ```
 
+# Modulos
+
+## Por que se meter com modulos?
+## O _modulepath_
+### Tarefa 1
+## Estrutura do Modulo
+### Tarefa 2
+### Tarefa 3
+## Gerenciando Arquivos
+### Tarefa 4
+### Tarefa 5
+### Tarefa 6
+## Testando seu modulo
+### Tarefa 7
+### Tarefa 8

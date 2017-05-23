@@ -513,6 +513,88 @@ Por padrao no _Vim_ os numeros de linha estao desabilitados, entao iremos adicio
 Salve e saia.
 
 ### Tarefa 6
+
+Agora que nosso arquivo fonte esta criados, precisamos de um manifesto para dizer o que o Puppet deve fazer com isso, lembrando-se que o manifesto que contem a classe principal do modulo sempre se chamara _init.pp_
+
+`vim vimrc/manifests/init.pp`
+
+O codigo Puppet aqui vai ser bem simples: vamos definir uma classe vimrc, realizar uma declaracao de recurso tipo _file_ para enviar o arquivo _vimrc_ de nosso modulo para a localizacao especifica. Nesse caso, o arquivo que se encontra no diretorio `/root`, entao seu caminho completo sera o titulo do recurso no arquivo da declaracao.
+
+Nosso recurso precisara de dois atributos tambem. Ja haviamos utilizado `ensure => present,` para garantir que o arquivo existisse no _filesystem_, no entando o Linux entende que isso e valido tanto para arquivos normais como para diretorios. Para garantir entao que seja um arquivo presente, utilizaremos `ensure => file,` explicitamente.
+
+O segundo atributo deve indicar ao Puppet qual o conteudo que o arquivo deve ter. O valor do atributo com a fonte do arquivo deve ser a URI desse arquivo fonte.
+
+Todas as URIs do servidor de arquivos do Puppet e estruturada assim:
+
+`puppet://{nome de host do server (opcional)}/{ponto de montagem}/{restante do caminho}`
+
+Mas ha ainda um pouco mais de magica embutida no Puppet para deixar essas URIs mais concisas:
+
+* O nome de host do server vai ser quase sempre omitido, ja que seu valor padrao aponta para o _Puppet Master_. Utilizamos somente quando necessitarmos apontar outro servidor de arquivos. Por padrao, entao, usamos 3 barras `puppet:///`
+* Quase todos os arquivos do Puppet sao servidos via modulos, para os quais o Puppet fornece alguns atalhos. Ele trata `modules` como um ponto de montagem especial que aponta para o _modulepath_ do _Puppet Master_. A URI fica agora assim `puppet:///modules/`
+* Como todos os os arquivos a serem servidos por um modulo devem estar no diretorio _files_, o nome do mesmo tambem e implicito e fica fora da URI.
+
+Sendo assim, ainda que nosso arquivo `vimrc` esteja em:
+
+`/etc/puppetlabs/code/environments/production/modules/vimrc/files/vimrc`
+
+O atributo com a URI para acesso do mesmo sera:
+
+`source => puppet:///modules/vimrc/vimrc,`
+
+Nosso `init.pp` fica assim:
+
+```
+    class vimrc {
+        file { '/root/.vimrc':
+            ensure => file,
+            source => 'puppet:///modules/vimrc/vimrc',
+        }
+
+    }
+```
+
+Apos salvar, validamos nosso manifest:
+
+`puppet parser validate vimrc/manifests/init.pp`
+
 ## Testando seu modulo
+
+Lembrando, o manifesto define/descreve nossa classe `vimrc` mas precisamos declara-la para fazer algum efeito.
+
 ### Tarefa 7
+
+Para testar, temos que criar o manifesto no diretorio _examples_
+
+`vim vimrc/examples/init.pp`
+
+E realizar a declaracao atraves de um  `include`:
+
+`include vimrc`
+
 ### Tarefa 8
+
+Aplique o manifesto com a _flag_ `--noop`. Se tudo estiver certo, dispense a mesma e execute pra valer.
+
+O output deve ser parecido com esse
+
+```
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.17 seconds
+    Notice: /Stage[main]/Vimrc/File[/root/.vimrc]/content: content changed '{md5}9cccec66ddbdf2cb32992c81e5281c8d' to '{md5}d1f40457544e7c0826da35bb0481afde'
+    Notice: Applied catalog in 0.62 seconds
+```
+
+Quando o Puppet gerencia um arquivo, ele compara o _hash_ do arquivo algo com o do arquivo fonte, caso nao batam fica sabido que o arquivo foi alterado e ocorre uma substituicao do mesmo para atingir o estado desejado.
+
+# NTP
+
+## O que e NTP
+## Pacote/Arquivo/Servico
+## Instalacao
+### Tarefa 1
+## Classificacao com o manifesto site.pp
+### Tarefa 2
+### Tarefa 3
+## Padroes e parametros de Classe
+### Tarefa 4
+### Tarefa 5

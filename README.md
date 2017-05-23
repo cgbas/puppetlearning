@@ -70,6 +70,15 @@ Outros tipos principais sao: _group, file, package, service, cron, exec e host_P
 
 
 ### Titulo
+
+```
+    user { 'root':
+      ...
+    }
+```
+
+No exemplo acima, `'root'` e nosso titulo. Trata-se do identificador interno - e unico - para esse recurso. Serve como uma chave primaria, ja que _dois recursos do mesmo tipo jamais podem compatilhar o mesmo nome_. Geralmente o titulo do recurso condiz com o nome da coisa que esse recurso gerencia: usuarios e pacotes com seus nomes, arquivos com seus paths completos. O Puppet permite que voce declare explicitamente os titulos de seus recursos, mas isso pode ser tornar mais dificil a gestao do seu codigo e impedir economizar algumas linhas.
+
 ### Par-valor de um atributo
 
 

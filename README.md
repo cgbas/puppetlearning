@@ -124,6 +124,10 @@ O mesmo nao possui ainda o atributo _Comments_ como no caso do usuario root.
 
 Poderiamos adicionar o atributo via `puppet apply -e`, mas nesse caso deveriamos passar a declaracao toda em uma linha so, alem de que nao poderiamos ver o estado do recurso antes de aplicar tudo. A ferramenta `puppet resource` possui a _flag_ `-e`, que abre o conteudo do recurso diretamente em um editor (Vim por padrao) e nos permite editar de uma maneira melhor. Para adicionar um atributo basta incluir uma linha (nao esqueca da virgula ao vinal), com o par valor (e o _hash rocket_).
 
+Sendo assim, para editar o recurso `galatea`, usamos:
+
+`puppet resource -e user galatea`
+
 Exemplo:
 
 ```

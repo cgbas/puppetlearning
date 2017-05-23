@@ -683,7 +683,33 @@ Uma _definicao de no_ e o equivalente a definicao em codigo do que fizemos no _P
 Como e mais acessivel monitorar com a ferramenta de `quest` do material, vamos utilizar principalmente o `site.pp` daqui em diante. O que aprendermos sobre definicao de nos e classes se aplica a qualquer metodo de classificacao escolhido, incluindo o classificador do PE.
 
 ### Tarefa 2
+
+Abrir o manifesto `site.pp` em algum editor:
+
+`vim /etc/puppetlabs/code/environments/production/manifests/site.pp`
+
+__Dica:_ a tecla `G` pula para o final do arquivo.
+
+O a definicao node `default` se trata de uma definicao especial, aplicada a qualquer node que nao esteja especificamente incluso em alguma outra definicao.
+
+Como queremos que nossas mudancas sejam aplicadas apenas a VM de aprendizagem, vamos colocar a declaracao de classe `ntp` em um novo bloco de node 'learning.puppetlabs.vm'.
+
+```
+    node 'learning.puppetlabs.vm' {
+        include ntp
+    }
+```
+
 ### Tarefa 3
+
+Disparar uma execucao do Puppet via ferramenta `puppet agent` e interessante para aprendizagem e testes, no entanto na producao voce deve preferir que o Puppet execute conforme agendamento, a cada 30 minutos, por padrao. Como voce ira executar o Puppet logo depois de alterar o manifesto `site.pp` talvez o cache nao tenha sido atualizado. Caso as mudancas nao estejam refletidas apos uma execucao via `puppet agent -t`, tente executar o comando mais uma vez.
+
+Teste o manifesto `site.pp` via  `puppet parser validate` e dispare uma execucao do Puppet via:
+
+`puppet agent -t`
+
+Utilize a ferramenta `puppet resource` para inspecionar o servico `ntpd` mais uma vez, caso a classe tenha sido aplicada com sucesso o servico estara no ar.
+
 ## Padroes e parametros de Classe
 ### Tarefa 4
 ### Tarefa 5

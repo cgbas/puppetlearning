@@ -290,7 +290,38 @@ Aqui, devemos adicionar o `include` para declarar nossa classe `cowsayings::fort
 
 ### Tarefa 6
 
-Aplique o `coswayings/examples/fortune.pp` com a _flag_ `--noop`. Caso tudo corra bem, aplique sem a _flag_. Com ambos pacotes instalados, podemos combinar comandos, como `fortune | cowsay`. Apesar de um exemplo simples, instalamos dois pacotes de maneira parecida como instalariamos o Apache e o PHP em nosso servidor.
+Aplique o `coswsayings/examples/fortune.pp` com a _flag_ `--noop`. Caso tudo corra bem, aplique sem a _flag_. 
+
+```
+    # puppet apply --noop cowsayings/examples/fortune.pp 
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.13 seconds
+    Notice: /Stage[main]/Cowsayings::Fortune/Package[fortune-mod]/ensure: current_value purged, should be present (noop)
+    Notice: Class[Cowsayings::Fortune]: Would have triggered 'refresh' from 1 events
+    Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+    Notice: Applied catalog in 1.96 seconds
+```
+
+Com ambos pacotes instalados, podemos combinar comandos, como `fortune | cowsay`. Apesar de um exemplo simples, instalamos dois pacotes de maneira parecida como instalariamos o Apache e o PHP em nosso servidor.
+
+```
+    # puppet apply cowsayings/examples/fortune.pp 
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.13 seconds
+    Notice: /Stage[main]/Cowsayings::Fortune/Package[fortune-mod]/ensure: created
+    Notice: Applied catalog in 5.96 seconds
+```
+
+```
+fortune | cowsay
+ _________________________________________ 
+| When in doubt, use brute force. -- Ken  |
+| Thompson                                |
+ ----------------------------------------- 
+      \   ^__^
+       \  (oo)\_______
+          (__)\       )\/\
+              ||----w |
+              ||     ||
+```
 
 ## Classe principal: init.pp
 

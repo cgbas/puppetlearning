@@ -1,0 +1,1 @@
+include cowsayings::fortune

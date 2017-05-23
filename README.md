@@ -267,8 +267,30 @@ Teste de execucao:
 Esse modulo nao e inteiramente sobre nossa vaca, mas tambem sobre o que ela fala. Com o package `fortune` podemos fornecer uma base de dados com frases de sabedoria.
 
 ### Tarefa 4
+
+Vamos criar um novo manifesto para nossa definicao da classe _fortune_: `vim cowsayings/manifests/fortune.pp`
+
+E inserir a seguinte definicao (_atencao aqui ao titulo sendo customizado_):
+
+```
+    class cowsayings::fortune {
+      package { 'fortune-mod':
+        ensure => present,
+      }
+    }
+```
+
 ### Tarefa 5
+
+Precisamos validar nosso manifesto via `puppet parser validate`, caso tudo esteja ok, podemos criar nosso manifesto de teste.
+
+`vim cowsayings/examples/fortune.pp`
+
+Aqui, devemos adicionar o `include` para declarar nossa classe `cowsayings::fortune`.
+
 ### Tarefa 6
+
+Aplique o `coswayings/examples/fortune.pp` com a _flag_ `--noop`. Caso tudo corra bem, aplique sem a _flag_. Com ambos pacotes instalados, podemos combinar comandos, como `fortune | cowsay`. Apesar de um exemplo simples, instalamos dois pacotes de maneira parecida como instalariamos o Apache e o PHP em nosso servidor.
 
 ## Classe principal: init.pp
 

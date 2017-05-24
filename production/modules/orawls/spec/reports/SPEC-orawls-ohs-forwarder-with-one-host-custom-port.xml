@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::ohs::forwarder with one host, custom port" tests="1" time="0.118152" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:11+02:00">
-  <testcase name="orawls::ohs::forwarder with one host, custom port should contain File[/opt/test/wls/domains/domain1/config/fmwconfig/components/OHS/ohs1/mod_wl_ohs.d/console.conf] with ensure =&gt; &quot;present&quot;, owner =&gt; &quot;oracle&quot;, group =&gt; &quot;oracle&quot;, content =~ /\&lt;LocationMatch &quot;\/console&quot;\&gt;/, content =~ /WebLogicHost 192.168.1.1/ and content =~ /WebLogicPort 7002/" time="0.117546">
-  </testcase>
-</testsuite>

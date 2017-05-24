@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::ohs::forwarder with two hosts without console ports" tests="1" time="0.069233" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:11+02:00">
-  <testcase name="orawls::ohs::forwarder with two hosts without console ports should contain File[/opt/test/wls/domains/domain1/config/fmwconfig/components/OHS/ohs1/mod_wl_ohs.d/console.conf] with ensure =&gt; &quot;present&quot;, owner =&gt; &quot;oracle&quot;, group =&gt; &quot;oracle&quot;, content =~ /\&lt;LocationMatch &quot;\/console&quot;\&gt;/ and content =~ /WebLogicCluster 192.168.1.1,192.168.1.2/" time="0.068893">
-  </testcase>
-</testsuite>

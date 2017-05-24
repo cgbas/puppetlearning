@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::fmw CentOS remote create Oracle home" tests="1" time="0.007105" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
-  <testcase name="orawls::fmw CentOS remote create Oracle home should contain File[/opt/oracle/middleware11gR1/Oracle_SOA1] that comes before Exec[install soaPS6]" time="0.006666">
-  </testcase>
-</testsuite>

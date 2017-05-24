@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::bsu unix CentOS local extract patch" tests="1" time="0.002867" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
-  <testcase name="orawls::bsu unix CentOS local extract patch should contain Exec[extract p17572726_1036_Generic.zip] that comes before Bsu_patch[/opt/oracle/middleware11gR1:FCX7]" time="0.002589">
-  </testcase>
-</testsuite>

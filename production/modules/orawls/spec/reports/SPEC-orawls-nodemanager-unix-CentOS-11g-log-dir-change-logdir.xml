@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::nodemanager unix CentOS 11g log dir change logdir" tests="1" time="0.008259" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:11+02:00">
-  <testcase name="orawls::nodemanager unix CentOS 11g log dir change logdir should contain File[/var/log/weblogic] that requires Exec[create /var/log/weblogic directory]" time="0.007717">
-  </testcase>
-</testsuite>

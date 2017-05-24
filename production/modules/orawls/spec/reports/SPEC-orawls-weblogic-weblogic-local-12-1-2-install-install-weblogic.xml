@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::weblogic weblogic local 12.1.2 install install weblogic" tests="1" time="0.019107" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:08+02:00">
-  <testcase name="orawls::weblogic weblogic local 12.1.2 install install weblogic should contain Exec[install weblogic base] that requires File[/install/weblogic_silent_install_base.xml], Wls_directory_structure[weblogic structure base] and Orawls::Utils::Orainst[weblogic orainst base]" time="0.0184">
-  </testcase>
-</testsuite>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::urandomfix on operatingsystem Debian" tests="2" time="0.008232" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:07+02:00">
-  <testcase name="orawls::urandomfix on operatingsystem Debian should contain Exec[set urandom /etc/default/rng-tools] with user =&gt; &quot;root&quot;" time="0.004489">
-  </testcase>
-  <testcase name="orawls::urandomfix on operatingsystem Debian should contain Service[rng-tools] with ensure =&gt; &quot;running&quot; and enable =&gt; true" time="0.002848">
-  </testcase>
-</testsuite>

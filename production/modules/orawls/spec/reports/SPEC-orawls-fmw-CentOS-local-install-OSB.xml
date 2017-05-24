@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::fmw CentOS local install OSB" tests="1" time="0.017688" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
-  <testcase name="orawls::fmw CentOS local install OSB should contain Exec[install osbPS6] that requires File[/install/osbPS6_silent.rsp], Orawls::Utils::Orainst[create oraInst for osbPS6] and Exec[extract file1 for osbPS6]" time="0.017352">
-  </testcase>
-</testsuite>

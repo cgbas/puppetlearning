@@ -1,9 +1,0 @@
-newproperty(:cluster) do
-  include EasyType
-
-  desc 'The cluster this migratable tragte should be targetted to'
-
-  to_translate_to_resource do | raw_resource|
-    raw_resource['cluster']
-  end
-end

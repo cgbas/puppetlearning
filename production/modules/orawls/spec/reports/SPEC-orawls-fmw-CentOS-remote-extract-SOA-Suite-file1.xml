@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::fmw CentOS remote extract SOA Suite file1" tests="1" time="0.005" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
-  <testcase name="orawls::fmw CentOS remote extract SOA Suite file1 should contain Exec[extract file1 for soaPS6] that requires Orawls::Utils::Orainst[create oraInst for soaPS6]" time="0.004471">
-  </testcase>
-</testsuite>

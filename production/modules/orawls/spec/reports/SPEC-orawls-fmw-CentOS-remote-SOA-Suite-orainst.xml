@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::fmw CentOS remote SOA Suite orainst" tests="1" time="0.003181" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
-  <testcase name="orawls::fmw CentOS remote SOA Suite orainst should contain Orawls::Utils::Orainst[create oraInst for soaPS6] with ora_inventory_dir =&gt; &quot;/opt/oracle/oraInventory&quot; and os_group =&gt; &quot;dba&quot;" time="0.002897">
-  </testcase>
-</testsuite>

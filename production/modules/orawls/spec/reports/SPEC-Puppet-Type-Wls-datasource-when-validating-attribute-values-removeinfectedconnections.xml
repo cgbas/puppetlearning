@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Puppet::Type::Wls_datasource when validating attribute values removeinfectedconnections" tests="3" time="0.009061" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:12+02:00">
-  <testcase name="Puppet::Type::Wls_datasource when validating attribute values removeinfectedconnections should accept booleans" time="0.003604">
-  </testcase>
-  <testcase name="Puppet::Type::Wls_datasource when validating attribute values removeinfectedconnections should munge '0' to :false" time="0.001868">
-  </testcase>
-  <testcase name="Puppet::Type::Wls_datasource when validating attribute values removeinfectedconnections should munge '1' to :true" time="0.002832">
-  </testcase>
-</testsuite>

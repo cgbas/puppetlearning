@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::weblogic weblogic local install WebLogic structure" tests="1" time="0.002744" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:08+02:00">
-  <testcase name="orawls::weblogic weblogic local install WebLogic structure should contain Wls_directory_structure[weblogic structure base] with oracle_base_dir =&gt; &quot;/opt/oracle&quot;, ora_inventory_dir =&gt; &quot;/opt/oracle/oraInventory&quot;, os_group =&gt; &quot;dba&quot;, os_user =&gt; &quot;oracle&quot;, download_dir =&gt; &quot;/install&quot;, wls_domains_dir defined and wls_apps_dir defined" time="0.002477">
-  </testcase>
-</testsuite>

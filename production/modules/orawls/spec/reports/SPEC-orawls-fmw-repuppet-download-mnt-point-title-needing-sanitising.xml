@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::fmw repuppet_download_mnt_point title needing sanitising" tests="2" time="1.135225" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
-  <testcase name="orawls::fmw repuppet_download_mnt_point title needing sanitising should compile into a catalogue without dependency cycles" time="1.086108">
-  </testcase>
-  <testcase name="orawls::fmw repuppet_download_mnt_point title needing sanitising should contain File[/install/My_Oracle-SOA_Installation_silent.rsp]" time="0.048455">
-  </testcase>
-</testsuite>

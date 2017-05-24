@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="orawls::weblogic weblogic local 12.1.2 install WebLogic orainst" tests="1" time="0.127331" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:08+02:00">
-  <testcase name="orawls::weblogic weblogic local 12.1.2 install WebLogic orainst should contain Orawls::Utils::Orainst[weblogic orainst base] with ora_inventory_dir =&gt; &quot;/opt/oracle/oraInventory&quot; and os_group =&gt; &quot;dba&quot;" time="0.127062">
-  </testcase>
-</testsuite>

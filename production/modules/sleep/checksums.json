@@ -1,0 +1,15 @@
+{
+  "LICENSE": "c7cfaeec9b53d710083f682d768bc981",
+  "Modulefile": "2685bed996f9a358a4e2f9386e470cc3",
+  "README.md": "b79679056a5875014bcdf20a334b4bed",
+  "Rakefile": "3a445a51ef5acbbd614e05ccf22ad14e",
+  "lib/puppet/provider/sleep/ruby.rb": "c7963fcbe2011f4ea8b7ecfcfb6298f2",
+  "lib/puppet/provider/sleep/windows.rb": "25e78bc90db7a2376886306aa3c138e1",
+  "lib/puppet/type/sleep.rb": "634176921b08c89d37e1ed12288f2adc",
+  "metadata.json": "5d87299d9c9df6f4dfd76df8a8675a9b",
+  "spec/fixtures/manifests/site.pp": "d41d8cd98f00b204e9800998ecf8427e",
+  "spec/spec_helper.rb": "5e79e95407412ac6ab72a7d5d9038825",
+  "spec/unit/provider/sleep/ruby_spec.rb": "af30ecd1b513b15d1935cb6abc76dada",
+  "spec/unit/type/sleep_spec.rb": "e9a9c7214b42dee904f2cfc91ad5fb04",
+  "tests/init.pp": "ed37114e48ec7651b2d4dd04b6b13e8c"
+}

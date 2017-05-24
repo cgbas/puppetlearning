@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::nodemanager CentOS 12.1.2 log dir start nodemanager 3" tests="1" time="0.126277" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:11+02:00">
+  <testcase name="orawls::nodemanager CentOS 12.1.2 log dir start nodemanager 3 should contain Exec[startNodemanager nodemanager12c] with command =&gt; &quot;nohup /opt/oracle/wlsdomains/domains/wls1212/bin/startNodeManager.sh &amp;&quot;, cwd =&gt; &quot;/opt/oracle/wlsdomains/domains/wls1212/nodemanager&quot;, user =&gt; &quot;oracle&quot;, group =&gt; &quot;dba&quot; and environment =&gt; [&quot;JAVA_OPTIONS=-Dweblogic.ssl.JSSEEnabled=false -Dweblogic.security.SSL.enableJSSE=false  &quot;, &quot;JAVA_HOME=/usr/java/jdk1.7.0_45&quot;, &quot;JAVA_VENDOR=Oracle&quot;]" time="0.125967">
+  </testcase>
+</testsuite>

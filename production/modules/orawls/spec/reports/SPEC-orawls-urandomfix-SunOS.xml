@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::urandomfix SunOS" tests="1" time="0.115676" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:07+02:00">
+  <testcase name="orawls::urandomfix SunOS should raise Puppet::Error with message matching /Unrecognized osfamily Solaris, please use it on a Linux host/" time="0.115378">
+  </testcase>
+</testsuite>

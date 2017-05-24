@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Puppet::Type::Wls_datasource when validating attributes" tests="31" time="0.057849" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:12+02:00">
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a domain parameter" time="0.002071">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a name parameter" time="0.001242">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a datasource_name parameter" time="0.001713">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a provider parameter" time="0.00167">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a ensure property" time="0.001215">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a connectioncreationretryfrequency property" time="0.001437">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a drivername property" time="0.001726">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a fanenabled property" time="0.001364">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a globaltransactionsprotocol property" time="0.001191">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a initialcapacity property" time="0.001204">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a initsql property" time="0.0012">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a jndinames property" time="0.001115">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a maxcapacity property" time="0.001537">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a mincapacity property" time="0.001364">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a password property" time="0.001205">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a removeinfectedconnections property" time="0.001447">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a rowprefetchenabled property" time="0.001175">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a rowprefetchsize property" time="0.001482">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a secondstotrustidlepoolconnection property" time="0.001874">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a shrinkfrequencyseconds property" time="0.002876">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a statementcachesize property" time="0.002021">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a target property" time="0.001842">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a targettype property" time="0.001808">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a testconnectionsonreserve property" time="0.001705">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a testfrequency property" time="0.001243">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a testtablename property" time="0.001185">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a url property" time="0.001187">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a user property" time="0.001592">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a usexa property" time="0.002107">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a wrapdatatypes property" time="0.003147">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_datasource when validating attributes should have a xaproperties property" time="0.002933">
+  </testcase>
+</testsuite>

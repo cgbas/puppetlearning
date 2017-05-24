@@ -38,3 +38,4 @@ au BufRead,BufNewFile *_spec.rb
 filetype plugin indent on
 
 set number
+set paste

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::bsu unix CentOS local install BSU" tests="1" time="0.00251" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
+  <testcase name="orawls::bsu unix CentOS local install BSU should contain Bsu_patch[/opt/oracle/middleware11gR1:FCX7] with ensure =&gt; &quot;present&quot;, middleware_home_dir =&gt; &quot;/opt/oracle/middleware11gR1&quot;, os_user =&gt; &quot;oracle&quot;, weblogic_home_dir =&gt; &quot;/opt/oracle/middleware11gR1/wlserver_103&quot; and jdk_home_dir =&gt; &quot;/usr/java/jdk1.7.0_45&quot;" time="0.002155">
+  </testcase>
+</testsuite>

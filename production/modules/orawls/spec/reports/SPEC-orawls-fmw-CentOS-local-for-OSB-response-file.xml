@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::fmw CentOS local for OSB response file" tests="1" time="0.002451" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
+  <testcase name="orawls::fmw CentOS local for OSB response file should contain File[/install/osbPS6_silent.rsp]" time="0.002186">
+  </testcase>
+</testsuite>

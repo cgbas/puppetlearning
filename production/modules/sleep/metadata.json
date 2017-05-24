@@ -1,0 +1,48 @@
+{
+  "name": "fiddyspence-sleep",
+  "version": "1.2.0",
+  "author": "fiddyspence",
+  "summary": "Sleep Module",
+  "license": "ASL 2.0",
+  "source": "git://github.com/fiddyspence/puppet-sleep.git",
+  "project_page": "http://github.com/fiddyspence/puppet-sleep",
+  "issues_url": "https://github.com/fiddyspence/puppet-sleep/issues",
+  "tags": [
+    "sleep",
+    "kernel",
+    "parameters"
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Redhat",
+      "operatingsystemrelease": [
+        "5.0",
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "10.04",
+        "14.10"
+      ]
+    },
+    {
+      "operatingsystem": "Windows"
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "5.0",
+        "6.0",
+        "7.0"
+      ]
+    }
+  ],
+  "description": "This is a module to provide a core type that does a sleep",
+  "dependencies": [
+  
+  ]
+}

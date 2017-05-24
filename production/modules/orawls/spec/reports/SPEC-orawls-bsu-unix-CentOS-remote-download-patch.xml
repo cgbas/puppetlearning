@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::bsu unix CentOS remote download patch" tests="1" time="0.045988" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:08+02:00">
+  <testcase name="orawls::bsu unix CentOS remote download patch should contain File[/install/p17572726_1036_Generic.zip] that comes before Exec[extract p17572726_1036_Generic.zip]" time="0.04569">
+  </testcase>
+</testsuite>

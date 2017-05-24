@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Puppet::Type::Wls_deployment localpath" tests="3" time="0.053034" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:12+02:00">
+  <testcase name="Puppet::Type::Wls_deployment localpath should accept an absolute path for localpath" time="0.022514">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_deployment localpath should fail if localpath isn't an absolute path" time="0.014935">
+  </testcase>
+  <testcase name="Puppet::Type::Wls_deployment localpath should fail if localpath is in /tmp" time="0.014005">
+  </testcase>
+</testsuite>

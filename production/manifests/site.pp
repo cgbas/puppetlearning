@@ -38,4 +38,11 @@ node 'learning.puppetlabs.vm' {
       'ntp-nist.ldbsc.edu'
     ]
   }
+  class {'::mysql::server':
+    root_password    => 'strongpassword',
+    override_options => {
+      'mysqld'       =>  { max_connections => 1024 }
+    },
+  }
 }
+

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::fmw CentOS remote for SOA Suite file2" tests="1" time="0.004564" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
+  <testcase name="orawls::fmw CentOS remote for SOA Suite file2 should contain File[/install/file2] that comes before Exec[extract file2 for soaPS6]" time="0.00426">
+  </testcase>
+</testsuite>

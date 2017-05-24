@@ -1,0 +1,85 @@
+
+
+def queue(token,token2,location,distributed):
+    cd(location)
+    jndiname           = get_attribute_value('JNDIName')
+    destination_keys   = get_attribute_value('DestinationKeys')
+    insertion_paused   = get_attribute_value('InsertionPausedAtStartup')
+    consumption_paused = get_attribute_value('ConsumptionPausedAtStartup')
+    production_paused  = get_attribute_value('ProductionPausedAtStartup')
+
+    forwardDelay = ''
+    try:
+      forwardDelay = get_attribute_value('ForwardDelay')
+    except:
+      print "forwardDelay failed, probably a normal queue"
+
+    defaultTargeting   = get_attribute_value('DefaultTargetingEnabled')
+    if defaultTargeting == '1':
+       subdeployment = ''
+    else:
+       subdeployment = get_attribute_value('SubDeploymentName')
+
+    if distributed == '1':
+      balancingPolicy  = get_attribute_value('LoadBalancingPolicy')
+    else:
+      balancingPolicy  = ''
+
+    quotaMbean = get('Quota')
+    if quotaMbean:
+       path = getPath(quotaMbean)
+       cd("/"+path)
+       quota  = get_attribute_value('Name')
+       cd(location)
+    else:
+       quota = ''
+
+    cd(location+'/DeliveryFailureParams/'+token2)
+    redeliveryLimit         = get_attribute_value('RedeliveryLimit')
+    expirationPolicy        = get_attribute_value('ExpirationPolicy')
+    expirationLoggingPolicy = get_attribute_value('ExpirationLoggingPolicy')
+
+    errorDestinationMBean   = get('ErrorDestination')
+    if errorDestinationMBean:
+       path = getPath(errorDestinationMBean)
+       cd("/"+path)
+       errorDestination  = get_attribute_value('Name')
+    else:
+       errorDestination = ''
+
+    cd(location+'/DeliveryParamsOverrides/'+token2)
+    timeToLive      = get_attribute_value('TimeToLive')
+    timeToDeliver   = get_attribute_value('TimeToDeliver')
+    deliveryMode    = get_attribute_value('DeliveryMode')
+    redeliveryDelay = get_attribute_value('RedeliveryDelay')
+
+    cd(location+'/MessageLoggingParams/'+token2)
+    messagelogging = get_attribute_value('MessageLoggingEnabled')
+
+    template=ls(location+'/Template',returnMap='true')
+    if template:
+      templatename = template[0]
+    else:
+      templatename = ''
+
+    add_index_entry(f, [domain+'/'+token+":"+token2,token,str(distributed),jndiname,subdeployment,balancingPolicy,quota,defaultTargeting,redeliveryLimit,expirationPolicy,errorDestination,expirationLoggingPolicy,timeToLive,timeToDeliver,redeliveryDelay,deliveryMode,forwardDelay,templatename,messagelogging,domain,','.join(destination_keys), insertion_paused, consumption_paused, production_paused])
+
+f = open_file("name;jmsmodule;distributed;jndiname;subdeployment;balancingpolicy;quota;defaulttargeting;redeliverylimit;expirationpolicy;errordestination;expirationloggingpolicy;timetolive;timetodeliver;redeliverydelay;deliverymode;forwarddelay;templatename;messagelogging;domain;destination_keys;insertionpaused;consumptionpaused;productionpaused", tmp_script)
+
+m = ls('/JMSSystemResources',returnMap='true')
+for token in m:
+  print '_jmsmodule_'+token+'___'
+  cd('/JMSSystemResources/'+token+'/JMSResource/'+token)
+
+  n = ls('UniformDistributedQueues',returnMap='true')
+  for token2 in n:
+    queue(token,token2,'/JMSSystemResources/'+token+'/JMSResource/'+token+'/UniformDistributedQueues/'+token2,'1')
+
+  cd('/JMSSystemResources/'+token+'/JMSResource/'+token)
+  n = ls('Queues',returnMap='true')
+  for token2 in n:
+    queue(token,token2,'/JMSSystemResources/'+token+'/JMSResource/'+token+'/Queues/'+token2,'0')
+
+
+f.close()
+report_back_success()

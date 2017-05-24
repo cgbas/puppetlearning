@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::fmw CentOS local oracle product should not exists" tests="1" time="0.188756" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:09+02:00">
+  <testcase name="orawls::fmw CentOS local oracle product should not exists should contain Notify[orawls::fmw osbPS6 /opt/oracle/middleware11gR1/Oracle_OSB1 does not exists]" time="0.188494">
+  </testcase>
+</testsuite>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::nodemanager unix CentOS 11g log dir nodemanager.properties" tests="1" time="0.004302" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:11+02:00">
+  <testcase name="orawls::nodemanager unix CentOS 11g log dir nodemanager.properties should contain File[nodemanager.properties ux nodemanager11g] that comes before Exec[startNodemanager nodemanager11g]" time="0.003917">
+  </testcase>
+</testsuite>

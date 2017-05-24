@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::weblogic weblogic remote install download weblogic.jar" tests="1" time="0.0031" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:08+02:00">
+  <testcase name="orawls::weblogic weblogic remote install download weblogic.jar should contain File[/install/wls1036_generic.jar] with source =&gt; &quot;puppet:///middleware/wls1036_generic.jar&quot;" time="0.002806">
+  </testcase>
+</testsuite>

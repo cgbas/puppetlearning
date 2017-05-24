@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::nodemanager unix CentOS 11g log dir create logdir" tests="1" time="0.171235" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:11+02:00">
+  <testcase name="orawls::nodemanager unix CentOS 11g log dir create logdir should contain Exec[create /var/log/weblogic directory] with command =&gt; &quot;mkdir -p /var/log/weblogic&quot; and cwd =&gt; &quot;/opt/oracle/middleware11gR1/wlserver_103/common/nodemanager&quot;" time="0.170932">
+  </testcase>
+</testsuite>

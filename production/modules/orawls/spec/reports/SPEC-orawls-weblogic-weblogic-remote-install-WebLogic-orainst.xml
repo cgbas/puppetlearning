@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::weblogic weblogic remote install WebLogic orainst" tests="1" time="0.535491" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:07+02:00">
+  <testcase name="orawls::weblogic weblogic remote install WebLogic orainst should contain Orawls::Utils::Orainst[weblogic orainst base] with ora_inventory_dir =&gt; &quot;/opt/oracle/oraInventory&quot; and os_group =&gt; &quot;dba&quot;" time="0.535032">
+  </testcase>
+</testsuite>

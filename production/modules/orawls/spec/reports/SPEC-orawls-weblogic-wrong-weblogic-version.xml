@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="orawls::weblogic wrong weblogic version" tests="1" time="0.111686" failures="0" errors="0" skipped="0" timestamp="2017-05-07T12:45:07+02:00">
+  <testcase name="orawls::weblogic wrong weblogic version should raise Puppet::Error with message matching /unknown weblogic version parameter/" time="0.111444">
+  </testcase>
+</testsuite>

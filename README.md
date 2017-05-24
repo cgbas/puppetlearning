@@ -1240,3 +1240,79 @@ Agora faca um teste, execute uma vez com `--noop` e entao aplique o teste. A nov
 
 __Importante:__ lembre-se que classes no Puppet sao singletons, entao so podem ser aplicadas uma vez por node (no nosso exemplo so seria possivel ter uma pagina espeficada por parametros alem das duas outras ja existentes). Caso voce deseje repetir o mesmo recurso ou grupo deles __em um mesmo no__, podemos utilizar o conceito de _tipo de recurso definido_, que veremos em uma proxima quest.
 
+# Declaracoes condicionais
+## Escrevendo pela flexibilidade
+## Fatos
+## Condicoes
+### If
+### Tarefa 1
+### Tarefa 2
+### Tarefa 3
+### Tarefa 4
+### Tarefa 5
+### Tarefa 6
+### Unless
+### Case
+### Selector
+
+# Ordenacao de recursos
+## Ordem de recurso
+### Tarefa 1
+### Tarefa 2
+### Tarefa 3
+### Tarefa 4
+### Tarefa 5
+### Tarefa 6
+### Tarefa 7
+### Tarefa 8
+### Tarefa 9
+## Encadeamento de setas (chaining arrows)
+## Autorequires
+
+# Tipos de recurso definidos
+## Tipos de recurso definidos
+### Tarefa 1
+### Tarefa 2
+### Tarefa 3
+### Tarefa 4
+### Paginas HTML publicas
+### Tarefa 5
+### Tarefa 6
+### Parametros
+### Tarefa 7
+### Tarefa 8
+### Tarefa 9
+
+# Instalacao de Agente de no
+## Consiga alguns nos
+### Conteineres
+### Tarefa 1
+### Tarefa 2
+### Instale o agente do Puppet
+### Tarefa 3
+### Tarefa 4
+### Tarefa 5
+### Certificados
+### Tarefa 6
+### Tarefa 7
+
+# Orquestrador de aplicacao
+# O Orquestrador de aplicacao
+### Configuracao de no
+### Tarefa 1
+### Tarefa 2
+### Configuracao Master
+### Configuracao do client e permissoes
+### Tarefa 3
+### Token do client
+### Tarefa 4
+## Aplicacoes Puppetizadas
+### Tarefa 6
+### Tarefa 7
+### Tarefa 8
+### Tarefa 9
+### Tarefa 10
+### Tarefa 11
+
+
+

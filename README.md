@@ -1253,18 +1253,75 @@ Crie um diretorio `accounts` e seus diretorios `manifests` e `examples`:
 `mkdir -p accounts/{manifests,examples}`
 
 ### Tarefa 2
+
+Abra o manifesto `accounts/manifests/init.pp` no Vim. No inicio da sua definicao de classe de `accounts`, voce ira incluir logica condicional para atribuir a variavel `$groups` baseada no valor do fato `::operatingsystem`. Se o SO for CentOS, o Puppet ira adicionar o usuario ao grupo `wheel`, se for Debian ira adicionar ao grupo `admin`.
+
+O inicio da sua definicao de classe deveria se parecer com isso aqui:
+
+```
+  class accounts ($user_name) {
+
+    if $::operatingsystem == 'centos' {
+      $groups = 'whell'
+    }
+    elsif $::operatingsystem == 'debian' {
+      $groups = 'admin'
+    }
+    else {
+      fail( "This module doesn't support ${::operatingsystem}." )
+    }
+
+    notice ( "Groups for user ${user_name} set to ${groups}" )
+  }
+```
+
+Note que esses _matches_ de strings __nao__ sao _case-sensitive_, entao 'CENTOS' tambem funcionaria. Pra finalizar, no bloco `else`, voce vai sinalizar um erro caso o modulo nao suporte o SO.
+
+Com a logica para o grupo (`$groups`) finalizada, crie uma declaracao de recurso `user`. Utilize a variavel `$user_name` definida pelo seu parametro de classe pra atribuir o home e o titulo do usuario, e use a variavel `$groups` para definir o atributo `groups`
+
+```
+class accounts ($user_name) {
+  ...
+
+  user { $user_name:
+    ensure  => present,
+    home    => "/home/${user_name}",
+    groups  => $groups
+  }
+  ...
+}
+```
+
+Pra garantir, que tal seu codigo passar em um `puppet parser validate` antes de continuar? :D
+
 ### Tarefa 3
 ### Tarefa 4
 ### Tarefa 5
 ### Tarefa 6
+
+Agora va em frente e execute um `puppet apply --noop` no seu manifesto de teste antes de definir a variavel de ambiente. Se parecer bom, dispense a _flag_ `--noop` para aplicar o catalogo gerado pelo seu manifesto.
+
+Voce pode usar a ferramenta `puppet resource` para validar os resultados.
+
 ### Unless
 
 A declaracao `unless` funciona como o inverso de um `if`. O `unless` recebe uma condicao e um bloco de codigo Puppet. So ira executar __se__ a condicao for __falsa__. Se a condicao for verdadeira, o Puppet nao fara nada e seguira. Nao existe um equivalente de clausulas `elsif` ou `else` para declaracoes `unless`.
 
 ### Case
+
+Declaracoes condicionais permitem que voce escreva codigo que retorne valores diferentes ou execute blocos diferentes de codigo dependendo do que voce especificar. Junto ao `Facter`, que disponibiliza os detalhes de uma maquina como _variaveis_, permite que voce escreva um codigo que acomode flexivelmente diferentes plataformas, sistemas operacionais e requisitos funcionais.
+
 ### Selector
 
+Codigo excelente == codigo flexivel e portavel. Apesar dos tipos e provedores que sao o _code_ do __RAL__ do Puppet fazerem a maior parte do trabalho pesado nessas adaptacoes, ha varias coisas que sao melhores nas maos de usuarios competentes.
+
+(...)
+
+Uma fez feito, os detalhes deixam de ser importantes. __Fatos__ e __declaracoes condicionais__ sao o arroz feijao dessa funcionalidade.
+
 # Ordenacao de recursos
+
+
 ## Ordem de recurso
 ### Tarefa 1
 ### Tarefa 2

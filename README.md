@@ -1238,5 +1238,5 @@ Agora faca um teste, execute uma vez com `--noop` e entao aplique o teste. A nov
   Notice: Applied catalog in 0.58 seconds
 ```
 
-__Importante:__lembre-se que classes no Puppet sao singletons, entao so podem ser aplicadas uma vez por node (no nosso exemplo so seria possivel ter uma pagina espeficada por parametros alem das duas outras ja existentes). Caso voce deseje repetir o mesmo recurso ou grupo deles __em um mesmo no__, podemos utilizar o conceito de _tipo de recurso definido_, que veremos em uma proxima quest.
+__Importante:__ lembre-se que classes no Puppet sao singletons, entao so podem ser aplicadas uma vez por node (no nosso exemplo so seria possivel ter uma pagina espeficada por parametros alem das duas outras ja existentes). Caso voce deseje repetir o mesmo recurso ou grupo deles __em um mesmo no__, podemos utilizar o conceito de _tipo de recurso definido_, que veremos em uma proxima quest.
 

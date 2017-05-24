@@ -1068,7 +1068,7 @@ Para isso, voce vai escrever um modulo que gerencia um site de HTML estatico. Pr
 
 No Puppet, variaveis sao prefixadas por um `$` e atribui-se valor a elas com `=`. Por exemplo, para atribuir uma _string_ a uma variavel, fazemos:
 
-`$minhavariavel = olhe, uma string`
+`$minhavariavel = 'olhe, uma string'`
 
 Uma vez definida, voce pode utilizar a variavel em qualquer lugar em que poderia utilizar o valor atribuido.
 
@@ -1080,11 +1080,75 @@ O basico sobre variaveis parecera familiar se voce ja conhece qualquer outra lin
 
 ### Interpolacao de variaveis
 
+A interpolacao permite que voce utilize o valor de uma variavel em uma _string_. Por acaso, se voce quisesse que o Puppet gerenciasse varios arquivos dentro do diretorio `/var/www/quest`, voce poderia ter atribuido esse caminho de diretorio a uma variavel:
+
+`$doc_root = '/var/www/quest'`
+
+Uma vez definida, voce nao precisa mais repetir o caminho inserindo a variavel `$doc_root` no inicio de qualquer _string_.
+
+Por exemplo, voce pode utilizar no titulo da declaracao de alguns recursos _file_:
+
+```
+  file { "${doc_root}/index.html":
+    ...
+  }
+  file { "${doc_root}/about.html":
+    ...
+  }
+```
+
+Note a sintaxe diferente aqui, o nome da variavel e envolto entre chaves (`{ }`) e tudo isso precedido pelo `$` (`${nome_da_variavel}`). Perceba tambem que uma _string_ que inclui uma variavel interpolada deve estar envolta entre aspas duplas `"..."` ao inves das simples que utilizamos em _strings_ comuns. Tais aspas sinalizam ao Puppet que ele deve encontrar e analisar sintaxe dentro da _string_ e nao apenas interpreta-la como literal.
 
 ## Gerenciando conteudo Web com variaveis
+
+Pra entender melhor como trabalhar com variaveis nesse contexto, te guiaremos atraves da criacao de um modulo `web` que colocara isso em pratica.
+
 ### Tarefa 1
+
+Primeiro, voce vai precisar da estrutura de diretorio do seu modulo.
+
+Confira que voce esta no diretorio `modules` do seu _modulepath_:
+
+`cd /etc/puppetlabs/code/environments/production/modules/`
+
+Agora crie um diretorio `web` e seus diretorios `manifests` e `examples`:
+
+`mkdir -p web/{manifests,examples}`
+
 ### Tarefa 2
+
+Com essa estrutura no lugar, voce ja pode comecar a criar seu manifesto principal onde voce define sua classe `web`.
+
+`vim web/manifests/init.pp`
+
+E adicione o seguinte conteudo (lembre-se do `:set paste`, caso nao tenha ajustado seu `.vimrc` automaticamente)
+
+```
+class web {
+
+    $doc_root = '/var/www/quest'
+
+    $english = 'Hello world!'
+    $french  = 'Bonjour le monde!'
+
+    file { "${doc_root}/hello.html":
+      ensure  => file,
+      content => "<em>${english}</em>",
+    }
+
+    file { "${doc_root}/bonjour.html":
+      ensure  => file,
+      content => "<em>${french}</em>",
+    }
+
+  }
+```
+
+Note que se voce quisesse alterar o valor do `$doc_root` so precisaria faze-lo em um lugar. Apesar de existirem formas mais avancadas de separacao de dados no Puppet o principio e o mesmo: quanto mais separado for seu codigo dos dados abaixo dele, mais reutilizavel ele e, e mais facil de refatorar quando voce precisar altera-lo no futuro.
+
 ### Tarefa 3
+
+
 ### Tarefa 4
 ## Parametros de Classe
 ### Tarefa 5

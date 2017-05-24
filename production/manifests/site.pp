@@ -31,6 +31,20 @@ node default {
 }
 
 node 'learning.puppetlabs.vm' {
+  mysql_database { 'lvm':
+    ensure  => present,
+    charset => 'utf8',
+  }
+  mysql_user{ 'lvm_user@localhost':
+    ensure => present,
+  }
+  mysql_grant { 'lvm_user@localhost/lvm.*':
+    ensure     => present,
+    options    => ['GRANT'],
+    privileges => ['ALL'],
+    table      => 'lvm.*',
+    user       => 'lvm_user@localhost',
+  }
   class {'ntp':
     servers => [
       'nist-time-server.eoni.com',
@@ -44,5 +58,6 @@ node 'learning.puppetlabs.vm' {
       'mysqld'       =>  { max_connections => 1024 }
     },
   }
+  include ::mysql::server::account_security
 }
 

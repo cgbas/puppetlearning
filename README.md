@@ -649,7 +649,8 @@ Antes de classificar a nossa VM com a classe do NTP, precisamos  instalar o modu
 
 ### Tarefa 1
 
-Utilizar a ferramenta `puppet module` para instalar o `ntp` via __Forge__. (Caso voce tenha instalado os modulos do cache essa tarefa pode ja estar concluida e voce pode pular para o proximo passo)
+Utilizar a ferramenta `puppet module` para instalar o `ntp` via __Forge__. 
+(Caso voce tenha instalado os modulos do cache essa tarefa pode ja estar concluida e voce pode pular para o proximo passo)
 
 ```
     # puppet module install puppetlabs-ntp
@@ -806,13 +807,267 @@ Verifique que o arquivo `/etc/ntp.conf` foi alterado e que o servico `ntpd` foi 
 # MySQL
 
 ## PorQueSQL?
+
+O modulo de MySQL (mantido) e utilizado para simplificar tarefas complexas sem sacrificar robustez e controle. O modulo permite que voce instale e configure tanto instancias de servidor como de cliente. Permite tambem estender o tipo de recurso para gerenciar usuarios, grants e bases de dados MySQL com a linguagem de recurso padrao do Puppet.
+
 ## Instalacao do Servidor
+
+### Tarefa 1
+
+Antes de iniciarmos, vamos pegar o modulo `puppetlabs-mysql` do __Forge__ atraves da ferramenta `puppet module`. (Caso voce tenha instalado os modulos do cache essa tarefa pode ja estar concluida e voce pode pular para o proximo passo)
+
+`puppet module install puppetlabs-mysql`
+
+Agora que este modulo esta instalado no _modulepath_ do _Puppet Master_, todas suas classes ficam disponiveis para classificarmos os _nodes_.
+
+### Tarefa 2
+
+Editar o `site.pp` para classificar a VM de aprendizagem como uma classe MySQL.
+
+`vim /etc/puppetlabs/code/environments/production/manifests/site.pp`
+
+Se voce completou a quest do NTP, ja tem uma entrada para o certname `learning.puppetlabs.vm`, do contrario crie agora:
+
+```
+  node 'learning.puppetlabs.vm' {
+
+  }
+```
+
+Dentro desse bloco de no, podemos declarar nossa classe `::mysql::server` e definir seus parametros. Para esse exemplo vamos definir a senha de `root` e definir o maximo de conexoes com o servidor como 1024. 
+
+__Dica:__ altere o `vimrc` utilizado anteriormente para incluir `set paste` e garantir que o _vim_ nao quebre a formatacao ao colar hashes aninhados.
+
+```
+  node 'learning.puppetlabs.vm' {
+    class { '::mysql::server':
+      root_password    => 'strongpassword',
+      override_options => {
+        'mysqld' => { 'max_connections' => '1024' }
+      },
+    }
+  }
+```
+
+Nao apenas opcoes padrao como `root_password`, a classe aceita `override_options` como um hash, que voce pode utilizar para qualquer configuracao que voce normalmente faria no arquivo `/etc/my.cnf`. Ao utilizar um hash permite a gestao dessas configuracoes sem requerer que fossem escritas na classe como parametros distintos. Essa estrutura e analoga a sintaxe de `[section] , var_name = value` de um arquivo `my.cnf`
+
+### Tarefa 3
+
+Utilize a ferramenta `puppet parser validade` para verificar sua sintaxe, entao dispare uma execucao:
+
+```
+  # puppet agent -t
+  Info: Using configured environment 'production'
+  Info: Retrieving pluginfacts
+  Info: Retrieving plugin
+  Info: Loading facts
+  Info: Caching catalog for learning.puppetlabs.vm
+  Info: Applying configuration version '1495613765'
+  Notice: /Stage[main]/Mysql::Server::Config/File[mysql-config-file]/ensure: defined content as '{md5}15d890f0648fc49e43fcffc6ed7bd2d8'
+  Notice: /Stage[main]/Mysql::Server::Install/Package[mysql-server]/ensure: created
+  Notice: /Stage[main]/Mysql::Server::Installdb/Mysql_datadir[/var/lib/mysql]/ensure: created
+  Notice: /Stage[main]/Mysql::Server::Service/Service[mysqld]/ensure: ensure changed 'stopped' to 'running'
+  Info: /Stage[main]/Mysql::Server::Service/Service[mysqld]: Unscheduling refresh on Service[mysqld]
+  Notice: /Stage[main]/Mysql::Server::Root_password/Mysql_user[root@localhost]/password_hash: defined 'password_hash' as '*FAB0955B2CE7AE2DAFEE46C36501AFC5E65D445D'
+  Notice: /Stage[main]/Mysql::Server::Root_password/File[/root/.my.cnf]/ensure: defined content as '{md5}e31a08f361a550c6909c0a39ea4b68f6'
+  Notice: Applied catalog in 33.53 seconds
+```
+
+Para conferir sua nova base (!) basta acessar o MySQL Monitor via `mysql` e sair via `\q`. Para conferir o resultado do `override_options` basta validar no arquivo `/etc/my.cnf.d/server.cnf`
+
+`less /etc/my.cnf.d/server/cnf`
+
+Ou,
+
+```
+  # grep max_conn /etc/my.cnf.d/server.cnf                          
+  max_connections = 1024
+```
+
+## Escopo
+
+Alem de instalar e configurar um banco MySQL, o modulo `puppetlabs-mysql` inclui diversas outras classes para ajudar a gerir outros aspectos da sua implementacao MySQL.
+
+Essas classes estao organizadas em uma estrutura diretorios de modulo que combina com a sintaxe de escopo do Puppet. Escopo ajuda a organizar as classes, dizendo ao Puppet onde olhar na estrutura de diretorios de modulo para encontrar cada classe. O escopo tambem ajuda a separar os _namespaces_ dentro dos modulos e nos manifestos Puppet, prevenindo o conflito entre classes e variaveis com o mesmo nome.
+
+De uma olhada nos diretorios e manifestos dentro do modulo MySQL (utilize um filtro do `tree` para exibir apenas arquivos de manifesto):
+
+```
+  # tree -P "*.pp" /etc/puppetlabs/code/environments/production/modules/mysql/manifests/
+
+  ├── backup
+  │   ├── mysqlbackup.pp
+  │   ├── mysqldump.pp
+  │   └── xtrabackup.pp
+  ├── bindings
+  │   ├── client_dev.pp
+  │   ├── daemon_dev.pp
+  │   ├── java.pp
+  │   ├── perl.pp
+  │   ├── php.pp
+  │   ├── python.pp
+  │   └── ruby.pp
+  ├── bindings.pp
+  ├── client
+  │   └── install.pp
+  ├── client.pp
+  ├── db.pp
+  ├── params.pp
+  ├── server
+  │   ├── account_security.pp
+  │   ├── backup.pp
+  │   ├── binarylog.pp
+  │   ├── config.pp
+  │   ├── installdb.pp
+  │   ├── install.pp
+  │   ├── monitor.pp
+  │   ├── mysqltuner.pp
+  │   ├── providers.pp
+  │   ├── root_password.pp
+  │   └── service.pp
+  └── server.pp
+
+4 directories, 27 files
+```
+
+Note o arquivo `server.pp` no topo do diretorio `mysql/manifests`. Baseado nesse nome de classe em escopo, o Puppet consegue encontrar o manifesto chamado `server.pp` no diretorio de manifestos do modulo MySQL.
+
+Entao, `mysql::server` significa:
+
+`/etc/puppetlabs/code/environments/production/modules/mysql/manifests/server.pp`
+
+Para levar o exemplo um nivel abaixo, `mysql::server::account_security` e o mesmo que:
+
+`/etc/puppetlabs/code/environments/production/modules/mysql/manifests/server/account_security.pp`
+
+## Seguranca da Conta
+
+Por razoes de seguranca voce vai querer remover os usuarios padrao e as bases de teste de uma instalacao MySQL. A classe `accoount_security` faz justamente isso.
+
+### Tarefa 4
+
+Volte ao manifesto `site.pp` e inclua a classe `::mysql::server::account_security` no node `learning.puppetlabs.vm` apos a declaracao `::mysql::server`. Como voce nao precisa passar parametros a essa classe, um simples _include_ sera suficiente.
+
+```
+  # node 'learning.puppetlabs.vm' {
+    ...
+    include ::mysql::server::account_security
+    ...
+  }
+```
+
+Valide seu `site.pp`
+
+`puppet parser validate /etc/puppetlabs/code/environments/production/manifests/site.pp`
+
+Dispare uma execucao do puppet apos validar:
+
+```
+  # puppet agent -t
+  Info: Using configured environment 'production'
+  Info: Retrieving pluginfacts
+  Info: Retrieving plugin
+  Info: Loading facts
+  Info: Caching catalog for learning.puppetlabs.vm
+  Info: Applying configuration version '1495616327'
+  Notice: /Stage[main]/Mysql::Server::Account_security/Mysql_user[root@127.0.0.1]/ensure: removed
+  Notice: /Stage[main]/Mysql::Server::Account_security/Mysql_user[root@::1]/ensure: removed
+  Notice: /Stage[main]/Mysql::Server::Account_security/Mysql_user[@localhost]/ensure: removed
+  Notice: /Stage[main]/Mysql::Server::Account_security/Mysql_user[root@learning.puppetlabs.vm]/ensure: removed
+  Notice: /Stage[main]/Mysql::Server::Account_security/Mysql_user[@learning.puppetlabs.vm]/ensure: removed
+  Notice: /Stage[main]/Mysql::Server::Account_security/Mysql_database[test]/ensure: removed
+  Notice: Applied catalog in 22.31 seconds
+```
+
+Voce comecara a visualizar avisos de que a base de teste e dois usuarios padroes foram removidos.
+
+__Nota:__ nenhuma ferramenta de automatizacao substitui os requisitos de seguranca de seu sistema.
+
+## Tipos e provedores
+
+O modulo de MySQL do Puppet contem tipos e provedores customizados que permitem a gestao de itens criticos ao MySQL como recursos via DSL, da mesma maneira que voce faria com um usuario de sistema ou servico.
+
+Um __tipo__ define a interface para um recurso: um conjunto de propriedades que descrevem o estado desejado para um recurso e parametros que nao necessariamente correspondem a coisas no sistema, mas dizem ao Puppet como gerenciar o recurso. Tanto as propriedades como os parametros aparecem na sintaxe de declaracao de recursos como um par de valores de atributo.
+
+O __provedor__ levanta o peso para manter o sistema em linha com o estado definido numa declaracao de recurso. Sao implementados em uma variedade de sistemas operacionais. Sao essenciais a camada de abstracao de recursos (RAL), traduzindo a interface universal definida pelo __tipo__ em uma implementacao especifica do sistema.
+
+O modulo MySQL inclui tipos e provedores customizados que fazem com que `mysql_user`, `mysql_database` e `mysql_grant` fiquem disponiveis como recursos.
+
+## Base de dados, usuario, permissao
+
+### Tarefa 5
+
+Esses tipos de recurso customizados permitem gerenciar uma base de dados nova com apenas algumas linhas de codigo.
+
+Adicione declaracao de recurso a definicao do no `learning.puppetlabs.vm` no seu manifesto `site.pp`
+
+```
+  node 'learning.puppetlabs.vm' {
+    mysql_database { 'lvm':
+        ensure  => present,
+        charset => 'utf8',
+    }
+    ...
+  }
+```
+
+De maneira similar, com um usuario voce apenas precisa especificar o nome e o host como titulo, alem de declarar o atributo `ensure` como `present`. Insira o seguinte:
+
+```
+  node 'learning.puppetlabs.vm' {
+    mysql_user { 'lvm_user@localhost':
+      ensure => present,
+    }
+    ...
+  }
+```
+
+Agora que voce tem um usuario e um banco, pode utilizar o grant para definir privilegios para esse usuario. Note que o caracter `*` ira combinar com qualquer tabela. Logo, `table => lvm.*` abaixo significa que o usuario `lvm_user` tem TODAS as permissoes para todas as tabelas da base `lvm`.
+
+```
+  node 'learning.puppetlabs.vm' {
+    mysql_grant { 'lvm_user@localhost/lvm.*':
+      ensure     => present,
+      options    => ['GRANT'],
+      privileges => ['ALL'],
+      table      => 'lvm.*',
+      user       => 'lvm_user@localhost',
+    }
+    ...
+  }
+```
+
+
+Utilize a ferramenta `puppet parser validate` no manifesto `site.pp` para verificar a sintaxe desses tres recursos inseridos.
+
+`puppet parser validate /etc/puppetlabs/code/environments/production/modules/manifests/site.pp`
+
+Quando o codigo estiver bonito, dispare uma execucao.
+
+```
+  # puppet agent -t
+  Info: Using configured environment 'production'
+  Info: Retrieving pluginfacts
+  Info: Retrieving plugin
+  Info: Loading facts
+  Info: Caching catalog for learning.puppetlabs.vm
+  Info: Applying configuration version '1495618606'
+  Notice: /Stage[main]/Main/Node[learning.puppetlabs.vm]/Mysql_database[lvm]/ensure: created
+  Notice: /Stage[main]/Main/Node[learning.puppetlabs.vm]/Mysql_user[lvm_user@localhost]/ensure: created
+  Notice: /Stage[main]/Main/Node[learning.puppetlabs.vm]/Mysql_grant[lvm_user@localhost/lvm.*]/ensure: created
+  Notice: Applied catalog in 20.36 seconds
+```
+
+# Variaveis e Parametros
+
+## Variaveis
+### Interpolacao de variaveis
+## Gerenciando conteudo Web com variaveis
 ### Tarefa 1
 ### Tarefa 2
 ### Tarefa 3
-## Escopo
-## Seguranca da Conta
 ### Tarefa 4
-## Tipos e provedores
-## Base de dados, usuario, permissao
+## Parametros de Classe
 ### Tarefa 5
+### Tarefa 6
+### Tarefa 7

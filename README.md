@@ -1172,7 +1172,71 @@ Se sua execucao enxuta parecer Ok, execute o `puppet apply` sem a _flag_. De uma
 
 ## Parametros de Classe
 
+Agora que temos uma classe `web` basica, vamos abordar os parametros de classe. Eles te fornecem uma maneira de atribuir as variaveis de uma classe __enquanto ela e declarada__ ao inves de ter isso _hardcoded_ durante a definicao da classe.
+
+Ao definir uma classe, inclua uma lista de parametros e valores padroes opcionais entre o nome da classe e o inicio do bloco de classe.
+
+```
+  class classname ( $parameter = 'default' ) {
+    ...
+  }
+```
+
+Uma vez definida, uma classe parametrizada pode ser __declarada__ como uma sintaxe similar a de declaracao de recursos, incluindo par-valor de cada parametro que voce quer definir.
+
+
+```
+  class {'classname':
+    parameter => 'value',
+  }
+```
+
+Entao se voce quer implementar paginas em servidores ao redor do mundo, com conteudo dependente do idioma da regiao. Ao inves de reescrever toda uma classe ou modulo por regiao, voce pode utilizar parametos de classe para customizar esses valores enquanto a classe e declarada.
 
 ### Tarefa 5
+
+Para comecarmos a reescrever nossa classe `web` com parametros, reabra o manifesto `web/manifests/init.pp`. Para criar uma nova pagina regionalizada, voce devera ser capaz de definir a mensagem e o nome da pagina via parametros de classe.
+
+`class web ( $page_name, $message ) {`
+
+Agora crie uma terceira declaracao de recurso _file_ que utilize as variaveis dos seus parametros
+
+```
+  file { "${doc_root}/${page_name}.html":
+     ensure  => file,
+     content => "<em>${message}</em>",
+   }
+```
+
 ### Tarefa 6
+
+Assim como antes, use o manifesto de teste para declarar a classe. Voce ira abrir o manifesto `web/examples/init.pp` e substituir o `include` simples por uma sintaxe de declaracao de classe parametrizada que define cada um dos parametros (basicamente, a SDL do Puppet =P)
+
+```
+  class {'web':
+    page_name => 'hola',
+    message => 'hola mundo',
+  }
+```
+
 ### Tarefa 7
+
+Agora faca um teste, execute uma vez com `--noop` e entao aplique o teste. A nova pagina deve estar disponivel em `http://<IP DA VM>/hola.html`
+
+
+```
+  # puppet apply --noop web/examples/init.pp 
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.16 seconds
+  Notice: /Stage[main]/Web/File[/var/www/quest/hola.html]/ensure: current_value absent, should be file (noop)
+  Notice: Class[Web]: Would have triggered 'refresh' from 1 events
+  Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+  Notice: Applied catalog in 0.60 seconds
+
+  # puppet apply web/examples/init.pp 
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.13 seconds
+  Notice: /Stage[main]/Web/File[/var/www/quest/hola.html]/ensure: defined content as '{md5}e4b486becbc46475a52abb5c904a6690'
+  Notice: Applied catalog in 0.58 seconds
+```
+
+__Importante:__lembre-se que classes no Puppet sao singletons, entao so podem ser aplicadas uma vez por node (no nosso exemplo so seria possivel ter uma pagina espeficada por parametros alem das duas outras ja existentes). Caso voce deseje repetir o mesmo recurso ou grupo deles __em um mesmo no__, podemos utilizar o conceito de _tipo de recurso definido_, que veremos em uma proxima quest.
+

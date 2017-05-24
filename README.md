@@ -1060,8 +1060,27 @@ Quando o codigo estiver bonito, dispare uma execucao.
 
 # Variaveis e Parametros
 
+Pelas quests de NTP e MySQL voce ja viu como parametros de classe possibilitam que voce ajuste as classes de um modulo de acordo com sua necessidade. Nessa quest, o objetivo e vermos como integrar variaveis em suas classes e faze-las acessiveis via parametros.
+
+Para isso, voce vai escrever um modulo que gerencia um site de HTML estatico. Primeiro criara uma classe web com declaracoes de recurso _file_ para gerenciar seus documentos HTML. Ao atribuir valores repetidos como caminhos de arquivo a variaveis, sua classe sera mais concisa e facil de refatorar depois. Uma vez que essa estrutura basica da classe esteja concluida, adicionara parametros. Isso permitira que se definam os valores das variaveis de sua classe a medida que a declara.
+
 ## Variaveis
+
+No Puppet, variaveis sao prefixadas por um `$` e atribui-se valor a elas com `=`. Por exemplo, para atribuir uma _string_ a uma variavel, fazemos:
+
+`$minhavariavel = olhe, uma string`
+
+Uma vez definida, voce pode utilizar a variavel em qualquer lugar em que poderia utilizar o valor atribuido.
+
+O basico sobre variaveis parecera familiar se voce ja conhece qualquer outra linguagem de script, no entanto ha algumas advertencias sobre a utilizacao de variaveis no Puppet:
+
+* Diferente da declaracao de recursos, atribuicoes de variaveis sao dependentes da ordem de _parse_. Ou seja, voce deve atribuir em seu manifesto antes de utilizar.
+* Se voce tentar utilizar uma variavel nao definida, o parser do Puppet nao ira reclamar. Ao inves disso ira tratar a variavel como contendo o valor especial `undef`. Apesar de que isso deve causar erros de compilacao mais adiante, em algumas situacoes o processo pode concluir e causar resultados inesperados
+* Voce pode atribuir uma variavel apenas uma vez em um escopo. Uma vez atribuida, seu valor nao pode ser alterado. O valor de uma variavel pode alterar-se entre sistemas diferentes, mas nao dentro deles.
+
 ### Interpolacao de variaveis
+
+
 ## Gerenciando conteudo Web com variaveis
 ### Tarefa 1
 ### Tarefa 2

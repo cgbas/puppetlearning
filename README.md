@@ -1148,8 +1148,18 @@ Note que se voce quisesse alterar o valor do `$doc_root` so precisaria faze-lo e
 
 ### Tarefa 3
 
+Uma vez que voce validou seu manifesto com a ferramenta `puppet parser`, voce ainda precisa criar um teste pro seu manifesto com uma declaracao `include` para a classe que voce criou (vimos isso na quest Modulos).
+
+Crie um arquivo de manifesto `web/examples/init.pp` e insira `include web`. Salve e saia.
 
 ### Tarefa 4
+
+Aplique o teste recem criado com a _flag_ `--noop`
+
+`puppet apply --noop web/examples/init.pp`
+
+Se sua execucao enxuta parecer Ok, execute o `puppet apply` sem a _flag_. De uma olhada em `http://<IP DA VM>/hello.html` e `http://<IP DA VM>/bonjour.html` para conferir suas paginas novas.
+
 ## Parametros de Classe
 ### Tarefa 5
 ### Tarefa 6

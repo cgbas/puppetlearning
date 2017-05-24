@@ -9,7 +9,7 @@ class web {
     content => "<em>${english}</em>",
   }
 
-  file { "${doc_root}/hello.html":
+  file { "${doc_root}/bonjour.html":
     ensure  => file,
     content => "<em>${french}</em>",
   }

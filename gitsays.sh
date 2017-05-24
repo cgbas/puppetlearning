@@ -4,3 +4,4 @@ scp -rp root@192.168.56.110:/etc/puppetlabs/code/environments/production/ .
 rm -rf  production/modules/dockeragent/.git
 git add . -A
 git commit . -m "$@"
+git push -u origin master

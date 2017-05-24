@@ -5,6 +5,7 @@ Comecei a estudar puppet e me encantei pelas possibilidades que se abriram. Como
 
 Para acompanhar as notas, utilize o _Quest Guide_ e a VM contidas no _.zip_ disponivel via: https://puppet.com/download-learning-vm
 
+O script `gitsays.sh` foi uma brincadeira com o modulo `cowsays` do material. E apenas um wrapper para eu transferir as coisas da VM para meu repositorio local (atualizando), dar um commit e enviar para o GitHub (utilizo chave SSH para isso).
 
 # Forca do Puppet
 
@@ -1156,11 +1157,22 @@ Crie um arquivo de manifesto `web/examples/init.pp` e insira `include web`. Salv
 
 Aplique o teste recem criado com a _flag_ `--noop`
 
-`puppet apply --noop web/examples/init.pp`
+```
+  #puppet apply --noop web/examples/init.pp
+
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.16 seconds
+  Notice: /Stage[main]/Web/File[/var/www/quest/hello.html]/ensure: current_value absent, should be file (noop)
+  Notice: /Stage[main]/Web/File[/var/www/quest/bonjour.html]/ensure: current_value absent, should be file (noop)
+  Notice: Class[Web]: Would have triggered 'refresh' from 2 events
+  Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+  Notice: Applied catalog in 0.67 seconds
+```
 
 Se sua execucao enxuta parecer Ok, execute o `puppet apply` sem a _flag_. De uma olhada em `http://<IP DA VM>/hello.html` e `http://<IP DA VM>/bonjour.html` para conferir suas paginas novas.
 
 ## Parametros de Classe
+
+
 ### Tarefa 5
 ### Tarefa 6
 ### Tarefa 7

@@ -5,3 +5,11 @@ production/modules/docker/
 production/modules/graphite/
 production/modules/dockeragent/
 production/modules/stdlib/
+production/modules/orawls/
+production/modules/mysql/
+production/modules/yamlfile/
+production/modules/staging/
+production/modules/easy_type/
+production/modules/filemapper/
+production/modules/sleep/
+

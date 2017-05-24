@@ -1,7 +1,7 @@
 
 # Intuito desse repositorio
 
-Comecei a estudar puppet e me encantei pelas possibilidades que se abriram. Como o material da VM de aprendizagem esta em ingles, resolvi compartilhar todas minhas notas e demais itens que forem criados no processo de estudo da mesma. As notas estarao divididas pelas buscas (quests) do material oficial, todo e qualquer artefato estara dividido nessa mesma hierarquia. Alguns termos eu realmente preferi manter no original e citar sua traducao apenas uma vez - como no caso das _quests_, quando for assim manterei a palavra em italico.
+Comecei a estudar puppet e me encantei pelas possibilidades que se abriram. Como o material da VM de aprendizagem esta em ingles, resolvi compartilhar todas minhas notas e o que julguei que era interessante traduzir da da documentacao alem de demais itens que forem criados no processo de estudo da mesma. As notas estarao divididas pelas buscas (quests) do material oficial, todo e qualquer artefato estara dividido nessa mesma hierarquia. Alguns termos eu realmente preferi manter no original e citar sua traducao apenas uma vez - como no caso das _quests_, quando for assim manterei a palavra em italico.
 
 Para acompanhar as notas, utilize o _Quest Guide_ e a VM contidas no _.zip_ disponivel via: https://puppet.com/download-learning-vm
 
@@ -1246,12 +1246,21 @@ __Importante:__ lembre-se que classes no Puppet sao singletons, entao so podem s
 ## Condicoes
 ### If
 ### Tarefa 1
+
+Crie um diretorio `accounts` e seus diretorios `manifests` e `examples`:
+
+
+`mkdir -p accounts/{manifests,examples}`
+
 ### Tarefa 2
 ### Tarefa 3
 ### Tarefa 4
 ### Tarefa 5
 ### Tarefa 6
 ### Unless
+
+A declaracao `unless` funciona como o inverso de um `if`. O `unless` recebe uma condicao e um bloco de codigo Puppet. So ira executar __se__ a condicao for __falsa__. Se a condicao for verdadeira, o Puppet nao fara nada e seguira. Nao existe um equivalente de clausulas `elsif` ou `else` para declaracoes `unless`.
+
 ### Case
 ### Selector
 

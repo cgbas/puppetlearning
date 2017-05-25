@@ -1285,7 +1285,17 @@ Ja que o mesmo conceito que esta por baixo desses modos de logica, vamos explica
 
 ### If (se)
 
+O `if` no Puppet funciona da mesma forma que a maioria das outras linguagens de script e programacao. Uma declaracao `if` inclui uma condicao seguida de um bloco de codigo que so sera executado __se__ tal condicao for uma verdade, avaliando como __true__. Opcionalmente um `if` (se) pode incluir uma quantidade qualquer de `elseif` (se nao, se) e uma clausula `else` (entao).
 
+* se a condicao do `if` falhar, avanca para a condicao `elsif` (se existir)
+* se tanto as condicoes `if` como o `elsif` falharem, avanca para o codigo da clausula `else` (se existir)
+* se todas as condicoes falharem e nao existir um bloco `else`, o Puppet nao faz nada e segue
+
+Digamos que voce quer dar privilegio administrativos ao usuario que voce esta criando pelo modulo `accounts`. Voce tem um mix de CentOS e Debian na sua infraestrutura. Nas suas maquinas CentOS, voce usa o grupo `wheel` para gerenciar privilegios de superusuarios, enquanto no Debian voce usa o grupo `admin`. Usando a condicao `if` e o fato `operatingsystem` do Facter, esse tipo de ajuste se torna facil com o Puppet.
+
+Antes de comecar a escrever seu modulo, garanta que voce esta trabalhando do diretorio de modulos (_modules_)
+
+`cd /etc/puppetlabs/code/environments/production/modules`
 
 
 ### Tarefa 1

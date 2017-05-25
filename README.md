@@ -1241,7 +1241,19 @@ Agora faca um teste, execute uma vez com `--noop` e entao aplique o teste. A nov
 __Importante:__ lembre-se que classes no Puppet sao singletons, entao so podem ser aplicadas uma vez por node (no nosso exemplo so seria possivel ter uma pagina espeficada por parametros alem das duas outras ja existentes). Caso voce deseje repetir o mesmo recurso ou grupo deles __em um mesmo no__, podemos utilizar o conceito de _tipo de recurso definido_, que veremos em uma proxima quest.
 
 # Declaracoes condicionais
+
 ## Escrevendo pela flexibilidade
+
+Codigo excelente == codigo flexivel e portavel. Apesar dos tipos e provedores que sao o _code_ do __RAL__ do Puppet fazerem a maior parte do trabalho pesado nessas adaptacoes, ha varias coisas que sao melhores nas maos de usuarios competentes.
+
+E sensato que os provedores do Puppet `package` tomem conta de instalar e manter pacotes. As entradas e saidas sao padronizadas e estaveis o suficiente pra, seja la o que acontecer entre isso, desde que aconteca de maneira confiavel, esta livre pra ser escondido pela abstracao. Uma fez feito, os detalhes deixam de ser importantes. 
+
+__AJUDA CHRIS!:__ Oi, entao a ideia acima eh o seguinte: quem implementou e prove o `package` esta livre para implementar da maneira que quiser, desde que sua entrega seja confiavel entre o _input_ ou entrada e o _output_ ou saida. Os fins justificam os meios na maneira Puppet de se pensar.
+
+_Qual_ pacote esta instalado, por outro lado, nao e algo que voce simplesmente esquece. Nesse caso, os _inputs_ e _outputs_ nao estao tao bem definidos assim. apesar de que existam pacotes equivalentes entre as muitas plataformas por ai, __a equivalencia nunca e completa__; detalhes de configuracao vao variar, e esses detalhes vao precisar ser levados em conta em algum lugar do seu modulo Puppet.
+
+Mas mesmo o os provedores _built-in_ do Puppet nao sendo capazes de garantir a portabilidade do seu codigo Puppet nesse nivel tao alto de abstracao, a DSL do Puppet te da as __ferramentas para contruir *adaptabilidade*__ nos seus modulos. __Fatos__ e __declaracoes condicionais__ sao o arroz feijao dessa funcionalidade.
+
 ## Fatos
 ## Condicoes
 ### If
@@ -1313,11 +1325,6 @@ Declaracoes condicionais permitem que voce escreva codigo que retorne valores di
 
 ### Selector
 
-Codigo excelente == codigo flexivel e portavel. Apesar dos tipos e provedores que sao o _code_ do __RAL__ do Puppet fazerem a maior parte do trabalho pesado nessas adaptacoes, ha varias coisas que sao melhores nas maos de usuarios competentes.
-
-(...)
-
-Uma fez feito, os detalhes deixam de ser importantes. __Fatos__ e __declaracoes condicionais__ sao o arroz feijao dessa funcionalidade.
 
 # Ordenacao de recursos
 

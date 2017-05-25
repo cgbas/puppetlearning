@@ -1912,6 +1912,13 @@ Assim que fizer as alteracoes, faca uma execucao `--noop` e entao aplique seu ma
 Uma vez que a execucao do Puppet concluir, confira sua nova pagina de usuario em `http://<IP DA VM>/~frodo/index.html`
 
 # Instalacao de agente de no
+
+Ate entao, voce tem gerenciado um no, a VM de aprendizagem, que esta rodando o servidor master do Puppet. Em um ambiente real, no entanto, a maioria dos seus nos vao rodar apenas o agente do Puppet.
+
+Nessa quest, utilizamos uma ferramenta chamada `docker` para simular multiplos nos na VM de aprendizagem. Com esses nos novos, voce pode aprender como instalar o agente do Puppet, assinar o certificado dos seus nos novos para permitir que ingressem na sua infraestrutura Puppetizada, e finalmente utilizar o manifesto `site.pp` para aplicar um pouco de codigo Puppet nesses nos.
+
+__Por favor, tome nota__: Essa quest e a proxima "Orquestrador de Aplicacoes" requerem conexao a internet, se voce esta executando a VM offline, por favor  verifique as instrucoes para que ela acesse a internet. __Por enquanto nao ha uma maneira de executar essas quests offline e a Puppetlabs esta trabalhando nisso__
+
 ## Consiga alguns nos
 ### Conteineres
 ### Tarefa 1

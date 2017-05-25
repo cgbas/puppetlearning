@@ -1314,7 +1314,7 @@ O inicio da sua definicao de classe deveria se parecer com isso aqui:
   class accounts ($user_name) {
 
     if $::operatingsystem == 'centos' {
-      $groups = 'whell'
+      $groups = 'wheel'
     }
     elsif $::operatingsystem == 'debian' {
       $groups = 'admin'
@@ -1357,12 +1357,66 @@ Crie um manifesto de teste `accounts/example/init.pp` e declare o manifesto de c
 ```
 
 ### Tarefa 4
+
+Como nossa VM esta rodando CentOS e gostariamos de simular que esta com Debian, vamos utilizar um pouco de magica para sobrescrever o fato `operatingsystem` para o facter. Para isso, basta incluir o fato na seguinte sintaxe antes do seu comando `puppet apply`, podendo tambem compor com a _flag_ `--noop` para testar como seria com um SO diferente. Nosso exemplo ficaria assim:
+
+`FACTER_operatingsystem=Debian puppet apply --noop accounts/examples/init.pp`
+
+```
+  Notice: Scope(Class[Accounts]): Grupos  para usuario dana definidos para debian
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.13 seconds
+  Notice: /Stage[main]/Accounts/User[dana]/ensure: current_value absent, should be present (noop)
+  Notice: Class[Accounts]: Would have triggered 'refresh' from 1 events
+  Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+  Notice: Applied catalog in 0.73 seconds
+```
+
+Confira as notificacoes e voce vera como as mudancas seriam aplicadas.
+
 ### Tarefa 5
+
+Tente mais uma vez, agora com um SO nao suportado, para verificarmos a condicao de falha.
+
+`FACTER_operatingsystem=Darwin puppet apply --noop accounts/examples/init.pp`
+
+```
+  Error: Evaluation Error: Error while evaluating a Function Call, Esse modulo nao suporta Darwin. at /etc/puppetlabs/code/environments/production/modules/accounts/manifests/init.pp:8:3 on node learning.puppetlabs.vm
+```
+
 ### Tarefa 6
 
-Agora va em frente e execute um `puppet apply --noop` no seu manifesto de teste antes de definir a variavel de ambiente. Se parecer bom, dispense a _flag_ `--noop` para aplicar o catalogo gerado pelo seu manifesto.
+Agora va em frente e execute um `puppet apply --noop` no seu manifesto de teste sem definir a variavel de ambiente. Se parecer bom, dispense a _flag_ `--noop` para aplicar o catalogo gerado pelo seu manifesto.
+
+```
+  Notice: Scope(Class[Accounts]): Grupos  para usuario dana definidos para wheel
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.12 seconds
+  Notice: /Stage[main]/Accounts/User[dana]/ensure: current_value absent, should be present (noop)
+  Notice: Class[Accounts]: Would have triggered 'refresh' from 1 events
+  Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+  Notice: Applied catalog in 0.62 seconds
+  root@learning:/etc/puppetlabs/code/environments/production/modules/accounts # puppet apply  examples/init.pp 
+  Notice: Scope(Class[Accounts]): Grupos  para usuario dana definidos para wheel
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.18 seconds
+  Notice: /Stage[main]/Accounts/User[dana]/ensure: created
+  Notice: Applied catalog in 0.92 seconds
+```
 
 Voce pode usar a ferramenta `puppet resource` para validar os resultados.
+
+```
+  # puppet resource user dana
+  user { 'dana':
+    ensure           => 'present',
+    gid              => '1005',
+    groups           => ['wheel'],
+    home             => '/home/dana',
+    password         => '!!',
+    password_max_age => '99999',
+    password_min_age => '0',
+    shell            => '/bin/bash',
+    uid              => '1005',
+  }
+```
 
 ### Unless (a menos que)
 
@@ -1390,6 +1444,7 @@ Aqui, o valor de `$rootgroup` e determinado baseado na variavel de controle `$::
 Agora porque um seletor somente retorna um valor e nao pode executar uma funcao como `fail()` ou `warning()`, fica por sua conta garantir que o codigo de conta condicoes inesperadas de uma maneira elegante. Voce nao ia gostar do Puppet tomando as redeas com algum padrao inapropriado e encontrasse erros la na frente por causa disso.
 
 # Ordenacao de recursos
+
 
 
 ## Ordem de recurso

@@ -1577,10 +1577,49 @@ __Dica:__ altere o seu manifesto `sshd/manifests/init.pp` para utilizar `require
 ```
 
 ### Tarefa 5
+
+Vamos em frente! Utilizaremos um recuso _file_ para gerenciar a configuracao do `sshd`. Primeiro vamos precisar de um arquivo fonte. Assim como voce fez para o modulo `vimrc`, podemos copiar o arquivo existente para nosso diretorio `files`
+
+`cp /etc/ssh/sshd_config  sshd/files/sshd_config`
+
+Voce tambem pode querer garantir que o usuario `pe-puppet` tenha permissoes de leitura nesse arquivo
+
+`chwon pe-puppet:pe-puppet sshd/files/sshd_config`
+
 ### Tarefa 6
+
+Por razoes obvias o SSH ja esta bastante configurado na nossa VM de aprendizagem, mas com o intuito de praticar nosso exemplo, vamos fazer uma alteracao e ver como o Puppet cuida disso. Nao estamos utilizando autenticacao GSS API, entao voce pode melhor a performance de conexao atribuindo a configuracao `GSSAPIAuthentication` como `no`. Abra o arquivo `sshd/files/sshd_config`, encontre a configuracao `GSSAPIAuthentication`, altere a linha para refletir `no` como valor, salve o arquivo e saia do editor.
+
 ### Tarefa 7
+
+Com o arquivo fonte preparado, volte ao seu manifesto `sshd/manifests/init.pp` e adicione um recurso _file_ para gerenciar seu arquivo `sshd_config`. Voce quer garantir que esse arquivo seja aplicado _depois_ do pacote `openssh-server`, entao inclua um parametro `require` para esse recurso
+
+```
+  file {'/etc/sshd/sshd_config':
+    ensure => file,
+    source => 'puppet:///modules/sshd/sshd_config'
+    require => Package['openssh-server'],
+  }
+```
+
 ### Tarefa 8
+
+Aplique seu manifesto de teste novamente com as _flags_ `--noop` e `--graph`, utilize entao a ferramenta `dot` para gerar uma nova imagem.
+
+`dot -Tpng /opt/puppetlabs/puppet/cache/state/graphs/relationships.dot -o /var/www/quest/relationships.png`
+
+Agora utilizando o navegador, acesse `http://<IP DA VM>/relationships.png`. Fica facil ver pelo grafo que ambos recursos `file` e `service` requerem o recurso `package`. O que esta faltando nessa configuracao? Se voce quer que suas configuracoes facam efeito, voce tera que faze-las antes do servico ser reiniciado ou reiniciar o mesmo apos as mudancas.
+
+O Puppet utiliza outro par de _metaparametros_ para gerenciar esse relacionamento especial entre um arquivo de configuracao e seu servico correspondente: `notify` e `subscribe`. Os metaparametros `notify` e `subscribe` estabelecem o mesmo relacionamento de dependencia do `before` e `requires`, respectivamente, alem de disparar um _refresh_ sempre que o Puppet fizer uma modificacao na dependencia.
+
+Enquanto qualquer recurso pode ser a dependencia que dispara um _refresh_, existem dois recursos que podem responder a um _refresh_. Na proxima tarefa, vamos olhar pra um `service` ja familiar a voce (o segundo e chamado `exec`, mas os detalhes de como ele trabalha estao fora do escopo desse guia).
+
+Assim como `before` e `require`, `notify` e `subscribe` sao reflexos entre si. Incluir um `notify` no seu recurso `file` tem o mesmo resultado que incluir um `subscribe` no seu recurso `service`.
+
 ### Tarefa 9
+
+
+
 ## Encadeamento de setas (chaining arrows)
 
 * `->` O da esquerda vem antes

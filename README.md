@@ -1774,11 +1774,65 @@ Se voce se interessar, voce pode dar uma olhada no arquivo `_.conf` para ver com
 `cat /etc/nginx/sites-enabled/_.conf` 
 
 ### Tarefa 5
+
+Vamos la entao dar ao nosso recurso `web_user::user` um diretorio `public_html` e uma pagina `index.html` padrao. Vamos precisar adicionar um diretorio e um arquivo. Porque os parametros de nosso diretorio `public_html` serao identicos aos do diretorio home, podemos utilizar um vetor para declarar ambos de uma vez. Perceba que o _autorequires_ do Puppet ira cuidar da ordem nesse caso, garantindo que o diretorio home seja criado antes do `public_html` que o contem.
+
+Nos vamos definir o parametro `replace` do arquivo `index.html` para `false`. Isso significa que o Puppet vai criar esse arquivo caso nao exista, mas nao ira substituir um arquivo ja existente. Isso permite que criemos uma pagina padrao para o usuario, mas permite que o usuario substitua o conteudo padrao sem que o Puppet a sobrescreva em uma proxima execucao.
+
+Finalmente, podemos utilizar a interpolacao de strings para customizar o conteudo padrao da pagina inicial do usuario. (O Puppet tambem suporta templates de estilo `.erb` e `.epp`, que nos dariam uma maneira ainda mais potente de customizar uma pagina. Como ainda nao os vimos, vamos nos virar com interpolacao de variaveis!)
+
+Reabra seu manifesto:
+
+`vim web_user/manifest/user.pp`
+
+E adicione codigo para configurar o diretorio `public_html` de seu usuario e o arquivo `index.html` padrao:
+
+```
+  define web_user::user {
+    $home_dir = "/home/${title}"
+    $public_html = "${home_dir}/public_html"
+
+    user { $title:
+      ensure => present,
+    }
+    file { [$home_dir, $public_html]:
+      ensure  => directory,
+      owner   => $title,
+      group   => $title,
+      mode    => '0775',
+    }
+    file { "${public_html}/index.html":
+      ensure  => file,
+      owner   => $title,
+      group   => $title,
+      replace => false,
+      content => "<h1>Bem-vindx a pagina inicial de ${title}</h1>",
+      mode    => '0664',
+    }
+
+  }
+```
+
 ### Tarefa 6
 
 Assim que fizer as alteracoes, faca uma execucao `--noop` e entao aplique seu manifesto de teste:
 
-`puppet apply web_user/examples/user.pp`
+```
+  # puppet apply web_user/examples/user.pp --noop
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.12 seconds
+  Notice: /Stage[main]/Main/Web_user::User[shelob]/File[/home/shelob/public_html]/ensure: current_value absent, should be directory (noop)
+  Notice: /Stage[main]/Main/Web_user::User[shelob]/File[/home/shelob/public_html/index.html]/ensure: current_value absent, should be file (noop)
+  Notice: Web_user::User[shelob]: Would have triggered 'refresh' from 2 events
+  Notice: Class[Main]: Would have triggered 'refresh' from 1 events
+  Notice: Stage[main]: Would have triggered 'refresh' from 1 events
+  Notice: Applied catalog in 0.61 seconds
+
+  # puppet apply web_user/examples/user.pp
+    Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.29 seconds
+  Notice: /Stage[main]/Main/Web_user::User[shelob]/File[/home/shelob/public_html]/ensure: created
+  Notice: /Stage[main]/Main/Web_user::User[shelob]/File[/home/shelob/public_html/index.html]/ensure: defined content as '{md5}de6cd1997ca9388eae6bbcbdef3593bb'
+  Notice: Applied catalog in 0.71 seconds
+```
 
 Uma vez que a execucao do Puppet concluir, confira a nova pagina de usuario em `http://<IP DA VM>/~shelob/index.html`
 
@@ -1787,6 +1841,54 @@ Uma vez que a execucao do Puppet concluir, confira a nova pagina de usuario em `
 Do jeito que esta, seu _tipo de recurso definido_ nao te permite uma maneira de especificar nada alem do titulo. Utilizando parametros, a gente pode passar um pouco mais de informacao aos recursos contidos e customiza-los a nossa maneira. Vamos adicionar alguns parametros que nos permitirao definir uma senha para o usuario e algum conteudo customizado para a pagina padrao. 
 
 ### Tarefa 7
+
+A sintaxe para adicionar parametros a _tipos de recurso definidos_ e a mesma que das classes parametrizadas. Dentro de um conjunto de parenteses antes das chaves de abertura da definicao, inclua uma lista separada por virgulas das variaveis a serem definidas por parametros. O operador `=` pode ser utilizado opcionalmente para atribuir valores padroes.
+
+```
+  define web_user::user (
+    $content  = "<h1>Bem-vindx a pagina de ${title}</h1>",
+    $password = undef,
+    ){
+      ..
+    }
+```
+
+Existe um par de detalhes que voce deve perceber ai.
+
+Primeiro, apesar de termos utilizado a variavel `$title` para definir o conteudo padrao, nao podemos utilizar o valor de um parametro como padrao de outro. A ligacao (binding) desses parametros acontece em paralelo, nao sequencialmente. Qualquer atribuicao que dependa dos valores de outro parametro deve ser feita no corpo do _tipo de recurso definido_. A variavel `$title` e atribuida antes da ligacao dos outros parametros, entao ela e uma execao.
+
+Segundo, demos a variavel `$password` o valor especial `undef` como padrao. Quaquer parametro sem um valor padrao especificado ira causar um erro caso voce declare o _tipo de recurso definido_ sem especificar um valor para aquele parametro. Se deixassemos o parametro `$password` sem um padrao, voce teria que __sempre__ especificar uma senha. Para o tipo de recurso `user` que esta por baixo, entretanto, o parametro `password` e opcional para sistemas Linux. Ao utilizar o valor especial `undef` como padrao, podemos dizer ao Puppet explicitamente que trate aquele valor como indefinido, e aja como se simplesmente nao tivessemos incluido-o em nossa lista de pares chave-valor para nosso recurso `user`.
+
+Agora que voce tem seus parametros configurados, atualize o corpo do seu _tipo de recurso definido_ para utiliza-los.
+
+```
+  define web_user::user (
+    $content  = "<h1>Welcome to ${title}'s home page!</h1>",
+    $password = undef,
+  ) {
+    $home_dir    = "/home/${title}"
+    $public_html = "${home_dir}/public_html"
+    user { $title:
+      ensure   => present,
+      password => $password,
+    }
+    file { [$home_dir, $public_html]:
+      ensure => directory,
+      owner  => $title,
+      group  => $title,
+      mode    => '0775',
+    }
+    file { "${public_html}/index.html":
+      ensure  => file,
+      owner   => $title,
+      group   => $title,
+      replace => false,
+      content => $content,
+      mode    => '0664',
+    }
+  }
+```
+
 ### Tarefa 8
 
 Edite seu manifesto de teste para incluir mais um usuario para testarmos:

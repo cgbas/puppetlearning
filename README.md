@@ -1536,6 +1536,15 @@ Antes de adicionar um recurso _file_ para gerenciar a configuracao do `sshd`, va
 Quando o Puppet compila um catalogo, ele gera um __grafo__ representando a rede de relacionamentos entre os recursos daquele catalogo. O grafo nesse contexto se refere a um metodo utilizado na matematica e nas Ciencias da Computacao para modelar conexoes entre uma colecao de objetivos. O Puppet utiliza grafos internamente para determinar uma ordem de trabalho na hora de aplicar recursos e permite que voce acesse isso para vizualizacao ou para entender melhor esses relacionamentos.
 
 ### Tarefa 3
+
+O jeito mais rapido pra ser gerar um grafo no Puppet e criando um manifesto de teste e executando o mesmo com as _flags_ `--noop` e `--graph`. Crie um manifesto `sshd/examples/init.pp`. Voce nao tem nenhum parametro de classe, entao pode usar somente:
+
+`include sshd`
+
+Com isso pronto, execute um `puppet apply` com essas flags contra seu manifesto:
+
+`puppet appply sshd/examples/init.pp --noop --graph`
+
 ### Tarefa 4
 ### Tarefa 5
 ### Tarefa 6

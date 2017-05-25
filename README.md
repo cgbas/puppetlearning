@@ -1775,6 +1775,13 @@ Se voce se interessar, voce pode dar uma olhada no arquivo `_.conf` para ver com
 
 ### Tarefa 5
 ### Tarefa 6
+
+Assim que fizer as alteracoes, faca uma execucao `--noop` e entao aplique seu manifesto de teste:
+
+`puppet apply web_user/examples/user.pp`
+
+Uma vez que a execucao do Puppet concluir, confira a nova pagina de usuario em `http://<IP DA VM>/~shelob/index.html`
+
 ### Parametros
 
 Do jeito que esta, seu _tipo de recurso definido_ nao te permite uma maneira de especificar nada alem do titulo. Utilizando parametros, a gente pode passar um pouco mais de informacao aos recursos contidos e customiza-los a nossa maneira. Vamos adicionar alguns parametros que nos permitirao definir uma senha para o usuario e algum conteudo customizado para a pagina padrao. 

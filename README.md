@@ -1255,7 +1255,25 @@ _Qual_ pacote esta instalado, por outro lado, nao e algo que voce simplesmente e
 Mas mesmo o os provedores _built-in_ do Puppet nao sendo capazes de garantir a portabilidade do seu codigo Puppet nesse nivel tao alto de abstracao, a DSL do Puppet te da as __ferramentas para contruir *adaptabilidade*__ nos seus modulos. __Fatos__ e __declaracoes condicionais__ sao o arroz feijao dessa funcionalidade.
 
 ## Fatos
+
+Voce ja se deparou com a ferramenta `facter` quando a gente te pediu pra executar `facter ipaddress` na secao de instalacao do guia. Mas apesar de ser  bacana poder executar o facter pela linha de comando, ele se torna valioso mesmo no back end, tornando informacao sobre um sistema disponivel para utilizacao como variaveis em seus manifestos.
+
+__N.T.__realmente, isso e pra aplaudir de pe mesmo. quando eu vi do que o `orawls` era capaz, me emocionei.
+
+Enquanto o facter e tao importante pro Puppet que vem junto do Puppet Enterprise, ele tambem e um dos projetos open-source separados que estao integrados ao ecossistema Puppet.
+
+Combinado com condicionais, que a gente vai chegar em seguida, __fatos__ te dao um montao de forca pra codificar a tal portabilidade nos seus modulos.
+
+Pra ter uma lista completa dos fatos disponiveis, use o comando:
+
+`facter -p | less`
+
+Voce pode referenciar qualquer um dos fatos listados por esse comando como se fossem variaveisque voce tivesse definido em seus manifestos. __Entretanto__, existe uma diferenca _notavel_: porque os fatos estao disponiveis para qualquer manifesto compilado para aquele no, eles existem em um tal _top scope_ (escopo de topo). Isso significa que por mais que um fato possa ser acessado de qualquer lugar, ele tambem pode ser sobrescrito por qualquer variavel de mesmo nome em um escopo mais baixo (por ex.: escopo de no ou de classe). Pra evitar potenciais colisoes, fica melhor colocar explicitamente o escopo dos fatos. Voce especifica o _top scope_ prefixando o seu _factname_ com dois pontos duplos `::`, pronunciado _scope scope_. Entao um fato no seu manifesto vai parecer com isso `$::factname`.
+
 ## Condicoes
+
+
+
 ### If
 ### Tarefa 1
 

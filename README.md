@@ -1272,9 +1272,22 @@ Voce pode referenciar qualquer um dos fatos listados por esse comando como se fo
 
 ## Condicoes
 
+Declaracoes condicionais retornam valores ou executam blocos de codigo diferentes dependendo do valor de uma variavel determinada. Essa e a chave para fazer seu Puppet funcionar da maneira desejada em diferentes sistemas operacionais e cumprir diferentes papeis na sua infraestrutura.
 
+Algumas maneiras suportadas de logica condicional sao:
+
+* declaracoes `if` (se)
+* declaracoes `unless` (a menos que)
+* declaracoes `case`
+* _Selectors_ (seletores)
+
+Ja que o mesmo conceito que esta por baixo desses modos de logica, vamos explicar somente o `if` aqui. Assim que voce estiver confortavel com o `if`, ha as descricoes dos outros modos e algumas anotacoes quando forem uteis.
 
 ### If (se)
+
+
+
+
 ### Tarefa 1
 
 Crie um diretorio `accounts` e seus diretorios `manifests` e `examples`

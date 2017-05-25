@@ -1632,12 +1632,40 @@ Edite seu manifesto `ssh/examples/init.pp` para incluir um metaparametro `subscr
   }
 ```
 
+Valide sua sintaxe via `puppet parser validate`. Quando estiver tudo certo aplique seu manifesto de teste novamente com as _flags_ `--noop` e `--graph`, utilize entao a ferramenta `dot` para gerar uma nova imagem e conferir o resultado.
+
+Finalmente, dispense a _flag_ `--nop` para aplicar suas modificacoes pra valer. Voce vera uma notificacao que o arquivo foi alterado, seguido de uma notificacao de _refresh_ do servico.
+
 ## Encadeamento de setas (chaining arrows)
 
-* `->` O da esquerda vem antes
-* `~>` O da esquerda vem antes e notifica o da direita para um refresh caso altere algo
+O encadeamento de setas prove uma outra maneira para definir relacionamentos entre recursos ou grupos deles. As ocasioes apropriadas para isso estao fora do escopo desse guia, mas para ser completo, daremos uma explicacao breve.
+
+* A seta `->` faz com que o recurso da esquerda seja aplicado antes do recurso da direita.
+* A seta `~>` faz com que o recurso da esquerda seja aplicado antes do rescurso da direita __e__ envie um evento de _refresh_ para o recurso da direita caso o da esquerda tenha sofrido alguma alteracao.
+
+Apesar de que voce vai ver setas encadeadas sendo utilizadas nas proprias declaracoes de recursos, isso nao e uma boa pratica. E muito facil nao prestar atencao nessas setas, principalmente se voce esta refatorando um manifesto grande com muitos recursos e relacionamentos.
+
+Entao pra que elas sao boas? Ao contrario dos parametros, elas nao estao embutidas na declaracao de um recurso. Isso significa que voce pode utilizar as setas entre referencias de recursos, vetores de referencias de recursos, e coletores de recursos para criar, concisa e dinamicamente, relacionamentos __1:N__ ou __N:N:__ entre grupos de recursos.
 
 ## Autorequires
+
+__Autorequires__ sao relacionamentos entre recursos que o proprio Puppet consegue advinhar sozinho. Por exemplo, o Puppet sabe que um recurso _file_ dever vir sempre depois do diretorio pai que o contem, ou que um recurso _user_ deve ser gerenciado apenas depois que o grupo ao qual ele pertence seja criado. Voce pode encontrar esses relacionamentos na secao de _Referencias de tipo_ da documentacao oficial: https://docs.puppet.com/puppet/4.1/type.html, ou como saida da ferramenta `puppet describe`.
+
+Por exemplo:
+
+`puppet describe user | less`
+
+Deve conter no texto o seguinte:
+
+```
+  **Autorequires:** If Puppet is managing the user's primary group (as
+  provided in the `gid` attribute) or any group listed in the `groups`
+  attribute then the user resource will autorequire that group. If Puppet
+  is managing any role accounts corresponding to the user's roles, the
+  user resource will autorequire those role accounts.
+```
+
+Isso significa que se eu catalogo tem uma declaracao de recurso de um usuario e seu grupo primario, o Puppet sabe que precisa atuar no grupo antes do usuario. Perceba que esses relacionamentos sao documentados apenas na referencia de tipo do recurso _que requer_ (ex: usuario), nao no recurso _requerido_ (ex: grupo).
 
 # Tipos de recurso definidos
 ## Tipos de recurso definidos

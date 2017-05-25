@@ -1447,11 +1447,74 @@ Agora porque um seletor somente retorna um valor e nao pode executar uma funcao 
 
 # Ordenacao de recursos
 
+## Ordenacao de recursos
 
+Ate agora os modulos escritos foram bem simples. Te guiamos atraves de exemplos projetados para demonstrar as diversas caracteristicas do Puppet e seus construtos de linguagem. Como voce so cuidou de poucos recursos por vez, a gente nao se preocupou com a dependencia entre esses recursos.
 
-## Ordem de recurso
+Assim que voce comecar a trabalhar em problemas mais complexos, vai ficar claro bem rapido que as coisas precisam funcionar na ordem correta. Voce nao consegue configurar um pacote que ainda nao foi instalado, ou dar controle de um arquivo para um usuario que ainda nao criou.
+
+Entao, como o Puppet gerencia esses relacionamentos?
+
+O Puppet precisa de uma outra maneira de gerenciar a ordem dos recursos ja que por ser uma linguagem declarativa nao temos uma ordem linear implicita das coisas. Lembre-se que na DSL nos definimos o estado desejado, nao como se chega ate la.
+
+Aqui entram os __relacionamentos de recursos__. A sintaxe do Puppet permite que voce defina explicitamente a dependencia entre seus recursos.
+
+Existem algumas maneiras de fazer isso, a mais simples e atraves de __metaparametros de relacionamento__. Basicamente, e um tipo de par-valor de atributo que diz ao Puppet _como_ voce quer implementar um recurso, ao inves de detalhes do recurso em si. Esses metaparametros sao definidos na declaracao dos recursos, junto com o resto dos atributos de par-valor.
+
+Se voce esta escrevendo um modulo para gerenciar o SSH, voce precisa garantir que o pacote `openssh-server` esta instalado _antes_ de voce gerenciar o servico `sshd`. Pra conseguir isso, voce inclui um metaparametro `before`, com o valor `Service[sshd]`.
+
+```
+  package {'openssh-server':
+    ensure => present,
+    before => Service[sshd],
+  }
+```
+
+Voce pode abordar o problema a partir da direcao contraria, tambem. O metaparametro `require` e o reflexo do `before`. O `require` diz ao Puppet que o recurso atual _requer_ o recurso especificado pelo outro parametro.
+
+Utilizando `before` no pacote `openssh-server` e o mesmo que utilizar o `require` no recurso de servico `sshd`.
+
+```
+  service { 'sshd':
+    ensure => running,
+    enable => true,
+    require => Package['openssh-server'],
+  }
+```
+
+Em ambos os casos preste atencao em como voce se refere ao recurso alvo, o _tipo_ esta capitalizado e seguido por um _array_ (dentro de `[]` colchetes) de _titulos_ de recurso:
+
+`Tipo['titulo']`
+
+Ja que cobrimos alguns dos recursos que voce vai precisar, que tal fazer um modulo ssh para explorar isso?
+
 ### Tarefa 1
+
+Pra comecar nosso modulo, vamos criar um diretorio `sshd` com os subdiretorios `examples`, `files`, `manifests` (dentro do diretorio que ja estamos utilizando para modulos)
+
+```
+  cd /etc/puppetlabs/code/environment/production/modules
+  mkdir -p sshd/{examples,files,manifests}
+```
+
 ### Tarefa 2
+
+Crie um manifesto `sshd/manifests/init.pp` e preencha sua classe `sshd` com o recurso de pacote `openssh-server` e o recurso de servico `sshd`. Nao se esqueca de incluir um relacionamento `before` ou um `require` entre esses recursos. Dentro da sua classe, se voce inclui um `before` para um recurso, nao precisa incluir um `require` para o outro e vice-versa, ja que ambos especificam a mesma dependencia entre os recursos.
+
+Com require:
+```
+```
+
+Com before:
+```
+```
+
+Quando estiver pronto use a ferramenta `puppet parser validate` para validar.
+
+Antes de adicionar um recurso _file_ para gerenciar a configuracao do `sshd`, vamos vizualizar o relacionamento entre `package` e `service` de outra perspectiva: __o grafo__.
+
+Quando o Puppet compila um catalogo, ele gera um __grafo__ representando a rede de relacionamentos entre os recursos daquele catalogo. O grafo nesse contexto se refere a um metodo utilizado na matematica e nas Ciencias da Computacao para modelar conexoes entre uma colecao de objetivos. O Puppet utiliza grafos internamente para determinar uma ordem de trabalho na hora de aplicar recursos e permite que voce acesse isso para vizualizacao ou para entender melhor esses relacionamentos.
+
 ### Tarefa 3
 ### Tarefa 4
 ### Tarefa 5
@@ -1460,6 +1523,10 @@ Agora porque um seletor somente retorna um valor e nao pode executar uma funcao 
 ### Tarefa 8
 ### Tarefa 9
 ## Encadeamento de setas (chaining arrows)
+
+* `->` O da esquerda vem antes
+* `~>` O da esquerda vem antes e notifica o da direita para um refresh caso altere algo
+
 ## Autorequires
 
 # Tipos de recurso definidos

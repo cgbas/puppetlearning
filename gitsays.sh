@@ -4,4 +4,4 @@ scp -rp root@192.168.56.110:/etc/puppetlabs/code/environments/production/modules
 scp -rp root@192.168.56.110:/etc/puppetlabs/code/environments/production/manifests/ ./production/
 git add . -A
 git commit . -m "$@"
-git push -u origin master
+git push -u origin master 2>/dev/null

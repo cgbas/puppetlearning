@@ -1543,9 +1543,39 @@ O jeito mais rapido pra ser gerar um grafo no Puppet e criando um manifesto de t
 
 Com isso pronto, execute um `puppet apply` com essas flags contra seu manifesto:
 
-`puppet appply sshd/examples/init.pp --noop --graph`
+```
+  # puppet appply sshd/examples/init.pp --noop --graph
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.13 seconds
+  Notice: Applied catalog in 1.71 seconds
+
+  # ls -ltr /opt/puppetlabs/puppet/cache/state/graphs
+  total 12
+  -rw-r--r-- 1 root root 1524 May 25 02:52 resources.dot
+  -rw-r--r-- 1 root root 1268 May 25 02:53 relationships.dot
+  -rw-r--r-- 1 root root 3028 May 25 02:53 expanded_relationships.dot
+```
 
 ### Tarefa 4
+
+O Puppet gera um arquivo `.dot` em um local definido como `graphdir`. Pra saber essa localizacao utilizamos o comando `puppet config print`
+
+`puppet config print graphdir`
+
+O comando `dot` pode ser utilizado para converter o arquivo `relationships.dot` em uma imagem png. Para facilitar as coisas, vamos definir o diretorio de _output_ (saida) como o _web dir_ do nosso guia, assim podemos visualizar direto em um navegador
+
+`dot -Tpng /opt/puppetlabs/puppet/cache/state/graphs/relationships.dot -o /var/www/quest/relationships.png`
+
+Agora utilizando o navegador, acesse `http://<IP DA VM>/relationships.png`. Perceba que os recursos `openssh-server` e `sshd` estao conectados por uma seta que indica o relacionamento de dependencia.
+
+__Dica:__ altere o seu manifesto `sshd/manifests/init.pp` para utilizar `require` ou `before` duplamente gere/converta novamente o grafo para visualizar. O Puppet tambem previne que manifestos com referencias ciclicas sejam aplicados no ambiente :D
+
+```
+  Notice: Compiled catalog for learning.puppetlabs.vm in environment production in 0.18 seconds
+  Error: Failed to apply catalog: Found 1 dependency cycle:
+  (Package[openssh-server] => Service[sshd] => Package[openssh-server])
+  Cycle graph written to /opt/puppetlabs/puppet/cache/state/graphs/cycles.dot.
+```
+
 ### Tarefa 5
 ### Tarefa 6
 ### Tarefa 7

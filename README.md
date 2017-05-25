@@ -1503,10 +1503,30 @@ Crie um manifesto `sshd/manifests/init.pp` e preencha sua classe `sshd` com o re
 
 Com require:
 ```
+  class { 'sshd':
+    package { 'openssh-server':
+      ensure => present,
+    }
+    service { 'sshd':
+      ensure => running,
+      enable => true,
+      require => Package['openssh-server'],
+    }
+  }
 ```
 
 Com before:
 ```
+  class { 'sshd':
+    package { 'openssh-server':
+      ensure => present,
+      before => Service['sshd'],
+    }
+    service { 'sshd'
+      ensure => running,
+      enable => true
+    }
+  }
 ```
 
 Quando estiver pronto use a ferramenta `puppet parser validate` para validar.

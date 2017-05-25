@@ -1274,7 +1274,7 @@ Voce pode referenciar qualquer um dos fatos listados por esse comando como se fo
 
 
 
-### If
+### If (se)
 ### Tarefa 1
 
 Crie um diretorio `accounts` e seus diretorios `manifests` e `examples`:
@@ -1342,16 +1342,30 @@ Agora va em frente e execute um `puppet apply --noop` no seu manifesto de teste 
 
 Voce pode usar a ferramenta `puppet resource` para validar os resultados.
 
-### Unless
+### Unless (a menos que)
 
 A declaracao `unless` funciona como o inverso de um `if`. O `unless` recebe uma condicao e um bloco de codigo Puppet. So ira executar __se__ a condicao for __falsa__. Se a condicao for verdadeira, o Puppet nao fara nada e seguira. Nao existe um equivalente de clausulas `elsif` ou `else` para declaracoes `unless`.
 
-### Case
+### Case (caso)
 
 Declaracoes condicionais permitem que voce escreva codigo que retorne valores diferentes ou execute blocos diferentes de codigo dependendo do que voce especificar. Junto ao `Facter`, que disponibiliza os detalhes de uma maquina como _variaveis_, permite que voce escreva um codigo que acomode flexivelmente diferentes plataformas, sistemas operacionais e requisitos funcionais.
 
-### Selector
+### Selector (Seletores)
 
+Declaracoes seletoras sao parecidas com declaracoes `case`, mas ao inves de selecionar um bloco de codigo, um seletor atribuem um valor diretamente. Um seletor deve ser algo assim:
+
+```
+  $rootgroup = $::osfamily ? {
+    'Solaris' => 'wheel',
+    'Darwin'  => 'wheel',
+    'FreeBSD' => 'wheel',
+    'default' => 'root',
+  }
+```
+
+Aqui, o valor de `$rootgroup` e determinado baseado na variavel de controle `$::osfamily`. Depois dessa variavel vem um `?`, ponto de interrogacao. No bloco que esta envolto por chaves `{...}` ha uma serie de valores possiveis para o fato `$::osfamily`, seguido pelo valor que o seletor deveria retornar se o valor bater com o da variavel de controle.
+
+Agora porque um seletor somente retorna um valor e nao pode executar uma funcao como `fail()` ou `warning()`, fica por sua conta garantir que o codigo de conta condicoes inesperadas de uma maneira elegante. Voce nao ia gostar do Puppet tomando as redeas com algum padrao inapropriado e encontrasse erros la na frente por causa disso.
 
 # Ordenacao de recursos
 

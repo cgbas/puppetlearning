@@ -844,8 +844,8 @@ __Dica:__ altere o `vimrc` utilizado anteriormente para incluir `set paste` e ga
 ```
   node 'learning.puppetlabs.vm' {
     class { '::mysql::server':
-      root_password    => 'strongpassword',
-      override_options => {
+      root_password     => 'strongpassword',
+      override_options  => {
         'mysqld' => { 'max_connections' => '1024' }
       },
     }
@@ -1217,7 +1217,7 @@ Assim como antes, use o manifesto de teste para declarar a classe. Voce ira abri
 ```
   class {'web':
     page_name => 'hola',
-    message => 'hola mundo',
+    message   => 'hola mundo',
   }
 ```
 
@@ -1476,8 +1476,8 @@ Utilizando `before` no pacote `openssh-server` e o mesmo que utilizar o `require
 
 ```
   service { 'sshd':
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
     require => Package['openssh-server'],
   }
 ```
@@ -1508,8 +1508,8 @@ Com require:
       ensure => present,
     }
     service { 'sshd':
-      ensure => running,
-      enable => true,
+      ensure  => running,
+      enable  => true,
       require => Package['openssh-server'],
     }
   }
@@ -1596,8 +1596,8 @@ Com o arquivo fonte preparado, volte ao seu manifesto `sshd/manifests/init.pp` e
 
 ```
   file {'/etc/sshd/sshd_config':
-    ensure => file,
-    source => 'puppet:///modules/sshd/sshd_config'
+    ensure  => file,
+    source  => 'puppet:///modules/sshd/sshd_config'
     require => Package['openssh-server'],
   }
 ```
@@ -1668,11 +1668,89 @@ Deve conter no texto o seguinte:
 Isso significa que se eu catalogo tem uma declaracao de recurso de um usuario e seu grupo primario, o Puppet sabe que precisa atuar no grupo antes do usuario. Perceba que esses relacionamentos sao documentados apenas na referencia de tipo do recurso _que requer_ (ex: usuario), nao no recurso _requerido_ (ex: grupo).
 
 # Tipos de recurso definidos
+
+Na quest de classes parametrizadas, vimos como parametros podem ser utilizados para customizar uma classe no momento de sua declaracao. Se voce lembrar que classes, assim como recursos, so podem ser _realizados_ uma unica vez em um catalogo, voce deve estar pensando no que fazer se voce quiser que o Puppet repita o mesmo padrao multiplas vezes, mas com parametros diferentes.
+
+Na maioria dos casos a resposta e um _tipo de recurso definido_ (__defined resource type__), um bloco de codigo Puppet que pode ser declarado multiplas vezes com parametros de valores diferentes. Uma vez definido, um _tipo de recurso definido_ se parece e age como qualquer outro tipo principal que voce ja esta acostumado.
+
+Nessa quest voce vai criar um _tipo de recurso definido_ para um `web_user`. Isso vai permitir que voce agrupe os recursos que precisa para criar um usuario e tambem sua pagina inicial pessoal. Assim voce consegue resolver tudo com uma declaracao de recurso unica.
+
 ## Tipos de recurso definidos
+
+Por mais que voce consiga fazer bastante coisa com os principais tipos de recurso do Puppet, mais cedo ou mais tarde voce vai ser deparar com coisas que nao se encaixam bem nos tipos pre-definidos do Puppet. Na quest do MySQL, por exemplo, voce encontrou algums tipos customizados de recursos que permitiram que voce configurasse os grants, usuarios e bases do MySQL. O modulo `puppetlabs-mysql` contem codigo Ruby que define o comportamento desses _tipos_ e dor _provedores_ customizados que os implementam no sistema.
+
+Escrever _provedores_ customizados, no entanto, e um comprometimento enorme. Quando voce escreve seus proprios _provedores_, assume a responsabilidade por toda a abstracao que o Puppet utiliza para cuidar daquele recurso em diversos sistemas operacionais e configuracoes. Apesar dessa ser uma contribuicao benefica a comunidade, nao e muito apropriada para uma solucao isolada.
+
+Os __tipos de recurso definidos__ do Puppet sao a solucao de baixo custo. Apesar de nao terem a mesma forca que implementar uma funcionalidade completamente nova, voce deve se surpreender quando quanto pode ser alcancado ao mesclar os tipos pre-definidos do Puppet com os fornecidos pelos modulos existentes da comunidade.
+
 ### Tarefa 1
+
+Para comecar, vamos criar a estrutura de diretorios para nosso modulo `web_user`
+
+```
+  # cd /etc/puppetlabs/code/environment/production/modules
+  mkdir -p web_user/{examples, manifests}
+```
+
+Antes de entrar nos detalhes do que vamos fazer com esse modulo, vamos escrever um _tipo de recurso definido_ simples assim voce se acostuma com a sintaxe. Por hora, vamos criar um usuario e o diretorio home dele. Normalmente, voce poderia utilizar o parametro `managehome` para dizer ao Puppet gerenciar o home do usuario, mas queremos um pouco mais de controle sobre as permissoes desse diretorio, entao vamos fazer por conta propria.
+
 ### Tarefa 2
+
+Va em frente e crie um manifesto `user.pp` onde vamos definir nosso `tipo de recurso definido`. 
+
+`vim web_user/manifests/user.pp`
+
+Vamos comecar devagar. Insira o codigo abaixo no seu manifesto, tomando bastante cuidado com a sintaxe e as variaveis.
+
+```
+  define web_user::user {
+    $home_dir = "/home/${title}"
+    user { $title:
+      ensure => present,
+    }
+    file { $home_dir:
+      ensure  => directory,
+      owner  => $title,
+      group  => $title,
+      mode   => '0775',
+    }
+  }
+```
+
+O que voce percebeu? Primeiro que essa sintaxe e praticamente identica a de uma classe. A unica diferenca e que voce usa a palavra `define` ao inves de `class`.
+
+Assim como uma classe, um tipo de recurso definido traz uma colecao de recursos em uma unidade configuravel. A diferenca chave e, como mencionamos, que ele pode ser realizado diversas vezes em um sistema, enquanto classes sao sempre _singletons_.
+
+Isso nos leva a segunda diferenca de codigo que voce deve ter percebido. Nos utilizamos a variavel `$title` em varios lugares, mas nao atribuimos ela explicitamente! Perceba tambem que `$title` esta sendo usada tanto em `file` como em `user` que estamos declarando. O que esta acontecendo aqui? 
+
 ### Tarefa 3
+
+Para entender a importancia dessa variavel de titulo em um _tipo de recurso definido_, va em frente e crie um manifesto de teste.:
+
+`vim web_user/examples/user.pp`
+
+Declare um recurso `web_user::user`:
+
+`web_user::user { 'shelob': }`
+
+Aqui, atribuimos o titulo ('shelob', no nosso caso) da mesma maneira que fariamos para qualquer outro recurso. Esse titulo passa atraves do nosso _tipo de recurso definido_ como a variavel `$title`. Voce deve se lembrar da quest Resources, onde vimos que titulos de recurso devem ser unicos, vez que sao a chave para o Puppet referenciar um recurso internamente. Quando voce cria um _tipo de recurso definido_, deve garantir que todos os recursos inclusos contenham um titulo unico para seu tipo. A melhor maneira de fazer isso e passando a variavel `$title` no titulo de cada recurso. Apesar de que o titulo do seu recurso de arquivo que voce declarou para o diretorio `home` esteja definido pela variavel `$home_dir`, essa variavel tem atribuida uma string que inclui a variavel `$title`: `"/home/${title}"`.
+
+Voce tambem pode estar se perguntando pela falta de parametros. Se um recurso ou classe nao tem parametros, ou possui padroes aceitaveis para seus parametros, e possivel declarar a mesma na forma resumida sem uma lista de parametros no formado de pares chave valor (voce vai ver menos disso no caso de classes, ja que a sintaxe idempotente do `include` e quase sempre preferida).
+
 ### Tarefa 4
+
+Va em frente , execute seu manifesto com `--noop` e entao aplique-o:
+
+`puppet apply web_user/examples/user.pp`
+
+Agora de uma olhada no diretorio `home`:
+
+`ls -la /home`
+
+Voce deve ver um diretorio home para 'shelob' com as permissoes que voce definiu:
+
+`drwxrwxr-x   2 shelob              shelob                 6 May 25 04:58 shelob`
+
 ### Paginas HTML publicas
 ### Tarefa 5
 ### Tarefa 6
@@ -1681,7 +1759,7 @@ Isso significa que se eu catalogo tem uma declaracao de recurso de um usuario e 
 ### Tarefa 8
 ### Tarefa 9
 
-# Instalacao de Agente de no
+# Instalacao de agente de no
 ## Consiga alguns nos
 ### Conteineres
 ### Tarefa 1

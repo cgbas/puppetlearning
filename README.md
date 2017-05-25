@@ -1776,9 +1776,31 @@ Se voce se interessar, voce pode dar uma olhada no arquivo `_.conf` para ver com
 ### Tarefa 5
 ### Tarefa 6
 ### Parametros
+
+Do jeito que esta, seu _tipo de recurso definido_ nao te permite uma maneira de especificar nada alem do titulo. Utilizando parametros, a gente pode passar um pouco mais de informacao aos recursos contidos e customiza-los a nossa maneira. Vamos adicionar alguns parametros que nos permitirao definir uma senha para o usuario e algum conteudo customizado para a pagina padrao. 
+
 ### Tarefa 7
 ### Tarefa 8
+
+Edite seu manifesto de teste para incluir mais um usuario para testarmos:
+
+```
+  web_user::user { 'shelob': }
+  web_user::user { 'frodo':
+    content   => 'Custom Content',
+    password  => pw_hash('sting', 'SHA-512', 'mysalt'),
+  }
+```
+
+Perceba que estamos utilizando a funcao `pw_hash` para gerar um hash SHA-512 da senha 'sting' e salt 'mysalt'.
+
 ### Tarefa 9
+
+Assim que fizer as alteracoes, faca uma execucao `--noop` e entao aplique seu manifesto de teste:
+
+`puppet apply web_user/examples/user.pp`
+
+Uma vez que a execucao do Puppet concluir, confira sua nova pagina de usuario em `http://<IP DA VM>/~frodo/index.html`
 
 # Instalacao de agente de no
 ## Consiga alguns nos

@@ -2,7 +2,7 @@
 
 AcceptEnv LANG LC_*
 ChallengeResponseAuthentication no
-GSSAPIAuthentication yes
+GSSAPIAuthentication no
 PermitRootLogin yes
 PrintMotd yes
 Subsystem sftp /usr/libexec/openssh/sftp-server

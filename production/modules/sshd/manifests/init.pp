@@ -10,6 +10,7 @@ class sshd {
   }
   file { '/etc/ssh/sshd_config':
     ensure  => present,
+    source  => 'puppet:///modules/sshd/sshd_config',
     require => Package['openssh-server'],
   }
 

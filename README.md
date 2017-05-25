@@ -1618,7 +1618,19 @@ Assim como `before` e `require`, `notify` e `subscribe` sao reflexos entre si. I
 
 ### Tarefa 9
 
+Edite seu manifesto `ssh/examples/init.pp` para incluir um metaparametro `subscribe` ao recurso `sshd`.
 
+```
+  class sshd {
+    ...
+    service { 'sshd':
+      ...
+      subscribe => File['/etc/ssh/sshd_config'],
+      ...
+    }
+    ...
+  }
+```
 
 ## Encadeamento de setas (chaining arrows)
 

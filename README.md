@@ -1307,6 +1307,15 @@ class accounts ($user_name) {
 Pra garantir, que tal seu codigo passar em um `puppet parser validate` antes de continuar? :D
 
 ### Tarefa 3
+
+Crie um manifesto de teste `accounts/example/init.pp` e declare o manifesto de contas, com o parametro de nome definido como `dana`.
+
+```
+  class {'accounts':
+    user_name => 'dana',
+  }
+```
+
 ### Tarefa 4
 ### Tarefa 5
 ### Tarefa 6

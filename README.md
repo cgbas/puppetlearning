@@ -1752,6 +1752,27 @@ Voce deve ver um diretorio home para 'shelob' com as permissoes que voce definiu
 `drwxrwxr-x   2 shelob              shelob                 6 May 25 04:58 shelob`
 
 ### Paginas HTML publicas
+
+Agora que voce viu um exemplo simples de um _tipo de recurso definido_, vamos fazer algo mais util com isso.
+
+Nos ja configuramos o servidor Nginx que esta hospedando esse guia para criar um alias de todas as localizacoes que comecem com `~` para um diretorio `public_html` no diretorio home do usuario correspondente.
+
+Voce nao precisa entender os detalhes dessa configuracao para essa quest. Dito isso, o codigo que utilizamos para essa configuracao e um exemplo real de um _tipo de recurso definido_, entao vale dar uma olhada. Esse _tipo de recurso definido_ que utilizamos vem com o modulo `jfryman-nginx`. Declaramos isso com alguns poucos parametros para configurar uma localizacao que ira lidar automaticamente com nossas paginas `~` especiais. Nao se preocupe com a expressao regular assustadora no titulo. Ela e especifica da maneira que nossa configuracao do Nginx funciona, e voce nao precisa entender nada disso para utilizar _tipos definidos de recurso_ em geral.
+
+```
+  nginx::resource::location { '~ ^/~(.+?)(/.*)?$':
+    vhost           => '_',
+    location_alias  => '/home/$1/public_html$2',
+    autoindex       => true,
+  }
+```
+
+Essa expressao regular no titulo (`~ ^/~(.+?)(/.*)?$`) captura qualquer caminho de segmento URL precedido por um `~` como um grupo de captura e o restante da URL como um segundo grupo de captura. Ela entao mapeia o primeiro grupo ao diretorio home do usuario, e o resto para o conteudo do diretorio `public_html` daquele usuario. Entao `/~username/index.html` correspondera a `/home/username/public_html/index.html`.
+
+Se voce se interessar, voce pode dar uma olhada no arquivo `_.conf` para ver como esse _tipo de recurso definido_ se traduz em um bloco de localizacao no nosso arquivo de configuracao do Nginx:
+
+`cat /etc/nginx/sites-enabled/_.conf` 
+
 ### Tarefa 5
 ### Tarefa 6
 ### Parametros

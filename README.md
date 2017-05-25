@@ -7,6 +7,8 @@ Para acompanhar as notas, utilize o _Quest Guide_ e a VM contidas no _.zip_ disp
 
 O script `gitsays.sh` foi uma brincadeira com o modulo `cowsays` do material. E apenas um wrapper para eu transferir as coisas da VM para meu repositorio local (atualizando), dar um commit e enviar para o GitHub (utilizo chave SSH para isso).
 
+A minha trajetoria rumo a um legado totalmente administrado com codigo pode ser conferida nesse outro repositorio, o "Legado Legal": https://github.com/cgbas/legadolegal
+
 # Forca do Puppet
 
 Para buscar um modulo:

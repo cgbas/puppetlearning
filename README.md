@@ -1277,8 +1277,7 @@ Voce pode referenciar qualquer um dos fatos listados por esse comando como se fo
 ### If (se)
 ### Tarefa 1
 
-Crie um diretorio `accounts` e seus diretorios `manifests` e `examples`:
-
+Crie um diretorio `accounts` e seus diretorios `manifests` e `examples`
 
 `mkdir -p accounts/{manifests,examples}`
 
@@ -1350,7 +1349,7 @@ A declaracao `unless` funciona como o inverso de um `if`. O `unless` recebe uma 
 
 Declaracoes condicionais permitem que voce escreva codigo que retorne valores diferentes ou execute blocos diferentes de codigo dependendo do que voce especificar. Junto ao `Facter`, que disponibiliza os detalhes de uma maquina como _variaveis_, permite que voce escreva um codigo que acomode flexivelmente diferentes plataformas, sistemas operacionais e requisitos funcionais.
 
-### Selector (Seletores)
+### Selector (seletores)
 
 Declaracoes seletoras sao parecidas com declaracoes `case`, mas ao inves de selecionar um bloco de codigo, um seletor atribuem um valor diretamente. Um seletor deve ser algo assim:
 

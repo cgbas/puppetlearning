@@ -2023,6 +2023,57 @@ Podemos ver tambem que o fqdn do nosso no e `database.learning.puppetlabs.vm`. E
 
 ### Tarefa 5
 
+Podemos utilizar a ferramenta `puppet resource` pra criar um arquivo de teste novo no no de banco de dados. Ainda conectado a ele, execute o seguinte comando:
+
+`puppet resource file /tmp/test ensure=file`
+
+Voce vera o novo arquivo criado:
+
+```
+  Notice: /File[/tmp/test]/ensure: created 
+  file { '/tmp/test': 
+    ensure => 'file',
+  }
+```
+
+Voce tambem pode utilizar o `puppet apply` para aplicar o conteudo de um manifesto. Crie um manifesto de teste e experimente:
+
+`vim /tmp/test.pp`
+
+Vamos definir apenas uma mensagem:
+
+`notify { "Oi, sou um manifesto aplicado localmente em um no de agent": }`
+
+E aplique-o:
+
+`puppet apply /tmp/test.pp`
+
+Voce deveria visualizar a seguinte saida:
+
+```
+  Notice: Compiled catalog for database.learning.puppetlabs.vm in environment production in 0.14 seconds
+  Notice: Oi, sou um manifesto aplicado localmente em um no de agent
+  Notice: /Stage[main]/Main/Notify[Oi, sou um manifesto aplicado localmente em um no de agent]/message: defined 'message' as 'Oi, sou um manifesto aplicado localmente em um no de agent'
+  Notice: Applied catalog in 0.02 seconds
+```
+
+Pra enfatizar a diferenca entre um no de agente e um mestre, vamos dar uma olhada onde voce encontraria seu codigo Puppet no mestre:
+
+`ls /etc/puppetlabs/code/environment/production/manifests`
+
+e
+
+`ls /etc/puppetlabs/code/environment/production/modules`
+
+Voce pode ver que nao existem modulos nem um manifesto `site.pp`. A menos que voce esteja fazendo desenvolvimento local ou teste de um modulo, todo o codigo Puppet da sua infraestrutura e mantido no no mestre do Puppet, nao em cada agente individual. Quando uma execucao Puppet e disparada - seja agendada ou manualmente com o comando `puppet agent -`, o Puppet mestre compila seu codigo Puppet em um catalogo e envia de volta para o agente aplica-lo.
+
+Vamos testar. Dispare uma execucao Puppet no seu no de banco de dados:
+
+`puppet agent -t`
+
+Voce vera que ao inves de completar a execucao Puppet, o Puppet saiu com a seguinte mensagem:
+
+`Exiting; no certificate found and waitforcert is disabled`
 
 Isso nos leva ao proximo topico: certificacao.
 
@@ -2040,13 +2091,32 @@ Use `puppet cert list` para visualizar os certificados __nao__ assinados. (Que v
 
 `puppet cert list`
 
+```
+    "database.learning.puppetlabs.vm"  (SHA256) C5:23:29:43:21:00:28:AE:FD:D3:4C:B7:4A:17:1A:28:7D:B6:FD:F0:2F:FF:6E:D6:F5:16:80:36:4C:71:72:3D
+    "webserver.learning.puppetlabs.vm" (SHA256) 18:CD:EA:57:7F:5A:76:C6:3B:6C:A2:B9:51:88:9F:69:96:81:31:ED:4B:31:B5:CE:DA:0F:29:74:AA:8E:AC:49
+```
+
 Agora assine cada um dos certificados dos seus nos:
 
 `puppet cert sign webserver.learning.puppetlabs.vm`
 
+```
+  Signing Certificate Request for:
+    "database.learning.puppetlabs.vm" (SHA256) C5:23:29:43:21:00:28:AE:FD:D3:4C:B7:4A:17:1A:28:7D:B6:FD:F0:2F:FF:6E:D6:F5:16:80:36:4C:71:72:3D
+  Notice: Signed certificate request for database.learning.puppetlabs.vm
+  Notice: Removing file Puppet::SSL::CertificateRequest database.learning.puppetlabs.vm at '/etc/puppetlabs/puppet/ssl/ca/requests/database.learning.puppetlabs.vm.pem'
+```
+
 e
 
 `puppet cert sign database.learning.puppetlabs.vm`
+
+```
+  Signing Certificate Request for:
+  "webserver.learning.puppetlabs.vm" (SHA256) 18:CD:EA:57:7F:5A:76:C6:3B:6C:A2:B9:51:88:9F:69:96:81:31:ED:4B:31:B5:CE:DA:0F:29:74:AA:8E:AC:49
+  Notice: Signed certificate request for webserver.learning.puppetlabs.vm
+  Notice: Removing file Puppet::SSL::CertificateRequest webserver.learning.puppetlabs.vm at '/etc/puppetlabs/puppet/ssl/ca/requests/webserver.learning.puppetlabs.vm.pem'
+```
 
 ### Tarefa 7
 
@@ -2070,7 +2140,20 @@ E tente outra execucao Puppet:
 
 `puppet agent -t`
 
+```
+  Info: Using configured environment 'production'
+  Info: Retrieving pluginfacts
+  Info: Retrieving plugin
+  Info: Loading facts
+  Info: Caching catalog for database.learning.puppetlabs.vm
+  Info: Applying configuration version '1495767971'
+  Notice: Aqui e database.learning.puppetlabs.vm, rodando o sistema operacional Ubuntu
+  Notice: /Stage[main]/Main/Node[default]/Notify[Aqui e database.learning.puppetlabs.vm, rodando o sistema operacional Ubuntu]/message: defined 'message' as 'Aqui e database.learning.puppetlabs.vm, rodando o sistema operacional Ubuntu'
+  Notice: Applied catalog in 1.44 seconds
+```
+
 Com seu certificado assinado, o agente no seu no foi capaz de requisitar corretamente um catalogo ao mestre e aplica-lo para concluir a execucao Puppet.
+
 # Orquestrador de aplicacao
 # O Orquestrador de aplicacao
 ### Configuracao de no

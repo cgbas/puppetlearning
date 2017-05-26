@@ -2205,7 +2205,40 @@ Quando solicitado, forneca o usuario e senha que voce definiu no sistema RBAC do
 
 ## Aplicacoes Puppetizadas
 
+Agora que voce ja instalou seus nos master e agent para o orquestrador de aplicacoes alem de configurar seu cliente, voce esta pronto para definir sua aplicacao.
 
+Assim como o codigo Puppet que voce utilizou nas ultimas quests, uma definicao de aplicacao e geralmente empacotada em um modulo Puppet. A aplicacao que voce vai criar sera baseada no _stack pattern_ LAMP (Linux, Apache, MySQL e PHP).
+
+Antes que a gente se jogue no codigo, vamos revisar por um momento os planos pra essa aplicacao. O que a gente faz aqui vai ser um pouco mais simples que a aplicacao com balanceamento de carga que discutimos acima. A gente vai te poupar um pouco da escrita e ainda apresentar as principais caracteristicas do orquestrador de aplicacoes.
+
+__CORRE LA VER A IMAGEM, MO FI!__
+
+Nos vamos definir dois componentes que serao aplicados a dois nos separados. Um vai definir a configuracao do banco MySQL e sera aplicado ao no `database.learning.puppetlabs.vm`. O segundo vai definir a configuracao pra um servidor web Apache e uma aplicacao PHP e sera aplicado ao no `webserver.learning.puppetlabs.vm`.
+
+Podemos utilizar os modulos existentes pra configurar o MySQL e o Apache. Garanta que os seguintes modulos estejam instalados no mestre:
+
+`puppet module install puppetlabs-mysql`
+
+e
+
+`puppet module install puppetlabs-apache`
+
+Entao pra esses dois nos serem implementados corretamente, o que precisa acontecer? Primeiro, temos que garantir que os nos sejam implementados na ordem correta. Porque o no do nosso servidor web depende do nosso servidor MySQL, a gente precisa garantir que o Puppet rode nosso servidor de BD primeiro e nosso servidor Web depois. A gente tambem precisa de um metodo pra passar informacoes entre nossos nos. Porque a informacao que nosso servidor Web precisa para conectar na base de dados pode ser baseada em fatos `facter`, logica condicional ou funcoes no manifesto Puppet que define o componente, o Puppet nao vai saber o que e ate que ele enfim gere o catalogo para o no de banco de dados. Assim que o Puppet tem essa informacao, ele precisa de um jeito para passa-la como parametros para o nosso componente de servidor Web.
+
+Ambos os requisitos sao atendidos atraves de algo que chamamos _recurso de ambiente_. Diferente dos recursos especificos de um no (como um `user` ou um `file`) que dizem ao puppet como configurar uma unica maquina, recursos de ambiente carregam dados e definem relacionamentos entre multiplos nos em um ambiente. Nos vamos entrar mais no detalhe de como isso funciona a medida que implementamos nossa aplicacao.
+
+Entao o primeiro passo ao criar uma aplicacao e determinar exatamente qual informacao precisa ser passada entre os componentes. Com o que se parece isso no caso da nossa aplicacao LAMP?
+
+* __Host__: nosso servidor web precisa saber do nome de host do servidor de banco de dados
+* __Banco de dados__: a gente precisa do nome especifico do banco que devemos conectar
+* __Usuario__: se a gente quer se conectar ao banco, vamos precisar do usuario
+* __Senha__: e vamos precisar tambem da senha pra esse usuario
+
+Essa lista especifica o que nosso servidor de BD _produz_ e o que o nosso servidor Web _consome_. Se passarmos essa informacao pro nosso servidor Web, ele vai ter tudo o que precisa pra se conectar ao BD hospedado no nosso servidor de banco de dados. 
+
+Pra permitir que toda essa informacao seja produzida quando rodarmos o Puppet no servidor de banco de dados e consumida pelo nosso servidor Web, nos vamos criar um _tipo derecurso customizado_ chamado `sql`. Diferente de um recurso de no tipico, nosso recurso `sql` nao vai especificar diretamente nenhuma mudanca nos nossos sistemas. Voce pode pensar nele como um recurso _dummy_, bobo. Uma vez que seus parametros sao definidos pelo componente de BD, ele so fica ali sentado para que aqueles parametros possam ser consumidos pelo componente do web Server. (Veja que recursos de ambiente podem incluir um codigo de sondagem mais complexo que permita ao Puppet aguardar ate que um servico pre-requisito fique online antes de seguir para os componentes dependentes. Como isso requer um conhecimento mais aprofundado do Ruby, esta fora do escopo dessa quest)
+
+Ao contrario dos tipos de recurso definidos que podem ser escritos em codigo Puppet nativo, criar um tipo customizado requer uma rapida incursao ao Ruby. A sintaxe sera bem simples, entao nao se preocupe caso nao seja familiarizado com a linguagem.
 
 ### Tarefa 5
 

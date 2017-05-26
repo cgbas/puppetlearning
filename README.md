@@ -1931,7 +1931,7 @@ Apesar de que voce so vai precisar de um no para escrever e aplicar codigo Puppe
 
 ### Conteineres
 
-Nos criamos um modulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker nao e um componente do Puppet__, trata-se de uma ferramante open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com multiplos nos, mas tenha em mente que essa nao e a maneira recomendada de montar sua infraestrutura Puppet!
+Nos criamos um modulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker nao e um componente do Puppet__, trata-se de uma ferramenta open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com multiplos nos, mas tenha em mente que essa nao e a maneira recomendada de montar sua infraestrutura Puppet!
 
 ### Tarefa 1
 
@@ -2024,11 +2024,53 @@ Podemos ver tambem que o fqdn do nosso no e `database.learning.puppetlabs.vm`. E
 ### Tarefa 5
 
 
+Isso nos leva ao proximo topico: certificacao.
 
 ### Certificados
+
+O mestre Puppet, mantem uma lista de certificados assinados pra cada no da sua infraestrutura. Isso ajuda tanto a manter sua infraestrutura segura, como previne que o Puppet faca alguma mudanca indesejada a sistemas na sua rede.
+
+Antes que voce possa rodar o Puppet nos novos nos agente, voce precisa assinar os certificados no mestre Puppet. Se voce ainda esta conectado no seu no agente, retorne ao mestre:
+
+`exit`
+
 ### Tarefa 6
+
+Use `puppet cert list` para visualizar os certificados __nao__ assinados. (Que voce tambem pode visualizar e assinar via pagina de inventario no console PE).
+
+`puppet cert list`
+
+Agora assine cada um dos certificados dos seus nos:
+
+`puppet cert sign webserver.learning.puppetlabs.vm`
+
+e
+
+`puppet cert sign database.learning.puppetlabs.vm`
+
 ### Tarefa 7
 
+Agora que seus certificados estao assinados, seus nos podem ser gerenciados pelo Puppet. Pra testar isso, vamos adicionar um recurso `notify` simples ao manifesto `site.pp` no mestre.
+
+`vim /etc/puppetlabs/code/environments/production/manifests/site.pp`
+
+Encontre a declaracao de no `default` e edite-a para incluir um recurso `notify` que nos dira algumas informacoes basicas do no.
+
+```
+  node default {
+    notify { "Aqui e ${::fqdn}, rodando o sistema operacional ${::operatingsystem}": }
+  }
+```
+
+Agora conecte novamente no nosso no de banco de dados:
+
+`docker exec -it database bash`
+
+E tente outra execucao Puppet:
+
+`puppet agent -t`
+
+Com seu certificado assinado, o agente no seu no foi capaz de requisitar corretamente um catalogo ao mestre e aplica-lo para concluir a execucao Puppet.
 # Orquestrador de aplicacao
 # O Orquestrador de aplicacao
 ### Configuracao de no

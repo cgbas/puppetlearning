@@ -1991,7 +1991,7 @@ Navegue ate o console do Puppet Enterprise em `https://<IP DA VM>`. As credencia
 * usuario: `admin`
 * senha: `puppetlabs`
 
-No caminho __Nodes > Classification__, clique em __PE Infrastructure__ e selecione o grupo de nos __PE Master__. Na aba __Classes__, insira `pe_repo::platform::ubuntu_1404_amd64`. Clique no botao __Add class__ e confirme a mudanca.
+No caminho __Nodes > Classification__, clique em __PE Infrastructure__ e selecione o grupo de nos __PE Master__. Na aba __Classes__, insira `pe_repo::platform::ubuntu_1404_amd64`. Clique no botao __Add class__ e confirme a mudanca clicando em __Commit 1 change__.
 
 Dispare uma execucao no Puppet mestre.
 
@@ -1999,8 +1999,32 @@ Dispare uma execucao no Puppet mestre.
 
 ### Tarefa 4
 
+Normalmente voce deve usar `ssh` para conectar nos seus nos e executar essa instalacao. Entretanto como estamos utilizando o docker, a maneira de conectar vai ser um pouco diferente. Pra conectar no seu no `webserver`, rode o seguinte comando para executar um bash interativo no conteiner:
+
+`docker exec -it webserver bash`
+
+Cole o comando `curl` da console do __PE__ para instalar o agente Puppet no no. (Para referencia futura, voce pode encontrar esse comando em __Nodes > Unsigned Certificates__ na console do Puppet Enterprise (__PE__)).
+
+`curl -k https://learning.puppetlabs.vm:8140/packages/current/install.bash | sudo bash`
+
+A instalacao pode levar alguns minutos. (Se voce encontrar algum erro aqui, pode ser necessario reiniciar o servico do seu Puppet mestre `service pe-puppetserver restart`). Assim que concluir, termine seu bash no conteiner e saia `exit`. Repita o processo para instalar no seu banco de dados.
+
+`docker exec -it database bash`
+
+Agora voce tem dois novos nos com o agente Puppet instalado. Enquanto voce ainda esta com a sessao aberta com o no de banco de dados, voce pode experimentar alguns comandos:
+
+`facter operatingsystem`
+
+Repare que mesmo nossa VM rodando CentOS, nossos novos nos rodam Ubuntu.
+
+`facter fqdn`
+
+Podemos ver tambem que o fqdn do nosso no e `database.learning.puppetlabs.vm`. E assim que podemos identificar o no na console PE ou no manifesto `site.pp` no nosso mestre.
 
 ### Tarefa 5
+
+
+
 ### Certificados
 ### Tarefa 6
 ### Tarefa 7

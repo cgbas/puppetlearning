@@ -1920,7 +1920,19 @@ Nessa quest, utilizamos uma ferramenta chamada `docker` para simular multiplos n
 __Por favor, tome nota__: Essa quest e a proxima "Orquestrador de Aplicacoes" requerem conexao a internet, se voce esta executando a VM offline, por favor  verifique as instrucoes para que ela acesse a internet. __Por enquanto nao ha uma maneira de executar essas quests offline e a Puppetlabs esta trabalhando nisso__.
 
 ## Consiga alguns nos
+
+Ate entao, estavamos utilizando 2 comandos para aplicar nosso codigo Puppet: `puppet apply` e `puppet agent -t`. Se voce nao se sentiu confiante da diferenca desses dois comandos, isso pode ser porque estivemos fazendo tudo num unico no onde a diferenca entre aplicar mudancas localmente e envolver o Puppet master nao esta bem clara. Vamos revisar por um momento.
+
+`puppet apply` compila o catalogo baseado num manifesto especificado e aplica tal catalogo localmente. Qualquer node com o agente Puppet instalado pode aplicar um manifesto. Voce pode acabar utilizando bastante o `puppet apply` caso voce queira utilizar o agente do Puppet sem envolver um Puppet master. Por exemplo, caso voce esteja fazendo alguns testes locais ou experimentando com uma infraestrutura sem um servidor mestre.
+
+`puppet agent -t` dispara uma execucao do Puppet. Essa execucao e uma conversa entre o no agente e o Puppet master. Primeiro, o agente envia uma colecao de fatos para o mestre. O mestre pega esses fatos e utiliza-os para saber qual codigo precisa ser aplicado no no. Voce viu duas maneiras dessa classificacao ser configurada: no manifesto `site.pp` ou no classificador de nos do Puppet Enterprise. O mestre entao avalia o codigo Puppet para compilar um catalogo que descreva exatamente como os recursos no no devem estar configurados. O mestre envia esse catalogo para o agente no no, que o aplica. Finalmente, o agente envia um relatorio da execucao Puppet de volta ao mestre. Apesar de termos desabilitado execucoes automaticas na VM, elas sao agendadas para ocorrer a cada meia hora.
+
+Apesar de que voce so vai precisar de um no para escrever e aplicar codigo Puppet, ter a imagem completa de como o Puppet mestre e o no se comunicam vai ser bem mais facil se voce tem mais de um no para trabalhar.
+
 ### Conteineres
+
+Nos criamos um modulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker nao e um componente do Puppet_, trata-se de uma ferramante open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com multiplos nos, mas tenha em mente que essa nao e a maneira recomendada de montar sua infraestrutura Puppet!
+
 ### Tarefa 1
 ### Tarefa 2
 ### Instale o agente do Puppet

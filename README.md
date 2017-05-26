@@ -2155,14 +2155,29 @@ E tente outra execucao Puppet:
 Com seu certificado assinado, o agente no seu no foi capaz de requisitar corretamente um catalogo ao mestre e aplica-lo para concluir a execucao Puppet.
 
 # Orquestrador de aplicacao
+
+__NOTA DO CHRIS__: Caso voce esteja acompanhando esse guia somente pela minha adaptacao, tente ler essa quest no material oficial. Como havia como visualizar os grafos exportando na outra quest, as imagens do guia eram possiveis de serem emuladas. Essa quest tem alguns desenhos explicativos da aplicacao com que vamos trabalhar aqui.
+
+
 # O Orquestrador de aplicacao
 ### Configuracao de no
 ### Tarefa 1
 ### Tarefa 2
 ### Configuracao Master
+
+Antes que a gente saia escrevendo e implementando uma aplicacao, no entanto, tem alguns passos ate que tenhamos o Orquestrador de Aplicacoes do Puppet (_Puppet Application Orquestrator_) configurado corretamente.
+
+A ferramenta _Puppet Orquestrator_ que vamos utilizar nessa quest e uma interface de linha de comando que interage com o servico de Orquestracao de Aplicacao no Puppet mestre. Nos habilitamos esse servico por padrao na VM de aprendizagem, e ele sera habilitado por padrao em versoes futuras do PE. (Caso voce queira habilitar no seu proprio Puppet mestre, as intrucoes estao em: https://docs.puppet.com/pe/latest/orchestrator_install.html#enable-the-application-orchestration-service-and-orchestrator-client)
+
 ### Configuracao do client e permissoes
+
+Enquanto o servico de Orquestracao de Aplicacoes roda no seu Puppet mestre, o cliente pode rodar em qualquer sistema com conexao de rede para o mestre. Isso significa que voce pode gerenciar sua infraestrutura direto da sua maquina. Como nao podemos assumir que o cliente ira rodar em um sistema com a configuracao do Puppet apontando a URL e ambiente corretos, vamos ter que defini-los explicitamente. Apesar de que esses itens pudessem ser especificadas como _flags_ da linha de comando, criar um arquivo de configuracao evita que voce tenha que digita-las toda vez.
+
 ### Tarefa 3
 ### Token do client
+
+Agora que voce tem um usuario com as configuracoes certas, voce pode gerar um token de acesso RBAC para autenticar com o servico de Orquestracao.
+
 ### Tarefa 4
 ## Aplicacoes Puppetizadas
 ### Tarefa 6

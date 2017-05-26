@@ -59,5 +59,6 @@ node 'learning.puppetlabs.vm' {
     },
   }
   include ::mysql::server::account_security
+  include multi_node
 }
 

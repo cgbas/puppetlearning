@@ -1931,13 +1931,75 @@ Apesar de que voce so vai precisar de um no para escrever e aplicar codigo Puppe
 
 ### Conteineres
 
-Nos criamos um modulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker nao e um componente do Puppet_, trata-se de uma ferramante open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com multiplos nos, mas tenha em mente que essa nao e a maneira recomendada de montar sua infraestrutura Puppet!
+Nos criamos um modulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker nao e um componente do Puppet__, trata-se de uma ferramante open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com multiplos nos, mas tenha em mente que essa nao e a maneira recomendada de montar sua infraestrutura Puppet!
 
 ### Tarefa 1
+
+Primeiro, precisamos instalar uma dependencia para esse modulo. Normalmente a ferramenta `puppet module` daria conta disso, mas porque o modulo `multi_node` e especifico pra essa quest e nao e publicado no __Forge__, faremos isso manualmente.
+
+```
+  # puppet module install puppetlabs-concat
+
+  Notice: Preparing to install into /etc/puppetlabs/code/environments/production/modules ...
+  Notice: Downloading from http://localhost:8085 ...
+  Notice: Installing -- do not interrupt ...
+  /etc/puppetlabs/code/environments/production/modules
+  └─┬ puppetlabs-concat (v2.2.0)
+    └── puppetlabs-stdlib (v4.15.0)
+```
+
+Agora, para aplicar a classe `multi_node` na VM, adicione-a a declaracao do no `learning.puppetlabs.vm` no manifesto `site.pp` do mestre.
+
+`vim /etc/puppetlabs/code/environment/production/manifests/site.pp`
+
+Insira `include multi_node` na declaracao de no `learning.puppetlabs.vm`
+
+```
+  node learning.puppetlabs.vm {
+    include multi_node
+  }
+```
+
+E importante que voce nao tenha colocado isso na sua declaracao de no `default`. Se voce fez isso o Puppet vai tentar criar conteineres Docker nos seus conteineres Docker toda vez que voce fizesse uma execucao Puppet.
+
 ### Tarefa 2
+
+Agora dispare uma execucao do `puppet agent -t`. Isso pode levar um tempo.
+
+`puppet agent -t`
+
+Assim que essa execucao terminar, voce pode executar `docker ps` para ver seus dois nos novos. Voce deve ver um chamado `database` e outro chamado `webserver`.
+
+```
+  CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                     NAMES
+20668180d1fa        phusion/baseimage:0.9.18   "/sbin/my_init"     6 minutes ago       Up 6 minutes        0.0.0.0:10080->80/tcp     webserver
+819f26d9e356        phusion/baseimage:0.9.18   "/sbin/my_init"     6 minutes ago       Up 6 minutes        0.0.0.0:23306->3306/tcp   database
+```
+
+__AJUDA CHRIS__: eu comecei a levar `connection refused` ao executar `puppet agent -t` quando passei a placa de rede para modo bridged no Virtual Box, pra resolver isso bastou adicionar o novo IP do host no `/etc/hosts` para responder tanto `learning` como `learning.puppetlabs.vm`
+
 ### Instale o agente do Puppet
+
+Agora voce tem dois nos fresquinhos, mas nao tem o agente Puppet instalado em nenhum deles! Instalar o agente vai ser o primeiro passo para colocar esses nos na nossa infraestrutura.
+
 ### Tarefa 3
+
+Na maioria dos casos, o jeito mais simples de instalar o agente e atraves do comando `curl` para transferir o script de instalacao direto do mestre e executa-lo. Como nossos agentes estao rodando sobre Ubuntu, primeiro precisamos garantir que nosso Puppet mestre tem o script certo pra fornecer.
+
+Navegue ate o console do Puppet Enterprise em `https://<IP DA VM>`. As credenciais sao as mesmas do comeco do guia:
+
+* usuario: `admin`
+* senha: `puppetlabs`
+
+No caminho __Nodes > Classification__, clique em __PE Infrastructure__ e selecione o grupo de nos __PE Master__. Na aba __Classes__, insira `pe_repo::platform::ubuntu_1404_amd64`. Clique no botao __Add class__ e confirme a mudanca.
+
+Dispare uma execucao no Puppet mestre.
+
+`puppet agent -t`
+
 ### Tarefa 4
+
+
 ### Tarefa 5
 ### Certificados
 ### Tarefa 6

@@ -2156,15 +2156,41 @@ Com seu certificado assinado, o agente no seu no foi capaz de requisitar correta
 
 # Orquestrador de aplicacao
 
+Se voce gerencia aplicacoes compostas de multiplos servicos distribuidos atraves de multiplos nos, voce tambem sabe que a orquestracao de multiplos nos pode se apresentar alguns desafios especiais. Sua aplicacao tende a necessitar compartilhar informacao entre os nos involvidos e mudancas de configuracao precisam ser feitas na ordem correta para garantir que seus componentes de aplicacao nao fiquem fora de sincronia.
+
+O Orquestrador de Aplicacao do Puppet estende o poderoso modelo declarativo do nivel de um unico no para o de uma aplicacao complexa. Descreva sua aplicacao em codigo Puppet, e deixe o Orquestrador de Aplicacao cuidar da implementacao.
+
+__Atencao__: Antes de iniciar, voce deve saber que essa quest vai ser um significantemente mais complexa das outras que vimos antes, tanto em termos de conceitos envolvidos, variedade de ferramentas e configuracoes com que voce vai trabalhar. Entenda que o Orquestrador de Aplicacao e uma funcionalidade nova, e apesar de ja ser uma ferramenta poderosa, ela continuara a ser estendida, refinada e integrada com o resto do ecossistema Puppet. Enquanto isso, seja paciente com os problemas que encontrar. Pode ser util pra ti se referir a documentacao do Orquestrador de Aplicacoes para suplementar a informacao dessa quest, aqui: https://docs.puppet.com/pe/latest/app_orchestration_overview.html
+
+Saiba tambem que a instalacao do `multi_node` para a quest anterior e um pre-requisito para essa. Como mencionado nela, a tecnologia _Docker_ que estamos utilizando para disponibilizar multiplos nos em uma unica VM vem com um certo custo sobre a performance e a estabilidade. Se voce encontrar com qualquer problema, por favor contate learningvm@puppetlabs.com.
+
+
 __NOTA DO CHRIS__: Caso voce esteja acompanhando esse guia somente pela minha adaptacao, tente ler essa quest no material oficial. Como havia como visualizar os grafos exportando na outra quest, as imagens do guia eram possiveis de serem emuladas. Essa quest tem alguns desenhos explicativos da aplicacao com que vamos trabalhar aqui.
 
 
 # O Orquestrador de aplicacao
 
+Para entender como o Orquestrador de aplicacoes opera, vamos imaginar uma aplicacao web de duas camadas simples, com um balanceador de carga.
 
+__CORRE LA VER A IMAGEM, MO FI!__
 
+Temos um unico balanceador de carga, que a distribui entre tres servidores web, que por sua vez conectam ao mesmo banco de dados.
+
+Cada um dos nos envolvidos nessa aplicacao vai ter algum tipo de configuracao para coisas que nao envolvem diretamente na aplicacao. Itens como `sshd` e `ntp` normalmente sao comuns a varios nos na sua infraestrutura e o Puppet nao vai requisitar informacao especifica sobre a aplicacao em que o no esteja envolvido para configura-los corretamente. Alem dessas classes e recursos que sao independentes da aplicacao, cada no nesse exemplo contem algum componente da aplicacao: o servidor web, o banco de dados e o balanceador de carga alem de qualquer outro recurso necessario para suportar e configurar o conteudo e servidos especificos da aplicacao.
+
+Essa configuracao especifica da aplicacao e chamada componente. No nosso exemplo nos definimos componentes para o banco de dados, o servidor web e o balanceador de carga. Cada um contem todas as classes e recursos necessarios para um no cumprir seu papel na aplicacao. Um componente e, geralmente, um _tipo de recurso definido_, apesar de que ele tambem pode ser uma classe ou um recurso unico. Um _tipo de recurso definido_ e flexivel o bastante para incluir varios recursos e subclasses, e diferente de uma classe ele pode ser declarado multiplas vezes dentro do mesmo escopo, permitindo que seu ambiente tenha varias instancias de, assim por dizer, um componente de servidor web.
+
+__CORRE LA VER A IMAGEM, MO FI!__
+
+Com todos os componentes definidos, a proxima coisa a definir sao os relacionamentos entre eles como uma aplicacao. Se sua aplicacao esta empacotada como um modulo, a definicao dessa aplicacao geralmente vai no manifesto `init.pp`.
+
+__CORRE LA VER A IMAGEM, MO FI!__
+
+A definicao da aplicacao diz pra esses componentes como eles irao comunicar-se entre si e permite que o Orquestrador de Aplicacao a ordem das execucoes Puppet necessarias para implementar corretamente a aplicacao nos nos da sua infraestrutura.
+
+Esse ordenamento de execucoes Puppet e um papel importante em como as ferramentas no orquestrador de aplicacoes trabalham. E requer um pouco mais de control direto sobre quando o agente do Puppet executa nos nos envolvidos na sua aplicacao .Se as execucoes Puppet ocorreram no intervalo padrao agendado de meia hora, nao teriamos nenhuma maneira de garantir que os componentes de nossa aplicacao fossem configurados na ordem correta. Se, por exemplo, uma execucao Puppet em nosso servidor web disparasse antes da execucao no servidor de BD, uma mudanca no nome do BD quebraria nossa aplicacao. Nosso servidor web ainda tentaria conectar ao BD de uma configuracao anterior, resultando em um erro quando aquela base estava indisponivel.
+  
 ### Configuracao de no
-
 
 
 ### Tarefa 1

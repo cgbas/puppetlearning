@@ -2160,32 +2160,119 @@ __NOTA DO CHRIS__: Caso voce esteja acompanhando esse guia somente pela minha ad
 
 
 # O Orquestrador de aplicacao
+
+
+
 ### Configuracao de no
+
+
+
 ### Tarefa 1
+
+
+
 ### Tarefa 2
+
+
+
 ### Configuracao Master
 
-Antes que a gente saia escrevendo e implementando uma aplicacao, no entanto, tem alguns passos ate que tenhamos o Orquestrador de Aplicacoes do Puppet (_Puppet Application Orquestrator_) configurado corretamente.
+Antes que a gente saia escrevendo e implementando uma aplicacao, no entanto, tem alguns passos ate que tenhamos o Orquestrador de Aplicacoes do Puppet (_Puppet Application Orchestrator_) configurado corretamente.
 
-A ferramenta _Puppet Orquestrator_ que vamos utilizar nessa quest e uma interface de linha de comando que interage com o servico de Orquestracao de Aplicacao no Puppet mestre. Nos habilitamos esse servico por padrao na VM de aprendizagem, e ele sera habilitado por padrao em versoes futuras do PE. (Caso voce queira habilitar no seu proprio Puppet mestre, as intrucoes estao em: https://docs.puppet.com/pe/latest/orchestrator_install.html#enable-the-application-orchestration-service-and-orchestrator-client)
+A ferramenta _Puppet Orchestrator_ que vamos utilizar nessa quest e uma interface de linha de comando que interage com o servico de Orquestracao de Aplicacao no Puppet mestre. Nos habilitamos esse servico por padrao na VM de aprendizagem, e ele sera habilitado por padrao em versoes futuras do PE. (Caso voce queira habilitar no seu proprio Puppet mestre, as intrucoes estao em: https://docs.puppet.com/pe/latest/orchestrator_install.html#enable-the-application-orchestration-service-and-orchestrator-client)
 
 ### Configuracao do client e permissoes
 
 Enquanto o servico de Orquestracao de Aplicacoes roda no seu Puppet mestre, o cliente pode rodar em qualquer sistema com conexao de rede para o mestre. Isso significa que voce pode gerenciar sua infraestrutura direto da sua maquina. Como nao podemos assumir que o cliente ira rodar em um sistema com a configuracao do Puppet apontando a URL e ambiente corretos, vamos ter que defini-los explicitamente. Apesar de que esses itens pudessem ser especificadas como _flags_ da linha de comando, criar um arquivo de configuracao evita que voce tenha que digita-las toda vez.
 
 ### Tarefa 3
+
+
+
 ### Token do client
 
 Agora que voce tem um usuario com as configuracoes certas, voce pode gerar um token de acesso RBAC para autenticar com o servico de Orquestracao.
 
 ### Tarefa 4
+
+A ferramenta `puppet access` ajuda a gerenciar a autenticacao. Utilize o comando `puppet access login` para autenticar e ele ira salvar um token. Adicione a _flag_ `--lifetime=1d` assim voce nao precisa ficar gerando novos tokens enquanto trabalha.
+
+`puppet access login --service-url https://learning.puppetlabs.vm:4433/rbac-api --lifetime=1d`
+
+Quando solicitado, forneca o usuario e senha que voce definiu no sistema RBAC do console PE: __orchestrator__ e __puppet__.
+
+(Se receber uma mensagem de erro, confira se a URL esta correta)
+
 ## Aplicacoes Puppetizadas
+
+
+
+### Tarefa 5
+
+Como antes, o primeiro passo e criar a estrutura de diretorios do seu modulo. Garanta que voce esta no diretorio de modulos:
+
+`cd /etc/puppetlabs/code/environment/production/modules`
+
+E crie seus diretorios
+
+`mkdir -p lamp/{manifests,lib/puppet/type}`
+
+Perceba que estamos enterrando nosso tipo no diretorio `lib/puppet/type`. Esse diretorio e onde voce deve manter qualquer extensao a linguagem base do Puppet que seu modulo prove. Por exemplo, alem de tipos, voce tambem pode definir novos providers ou funcoes.
+
 ### Tarefa 6
+
+Vamos agora criar nosso novo tipo de recurso `sql`.
+
+`vim lamp/lib/puppet/type/sql.rb`
+
+Esse novo tipo e definido por um bloco de codigo Ruby, desse jeito:
+
+```
+  Puppet:Type.newtype :sql, :is_capability => true do
+    newparam :name, :is_namevar => true
+    newparam :user
+    newparam :password
+    newparam :host
+    newparam :database
+  end
+```
+
+Viu so? Nada mal! Veja que e o trecho `is_capability => true` que permite a esse recurso existir no nivel de ambiente, ao inves de aplicado a um no especifico. Tudo mais deveria ser razoavelmente auto-explicativo. Mais uma vez, nao temos que _fazer_ nada com esse recurso, e sim apenas dizer como queremos chamar nossos parametros.
+
 ### Tarefa 7
+
+
+
 ### Tarefa 8
+
+
+
 ### Tarefa 9
+
+
+
 ### Tarefa 10
+
+
+
 ### Tarefa 11
 
+Utilize o comando `puppet job` para implementar a aplicacao.
 
+`puppet job run Lamp['app1']`
 
+Voce pode verificar o estado de qualquer job executado ou em execucao com o comando `puppet job show`.
+
+Agora que seus nos estao configurados com sua aplicacao nova, vamos parar para conferir os resultados. Primeiro, podemos logar no servidor de banco de dados e dar uma olhada na nossa instancia MySQL.
+
+`docker exec -it database bash`
+
+Lembre-se, nao importa em que SO voce esteja, voce pode utilizar o comando `puppet resource` para verificar o estado de um servico. Vamos ver se o MySQL esta rodando:
+
+`puppet resource service mysql`
+
+Voce deveria ver que o recurso esta rodando. Se quiser, voce tambem pode abrir o cliente com o comando `mysql`. Quando terminar, utilize `\q` para sair.
+
+Agora va em frente e desconecte-se do no do banco de dados.
+
+Ao inves de logar no nosso no de servidor web, vamos apenas conferir se esta rodando. Na instalacao pre-configurada do docker para essa tarefa, nos mapeamos a porta `80` no conteiner `webserver.learning.puppetlabs.vm` para a porta `10080` no no `learning.puppetlabs.vm` - nossa VM de aprendizagem. Em um navegador web, va para `http://<IP DA VM>:10080/index.php` para visualizar seu site PHP.

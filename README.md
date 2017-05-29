@@ -2192,9 +2192,34 @@ Esse ordenamento de execucoes Puppet e um papel importante em como as ferramenta
   
 ### Configuracao de no
 
+Pra evitar esse tipo de mudanca descoordenada, voce vai precisar configurar os nos para que utilizem uma versao em cache do catalogo quando o Puppet executar. Isso permite que o Puppet execute conforme agendado para evitar um desvio de configuracao, mas so ira fazer mudancas no catalogo somente quando voce reimplementar intencionalmente sua aplicacao. Tambem dessa maneira voce deve desabilitar os plugins para que qualquer funcionalidade disponibilizada por plugins (ex.: funcoes ou provedores) nao causem mudances descoordenadas aos nos da sua aplicacao.
 
 ### Tarefa 1
 
+Claro que poderiamos logar em cada um dos nos e alterar diretamente a configuracao, mas por que nao utilizar o Puppet para configurar a si mesmo? Existe um recurso `init_setting` que nos permitira realizar as mudancas as configuracoes `use_cached_catalog` e  `pluginsync` em cada arquivo de configuracao `puppet.conf` nos agentes.
+
+`vim /etc/puppetlabs/code/environment/production/manifests/site.pp`
+
+Como queremos aplicar essas configuracoes tanto no no `webserver.learning.puppetlabs.vm` quanto no `database.learning.puppetlabs.vm` podemos utilizar uma expressao regular para combinar os dois direto na definicao de no. Crie um novo grupo de nos com o nome `/^(webserver|database).*$/` e inclua dois recursos `ini_setting` para as mudancas que queremos realizar nas configuracoes.
+
+```
+  node /^(webserver|database).*$/ {
+    pe_ini_setting { 'use_cached_catalog':
+      ensure  =>  present,
+      path    =>  $settings::config,
+      section =>  'agent',
+      setting =>  'use_cached_catalog',
+      value   =>  'true',
+    }
+    pe_ini_setting { 'pluginsync':
+      ensure  =>  present,
+      path    =>  $settings::config,
+      section =>  'agent',
+      setting =>  'pluginsync',
+      value   =>  'false',
+    }
+  }
+```
 
 
 ### Tarefa 2

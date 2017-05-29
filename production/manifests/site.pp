@@ -61,5 +61,21 @@ node 'learning.puppetlabs.vm' {
   }
   include ::mysql::server::account_security
   include multi_node
+  node /^(webserver|database).*$/ {
+    pe_ini_setting { 'use_cached_catalog':
+      ensure  =>  present,
+      path    =>  $settings::config,
+      section =>  'agent',
+      setting =>  'use_cached_catalog',
+      value   =>  'true',
+    }
+    pe_ini_setting { 'pluginsync':
+      ensure  =>  present,
+      path    =>  $settings::config,
+      section =>  'agent',
+      setting =>  'pluginsync',
+      value   =>  'false',
+    }
+  }
 }
 

@@ -2497,7 +2497,7 @@ Ja incluimos o trabalho pesado nos nossos componentes, entao esse sera bem simpl
   }
 ```
 
-...
+A aplicacao possui dois parametros, `db_user` e `db_password`. O corpo da aplicacao declara os componentes `lamp::webapp` e `lamp::mysql`. Nos passamos nossos parametros `db_user` e `db_password` atraves do componente `lamp::mysql`. E tambem nele onde utilizamos o metaparametro especial `export` para dizer ao Puppet que queremos que esse componente crie um recurso de ambiente `sql`, que podera ser consumido pelo componente `lamp::webapp`. Lembra-se do bloco `Lamp::Mysql produces Sql` que colocamos depois da definicao de componente?
 
 ```
   Lamp::Mysql produces Sql {
@@ -2508,7 +2508,9 @@ Ja incluimos o trabalho pesado nos nossos componentes, entao esse sera bem simpl
   }
 ```
 
-...
+Isso diz ao Puppet como mapear as variaveis do nosso componente `lamp::mysql` em um recurso de ambiente `sql` quando utilizarmos o metaparametro `export`. Perceba que apesar de estarmos definindo explicitamente os parametros `db_user` e `db_password` somente na declaracao desse componente, os padroes desse parametro serao passados mesmo assim.
+
+O bloco de _matching_ `Lamp::Webapp consumes sql` no manifesto `webapp.pp` diz ao Puppet como mapear os parametros do recurso de ambiente `sql` com o nosso componente `lamp::webapp` quando incluimos o metaparametro `consume => Sql[$name]`.
 
 ```
   Lamp::Webapp consumes Sql {
@@ -2519,16 +2521,15 @@ Ja incluimos o trabalho pesado nos nossos componentes, entao esse sera bem simpl
   }
 ```
 
-...
+Uma vez que tenha terminado a definicao da aplicacao, valide sua sintaxe e faca qualquer correcao necessaria
 
 `puppet parser validate --app_management lamp/manifests/init.pp`
 
-...
-
+Agora, use o comando `tree` para verificar que todos os componentes do seu modulo estao no lugar
 
 `tree lamp`
 
-...
+Seu modulo deve parecer com isso
 
 ```
   modules/lamp/

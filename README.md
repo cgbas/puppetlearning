@@ -2362,11 +2362,113 @@ Viu so? Nada mal! Veja que e o trecho `is_capability => true` que permite a esse
 
 ### Tarefa 7
 
+Agora que ja temos nosso tipo de recurso `sql`, ja podemos avancar para o componente de banco de dados que ira produzi-lo. Esse componente vive em nosso modulo `lamp` e define a configuracao de um servidor MySQL, entao iremos chama-lo `lamp::mysql`.
 
+`vim lamp/manifests/mysql.pp`
+
+Ele vai ficar assim
+
+```
+  define lamp::mysql (
+      $db_user,
+      $db_password,
+      $host     = $::hostname,
+      $database = $name,
+    ) {
+      class { '::mysql::server':
+        service_provider  => 'debian',
+        override_options  => {
+          'mysqld' => { 'bind-address' => '0.0.0.0' }
+        },
+      }
+
+      class { $name:
+        user      => $db_user,
+        password  => $db_password,
+        host      => '%',
+        grant     => ['SELECT','INSERT','UPDATE','DELETE'],
+      }
+
+      class { '::mysql::bindings': 
+        php_enable        => true,
+        php_package_name  => 'php5-mysql',
+      }
+    }
+    Lamp::Mysql produces Sql {
+      user      => $db_user,
+      password  => $db_password,
+      host      => $host,
+      database  => $database,
+    }
+```
+
+Verifique o manifesto com a ferramenta `puppet parser`. Como a orquestracao insere uma sintaxe nova, inclua a _flag_ `--app_management`
+
+`puppet parser validate --app_management lamp/manifests/mysql.pp`
 
 ### Tarefa 8
 
+Agora, crie um componente _webapp_ para configurar um servidor Apache e uma aplicacao PHP simples.
 
+`vim lamp/manifests/webapp.pp`
+
+Ele vai ficar assim
+
+```
+  define lamp::webapp (
+    $db_user,
+    $db_password,
+    $db_host,
+    $db_name,
+    $docroot = '/var/www/html'
+  ) {
+    class { 'apache':
+      default_mods  => false,
+      mpm_module    => 'prefork',
+      default_vhost => false,
+    }
+
+    apache::vhost { $name:
+      port           => '80',
+      docroot        => $docroot,
+      directoryindex => ['index.php','index.html'],
+    }
+
+    package { 'php5-mysql':
+      ensure => installed,
+      notify => Service['httpd'],
+    }
+
+    include apache::mod::php
+
+    $indexphp = @("EOT"/)
+      <?php
+      \$conn = mysql_connect('${db_host}', '${db_user}', '${db_password}');
+      if (!\$conn) {
+        echo 'Connection to ${db_host} as ${db_user} failed';
+      } else {
+        echo 'Connected successfully to ${db_host} as ${db_user}';
+      }
+      ?>
+      | EOT
+
+    file { "${docroot}/index.php":
+      ensure  => file,
+      content => $indexphp,
+    }
+
+  }
+  Lamp::Webapp consumes Sql {
+    db_user     => $user,
+    db_password => $password,
+    db_host     => $host,
+    db_name     => $database,
+  }
+```
+
+Agora, verifique a sintaxe do seu manifesto
+
+`puppet parser validate --app_management lamp/manifests/webapp.pp`
 
 ### Tarefa 9
 

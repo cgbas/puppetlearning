@@ -2472,11 +2472,116 @@ Agora, verifique a sintaxe do seu manifesto
 
 ### Tarefa 9
 
+Temos todos nossos componentes prontos, entao vamos definir nossa aplicacao. Como ela e o item principal do nosso modulo `lamp`, ela vai no manifesto `init.pp`
 
+`vim lamp/manifests.init.pp`
+
+Ja incluimos o trabalho pesado nos nossos componentes, entao esse sera bem simples. A sintaxe de uma aplicacao e parecida com a de uma classe ou um _recurso de tipo definido_. A unica diferenca esta em utilizarmos a palavra `application` no lugar de `define` ou `class`.
+
+```
+  application lamp (
+    $db_user,
+    $db_password,
+  ) {
+
+    lamp::mysql { $name:
+      db_user     => $db_user,
+      db_password => $db_password,
+      export      => Sql[$name],
+    }
+
+    lamp::webapp { $name:
+      consume => Sql[$name],
+    }
+
+  }
+```
+
+...
+
+```
+  Lamp::Mysql produces Sql {
+    user     => $db_user,
+    password => $db_password,
+    host     => $host,
+    database => $database,
+  }
+```
+
+...
+
+```
+  Lamp::Webapp consumes Sql {
+    db_name     => $name,
+    db_user     => $user,
+    db_host     => $host,
+    db_password => $password,
+  }
+```
+
+...
+
+`puppet parser validate --app_management lamp/manifests/init.pp`
+
+...
+
+
+`tree lamp`
+
+...
+
+```
+  modules/lamp/
+  ├── lib
+  │   └── puppet
+  │       └── type
+  │           └── sql.rb
+  └── manifests
+      ├── init.pp
+      ├── mysql.pp
+      └── webapp.pp
+
+  4 directories, 4 files
+```
 
 ### Tarefa 10
 
+Agora que sua aplicacao esta definida, o passo final e declara-la no manifesto `site.pp`
 
+`vim /etc/puppetlabs/code/environments/production/manifests/site.pp`
+
+Ate agora, a maior parte da configuracao feita no seu `site.pp` foi no contexto de blocos de nos. Uma aplicacao, entretanto, e aplicada ao seu ambiente independentemente de qualquer classificacao definida nos seus blocos de no ou no classificador de nos do PE. Para expressar essa distincao, declaramos a aplicacao com o bloco especial chamado `site`.
+
+```
+  site { 
+    lamp { 'app1':
+      db_user     => 'roland',
+      db_password => '12345',
+      nodes       => {
+        Node['database.learning.puppetlabs.vm']  => Lamp::Mysql['app1'],
+        Node['webserver.learning.puppetlabs.vm'] => Lamp::Webapp['app1'],
+      }
+    }
+  }
+```
+
+A sintaxe para declarar uma aplicacao e similar a de uma classe ou recurso. Os parametros `db_user` e `db_password` sao definidos do mesmo jeito.
+
+O parametro `nodes` e onde a magica da orquestracao acontece. Esse parametro toma um _hash_ de nos pareados com um ou mais componentes. No nosso caso, atribuimos o componente `Lamp::Mysql['app1']` a `database.learning.puppetlabs.vm` e `Lamp::Webapp['app1']` a `webserver.learning.puppetlabs.vm`. Quando o Orquestrador de Aplicacoes roda, ele usa os metaparametros `exports` e `consumes` na sua definicao de aplicacao (em `lamp/manifests/init.pp`, por exemplo) para determinar a ordem correta de execucoes Puppet entre os nos da aplicacao.
+
+Agora que a aplicacao esta declarada no nosso manifesto `site.pp`, podemos utilizar a ferramenta `puppet app` para visualiza-la
+
+`puppet app show`
+
+Voce deve ver um resultado parecido com esse
+
+```
+  Lamp['app1']
+    Lamp::Mysql['app1'] => database.learning.puppetlabs.vm
+        - produces Sql['app1']
+    Lamp::Webapp['app1'] => webserver.learning.puppetlabs.vm
+        - consumes Sql['app1']
+```
 
 ### Tarefa 11
 

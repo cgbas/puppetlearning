@@ -2229,7 +2229,7 @@ Voce pode disparar uma execucao Puppet nos dois nos atraves do console PE. Naveg
 * usuario: admin
 * senha: puppetlabs
 
-Va ate a secao __Nodes > Inventory__ no console. Clique no no `database.learning.puppetlabs.vm` e clique nos botoes `Run Puppet...` e depois em `Run` para iniciar. Voce nao precisa aguardar que a execucao termine, retorne ate a secao __Inventory__ e faca o mesmo para o no `webserver.learning.puppetlabs.vm`. Enquanto essas execucoes acontecem, fique a vontade para continuar o exercicio, vamos conferir o resultado das mesmas quando precisarmos aplicar codigo aos nos novamente.
+Va ate a secao __Nodes > Inventory__ no console. Clique no no `database.learning.puppetlabs.vm` e clique nos botoes `Run Puppet...` e depois em `Run` para iniciar. Voce nao precisa aguardar que a execucao termine, retorne ate a secao __Inventory__ e faca o mesmo para o no `webserver.learning.puppetlabs.vm`. Enquanto essas execucoes acontecem fique a vontade para continuar o exercicio - vamos conferir o resultado das mesmas quando precisarmos aplicar codigo aos nos novamente.
 
 ### Configuracao Master
 
@@ -2243,7 +2243,39 @@ Enquanto o servico de Orquestracao de Aplicacoes roda no seu Puppet mestre, o cl
 
 ### Tarefa 3
 
+Primeiro, crie a estrutura de diretorios onde esse arquivo de configuracao sera mantido.
 
+`mkdir -p ~/.puppetlabs/client-tools`
+
+Agora crie o arquivo de configuracao do Orquestrador
+
+`vim ~/.puppetlabs/client-tools/orchestrator.conf`
+
+Esse arquivo e formatado em JSON. (Lembre-se de que enquanto as virgulas sao boas praticas no seu codigo Puppet, elas sao proibidas no JSON!) Insira as seguintes opcoes:
+
+```
+  {
+    "options": {
+      "url" : "https://learning.puppetlabs.vm:443"
+      "environment" : "production"
+    }
+
+  }
+```
+
+Agora o cliente do Orquestrador Puppet sabe onde esta o mestre, mas o mestre ainda precisa verificar que o usuario que esta executando comandos tem as permissoes corretas. Isso e conseguido pelo sistema de RBAC (_role based access control_) do PE, que podemos configurar pelo console do PE.
+
+Volte ao console do PE e encontre a secao __Access control__ na barra de navegacao esquerda.
+
+Vamos criar um novo usuario `orchestrator` e atribuir permissoes para utilizar o orquestrador de aplicacoes. Clique na secao __Users__ da barra de navegacao. Adicione um novo usuario com o nome completo _Orquestrador_ e login "orquestrador".
+
+Agora que esse usuario existe, precisamos definir a senha dele. Clique no nome do usuario para acertar os detalhes, e clique no link __Generate password reset__. Copie e cole a url fornecida na sua barra de endereco e defina a senha como `puppet`.
+
+Agora vamos dar permissao para esse usuario executar o Orquestrador Puppet. Va ate a secao __User Roles__ e crie uma nova funcao com o nome _Orquestradores_ e descricao _Executar o Orquestrador Puppet_.
+
+Uma vez que essa nova funcao esta criada, clique no nome dela para modifica-la. Selecione seu usuario __Orquestrador__ no menu suspenso e adicione-o a funcao.
+
+Finalmente, va ate a aba __Permission__. Selecione "Puppet Agent" do menu suspenso __Type__ e "Run Puppet on agent nodes" do menu __Permission__. Clique em __Add permission__ e aplique um _commit_ na alteracao.
 
 ### Token do client
 

@@ -2224,7 +2224,12 @@ Como queremos aplicar essas configuracoes tanto no no `webserver.learning.puppet
 
 ### Tarefa 2
 
+Voce pode disparar uma execucao Puppet nos dois nos atraves do console PE. Navegue ate o console atraves de `https://<IP DA VM>` no seu navegador. Utilize as seguintes credenciais:
 
+* usuario: admin
+* senha: puppetlabs
+
+Va ate a secao __Nodes > Inventory__ no console. Clique no no `database.learning.puppetlabs.vm` e clique nos botoes `Run Puppet...` e depois em `Run` para iniciar. Voce nao precisa aguardar que a execucao termine, retorne ate a secao __Inventory__ e faca o mesmo para o no `webserver.learning.puppetlabs.vm`. Enquanto essas execucoes acontecem, fique a vontade para continuar o exercicio, vamos conferir o resultado das mesmas quando precisarmos aplicar codigo aos nos novamente.
 
 ### Configuracao Master
 

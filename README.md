@@ -16,7 +16,7 @@ Para buscar um módulo:
 ```
     puppet module search graphite
     puppet module install dwerder-graphite -v 5.16.1
-    	--module_repository=https://forge.puppet.com
+      --module_repository=https://forge.puppet.com
 ```
 
 * Para o puppet, classe e um bloco que serve para agrupar recursos
@@ -109,7 +109,7 @@ __Dica:__ executar o comando acima em uma sessão de ssh propria, no webshell o 
 
 ## Puppet Apply
 
-A ferramenta `puppet apply` pode ser utilizada com a _flag_ (bandeira) -e (de --execute) para executar código puppet. Dessa maneira a execucao acontece apenas uma vez, sendo util para testes e exploracao.
+A ferramenta `puppet apply` pode ser utilizada com a _flag_ (bandeira) -e (de --execute) para executar código puppet. Dessa maneira a execução acontece apenas uma vez, sendo util para testes e exploracao.
 
 ## Tarefa 3
 
@@ -223,7 +223,7 @@ Nesse manifesto, vamos _declarar_ a classe com a palavra chave __include__:
 
 `include cowsayings::cowsay`
 
-__Dica:__ a _flag_ `--noop` faz uma dry run (execucao enxuta) do agente, compilando o catálogo e notificando as mudanças que seriam aplicadas sem realmente aplicar nada ao sistema.
+__Dica:__ a _flag_ `--noop` faz uma dry run (execução enxuta) do agente, compilando o catálogo e notificando as mudanças que seriam aplicadas sem realmente aplicar nada ao sistema.
 
 Para testar, usamos então:
 
@@ -243,7 +243,7 @@ __Nota:__ em uma Instalação offline ou com um firewall você pode necessitar i
 
 ### Tarefa 3
 
-Caso a execucao com `--noop` seja bem sucedida, aplique o manifesto removendo a _flag_ `--noop`:
+Caso a execução com `--noop` seja bem sucedida, aplique o manifesto removendo a _flag_ `--noop`:
 
 ```
     puppet apply cowsayings/examples/cowsay.pp 
@@ -252,7 +252,7 @@ Caso a execucao com `--noop` seja bem sucedida, aplique o manifesto removendo a 
     Notice: Applied catalog in 2.25 seconds
 ```
 
-Teste de execucao:
+Teste de execução:
 
 ```
 # cowsay Can I Haz Soy Milk?
@@ -706,9 +706,9 @@ Como queremos que nossas mudanças sejam aplicadas apenas a VM de aprendizagem, 
 
 ### Tarefa 3
 
-Disparar uma execucao do Puppet via ferramenta `puppet agent` e interessante para aprendizagem e testes, no entanto na producao você deve preferir que o Puppet execute conforme agendamento, a cada 30 minutos, por padrão. Como você ira executar o Puppet logo depois de alterar o manifesto `site.pp` talvez o cache não tenha sido atualizado. Caso as mudanças não estejam refletidas apos uma execucao via `puppet agent -t`, tente executar o comando mais uma vez.
+Disparar uma execução do Puppet via ferramenta `puppet agent` e interessante para aprendizagem e testes, no entanto na producao você deve preferir que o Puppet execute conforme agendamento, a cada 30 minutos, por padrão. Como você ira executar o Puppet logo depois de alterar o manifesto `site.pp` talvez o cache não tenha sido atualizado. Caso as mudanças não estejam refletidas apos uma execução via `puppet agent -t`, tente executar o comando mais uma vez.
 
-Teste o manifesto `site.pp` via  `puppet parser validate` e dispare uma execucao do Puppet via:
+Teste o manifesto `site.pp` via  `puppet parser validate` e dispare uma execução do Puppet via:
 
 `puppet agent -t`
 
@@ -778,7 +778,7 @@ A declaração deve ficar assim:
 
 ### Tarefa 5
 
-Assim que efetuar a alteracao no manifesto `site.pp` utilize a ferramenta `puppet parser` para validar que esta tudo Ok e então dispare uma execucao via ferramenta `puppet agent`.
+Assim que efetuar a alteracao no manifesto `site.pp` utilize a ferramenta `puppet parser` para validar que esta tudo Ok e então dispare uma execução via ferramenta `puppet agent`.
 
 
 Exemplo do Puppet verificando alteracao no ntp.conf e alterando-o:
@@ -856,7 +856,7 @@ Nao apenas opcoes padrão como `root_password`, a classe aceita `override_option
 
 ### Tarefa 3
 
-Utilize a ferramenta `puppet parser validade` para verificar sua sintaxe, então dispare uma execucao:
+Utilize a ferramenta `puppet parser validade` para verificar sua sintaxe, então dispare uma execução:
 
 ```
   # puppet agent -t
@@ -963,7 +963,7 @@ Valide seu `site.pp`
 
 `puppet parser validate /etc/puppetlabs/code/environments/production/manifests/site.pp`
 
-Dispare uma execucao do puppet apos validar:
+Dispare uma execução do puppet apos validar:
 
 ```
   # puppet agent -t
@@ -1045,7 +1045,7 @@ Utilize a ferramenta `puppet parser validate` no manifesto `site.pp` para verifi
 
 `puppet parser validate /etc/puppetlabs/code/environments/production/modules/manifests/site.pp`
 
-Quando o código estiver bonito, dispare uma execucao.
+Quando o código estiver bonito, dispare uma execução.
 
 ```
   # puppet agent -t
@@ -1170,7 +1170,7 @@ Aplique o teste recém criado com a _flag_ `--noop`
   Notice: Applied catalog in 0.67 seconds
 ```
 
-Se sua execucao enxuta parecer Ok, execute o `puppet apply` sem a _flag_. De uma olhada em `http://<IP DA VM>/hello.html` e `http://<IP DA VM>/bonjour.html` para conferir suas páginas novas.
+Se sua execução enxuta parecer Ok, execute o `puppet apply` sem a _flag_. De uma olhada em `http://<IP DA VM>/hello.html` e `http://<IP DA VM>/bonjour.html` para conferir suas páginas novas.
 
 ## parâmetros de Classe
 
@@ -1258,7 +1258,7 @@ Mas mesmo o os provedores _built-in_ do Puppet não sendo capazes de garantir a 
 
 ## Fatos
 
-você já se deparou com a ferramenta `facter` quando a gente te pediu pra executar `facter ipaddress` na secao de Instalação do guia. Mas apesar de ser  bacana poder executar o facter pela linha de comando, ele se torna valioso mesmo no back end, tornando informacao sobre um sistema disponível para utilizacao como variaveis em seus manifestos.
+você já se deparou com a ferramenta `facter` quando a gente te pediu pra executar `facter ipaddress` na secao de Instalação do guia. Mas apesar de ser  bacana poder executar o facter pela linha de comando, ele se torna valioso mesmo no back end, tornando informação sobre um sistema disponível para utilizacao como variaveis em seus manifestos.
 
 __N.T.__realmente, isso e pra aplaudir de pe mesmo. quando eu vi do que o `orawls` era capaz, me emocionei.
 
@@ -1777,7 +1777,7 @@ Se você se interessar, você pode dar uma olhada no arquivo `_.conf` para ver c
 
 Vamos la então dar ao nosso recurso `web_user::user` um diretório `public_html` e uma página `index.html` padrão. Vamos precisar adicionar um diretório e um arquivo. Porque os parâmetros de nosso diretório `public_html` serao identicos aos do diretório home, podemos utilizar um vetor para declarar ambos de uma vez. Perceba que o _autorequires_ do Puppet ira cuidar da ordem nesse caso, garantindo que o diretório home seja criado antes do `public_html` que o contém.
 
-Nos vamos definir o parametro `replace` do arquivo `index.html` para `false`. Isso significa que o Puppet vai criar esse arquivo caso não exista, mas não ira substituir um arquivo já existente. Isso permite que criemos uma página padrão para o usuário, mas permite que o usuário substitua o conteúdo padrão sem que o Puppet a sobrescreva em uma proxima execucao.
+Nos vamos definir o parametro `replace` do arquivo `index.html` para `false`. Isso significa que o Puppet vai criar esse arquivo caso não exista, mas não ira substituir um arquivo já existente. Isso permite que criemos uma página padrão para o usuário, mas permite que o usuário substitua o conteúdo padrão sem que o Puppet a sobrescreva em uma proxima execução.
 
 Finalmente, podemos utilizar a interpolacao de strings para customizar o conteúdo padrão da página inicial do usuário. (O Puppet tambem suporta templates de estilo `.erb` e `.epp`, que nos dariam uma maneira ainda mais potente de customizar uma página. Como ainda não os vimos, vamos nos virar com interpolacao de variaveis!)
 
@@ -1815,7 +1815,7 @@ E adicione código para configurar o diretório `public_html` de seu usuário e 
 
 ### Tarefa 6
 
-Assim que fizer as alteracoes, faca uma execucao `--noop` e então aplique seu manifesto de teste:
+Assim que fizer as alteracoes, faca uma execução `--noop` e então aplique seu manifesto de teste:
 
 ```
   # puppet apply web_user/examples/user.pp --noop
@@ -1834,11 +1834,11 @@ Assim que fizer as alteracoes, faca uma execucao `--noop` e então aplique seu m
   Notice: Applied catalog in 0.71 seconds
 ```
 
-Uma vez que a execucao do Puppet concluir, confira a nova página de usuário em `http://<IP DA VM>/~shelob/index.html`
+Uma vez que a execução do Puppet concluir, confira a nova página de usuário em `http://<IP DA VM>/~shelob/index.html`
 
 ### parâmetros
 
-Do jeito que esta, seu _tipo de recurso definido_ não te permite uma maneira de especificar nada alem do título. Utilizando parâmetros, a gente pode passar um pouco mais de informacao aos recursos contidos e customiza-los a nossa maneira. Vamos adicionar alguns parâmetros que nos permitirao definir uma senha para o usuário e algum conteúdo customizado para a página padrão. 
+Do jeito que esta, seu _tipo de recurso definido_ não te permite uma maneira de especificar nada alem do título. Utilizando parâmetros, a gente pode passar um pouco mais de informação aos recursos contidos e customiza-los a nossa maneira. Vamos adicionar alguns parâmetros que nos permitirao definir uma senha para o usuário e algum conteúdo customizado para a página padrão. 
 
 ### Tarefa 7
 
@@ -1905,19 +1905,19 @@ Perceba que estamos utilizando a funcao `pw_hash` para gerar um hash SHA-512 da 
 
 ### Tarefa 9
 
-Assim que fizer as alteracoes, faca uma execucao `--noop` e então aplique seu manifesto de teste:
+Assim que fizer as alteracoes, faca uma execução `--noop` e então aplique seu manifesto de teste:
 
 `puppet apply web_user/examples/user.pp`
 
-Uma vez que a execucao do Puppet concluir, confira sua nova página de usuário em `http://<IP DA VM>/~frodo/index.html`
+Uma vez que a execução do Puppet concluir, confira sua nova página de usuário em `http://<IP DA VM>/~frodo/index.html`
 
 # Instalação de agente de no
 
 Ate então, você tem gerenciado um no, a VM de aprendizagem, que esta rodando o servidor master do Puppet. Em um ambiente real, no entanto, a maioria dos seus nos vao rodar apenas o agente do Puppet.
 
-Nessa quest, utilizamos uma ferramenta chamada `docker` para simular multiplos nos na VM de aprendizagem. Com esses nos novos, você pode aprender como instalar o agente do Puppet, assinar o certificado dos seus nos novos para permitir que ingressem na sua infraestrutura Puppetizada, e finalmente utilizar o manifesto `site.pp` para aplicar um pouco de código Puppet nesses nos.
+Nessa quest, utilizamos uma ferramenta chamada `docker` para simular múltiplos nos na VM de aprendizagem. Com esses nos novos, você pode aprender como instalar o agente do Puppet, assinar o certificado dos seus nos novos para permitir que ingressem na sua infraestrutura Puppetizada, e finalmente utilizar o manifesto `site.pp` para aplicar um pouco de código Puppet nesses nos.
 
-__Por favor, tome nota__: Essa quest e a proxima "Orquestrador de Aplicacoes" requerem conexao a internet, se você esta executando a VM offline, por favor  verifique as instrucoes para que ela acesse a internet. __Por enquanto não ha uma maneira de executar essas quests offline e a Puppetlabs esta trabalhando nisso__.
+__Por favor, tome nota__: Essa quest e a proxima "Orquestrador de aplicações" requerem conexao a internet, se você esta executando a VM offline, por favor  verifique as instrucoes para que ela acesse a internet. __Por enquanto não ha uma maneira de executar essas quests offline e a Puppetlabs esta trabalhando nisso__.
 
 ## Consiga alguns nos
 
@@ -1925,13 +1925,13 @@ Ate então, estavamos utilizando 2 comandos para aplicar nosso código Puppet: `
 
 `puppet apply` compila o catálogo baseado num manifesto especificado e aplica tal catálogo localmente. Qualquer node com o agente Puppet instalado pode aplicar um manifesto. você pode acabar utilizando bastante o `puppet apply` caso você queira utilizar o agente do Puppet sem envolver um Puppet master. Por exemplo, caso você esteja fazendo alguns testes locais ou experimentando com uma infraestrutura sem um servidor mestre.
 
-`puppet agent -t` dispara uma execucao do Puppet. Essa execucao e uma conversa entre o no agente e o Puppet master. Primeiro, o agente envia uma colecao de fatos para o mestre. O mestre pega esses fatos e utiliza-os para saber qual código precisa ser aplicado no no. você viu duas maneiras dessa classificacao ser configurada: no manifesto `site.pp` ou no classificador de nos do Puppet Enterprise. O mestre então avalia o código Puppet para compilar um catálogo que descreva exatamente como os recursos no no devem estar configurados. O mestre envia esse catálogo para o agente no no, que o aplica. Finalmente, o agente envia um relatorio da execucao Puppet de volta ao mestre. Apesar de termos desabilitado execucoes automaticas na VM, elas são  agendadas para ocorrer a cada meia hora.
+`puppet agent -t` dispara uma execução do Puppet. Essa execução e uma conversa entre o no agente e o Puppet master. Primeiro, o agente envia uma colecao de fatos para o mestre. O mestre pega esses fatos e utiliza-os para saber qual código precisa ser aplicado no no. você viu duas maneiras dessa classificacao ser configurada: no manifesto `site.pp` ou no classificador de nos do Puppet Enterprise. O mestre então avalia o código Puppet para compilar um catálogo que descreva exatamente como os recursos no no devem estar configurados. O mestre envia esse catálogo para o agente no no, que o aplica. Finalmente, o agente envia um relatorio da execução Puppet de volta ao mestre. Apesar de termos desabilitado execucoes automaticas na VM, elas são  agendadas para ocorrer a cada meia hora.
 
 Apesar de que você só vai precisar de um no para escrever e aplicar código Puppet, ter a imagem completa de como o Puppet mestre e o no se comunicam vai ser bem mais facil se você tem mais de um no para trabalhar.
 
 ### Conteineres
 
-Nos criamos um módulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker não e um componente do Puppet__, trata-se de uma ferramenta open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com multiplos nos, mas tenha em mente que essa não e a maneira recomendada de montar sua infraestrutura Puppet!
+Nos criamos um módulo `multi_node` que ira configurar um par de conteineres docker pra agirem como nos adicionais de agente na sua infraestrutura. __O docker não e um componente do Puppet__, trata-se de uma ferramenta open-source que estamos utilizando para construir esse ambiente de aprendizado multi-no. Executar um agente Puppet em um conteiner Docker nos da uma maneira conveniente de observar como o Puppet trabalha com múltiplos nos, mas tenha em mente que essa não e a maneira recomendada de montar sua infraestrutura Puppet!
 
 ### Tarefa 1
 
@@ -1960,15 +1960,15 @@ Insira `include multi_node` na declaração de no `learning.puppetlabs.vm`
   }
 ```
 
-E importante que você não tenha colocado isso na sua declaração de no `default`. Se você fez isso o Puppet vai tentar criar conteineres Docker nos seus conteineres Docker toda vez que você fizesse uma execucao Puppet.
+E importante que você não tenha colocado isso na sua declaração de no `default`. Se você fez isso o Puppet vai tentar criar conteineres Docker nos seus conteineres Docker toda vez que você fizesse uma execução Puppet.
 
 ### Tarefa 2
 
-Agora dispare uma execucao do `puppet agent -t`. Isso pode levar um tempo.
+Agora dispare uma execução do `puppet agent -t`. Isso pode levar um tempo.
 
 `puppet agent -t`
 
-Assim que essa execucao terminar, você pode executar `docker ps` para ver seus dois nos novos. você deve ver um chamado `database` e outro chamado `webserver`.
+Assim que essa execução terminar, você pode executar `docker ps` para ver seus dois nos novos. você deve ver um chamado `database` e outro chamado `webserver`.
 
 ```
   CONTAINER ID        IMAGE                      COMMAND             CREATED             STATUS              PORTS                     NAMES
@@ -1993,7 +1993,7 @@ Navegue ate o console do Puppet Enterprise em `https://<IP DA VM>`. As credencia
 
 No caminho __Nodes > Classification__, clique em __PE Infrastructure__ e selecione o grupo de nos __PE Master__. Na aba __Classes__, insira `pe_repo::platform::ubuntu_1404_amd64`. Clique no botao __Add class__ e confirme a mudanca clicando em __Commit 1 change__.
 
-Dispare uma execucao no Puppet mestre.
+Dispare uma execução no Puppet mestre.
 
 `puppet agent -t`
 
@@ -2065,13 +2065,13 @@ e
 
 `ls /etc/puppetlabs/code/environment/production/modules`
 
-você pode ver que não existem módulos nem um manifesto `site.pp`. A menos que você esteja fazendo desenvolvimento local ou teste de um módulo, todo o código Puppet da sua infraestrutura e mantido no no mestre do Puppet, não em cada agente individual. Quando uma execucao Puppet e disparada - seja agendada ou manualmente com o comando `puppet agent -`, o Puppet mestre compila seu código Puppet em um catálogo e envia de volta para o agente aplica-lo.
+você pode ver que não existem módulos nem um manifesto `site.pp`. A menos que você esteja fazendo desenvolvimento local ou teste de um módulo, todo o código Puppet da sua infraestrutura e mantido no no mestre do Puppet, não em cada agente individual. Quando uma execução Puppet e disparada - seja agendada ou manualmente com o comando `puppet agent -`, o Puppet mestre compila seu código Puppet em um catálogo e envia de volta para o agente aplica-lo.
 
-Vamos testar. Dispare uma execucao Puppet no seu no de banco de dados:
+Vamos testar. Dispare uma execução Puppet no seu no de banco de dados:
 
 `puppet agent -t`
 
-você verá que ao inves de completar a execucao Puppet, o Puppet saiu com a seguinte mensagem:
+você verá que ao inves de completar a execução Puppet, o Puppet saiu com a seguinte mensagem:
 
 `Exiting; no certificate found and waitforcert is disabled`
 
@@ -2136,7 +2136,7 @@ Agora conecte novamente no nosso no de banco de dados:
 
 `docker exec -it database bash`
 
-E tente outra execucao Puppet:
+E tente outra execução Puppet:
 
 `puppet agent -t`
 
@@ -2152,47 +2152,47 @@ E tente outra execucao Puppet:
   Notice: Applied catalog in 1.44 seconds
 ```
 
-Com seu certificado assinado, o agente no seu no foi capaz de requisitar corretamente um catálogo ao mestre e aplica-lo para concluir a execucao Puppet.
+Com seu certificado assinado, o agente no seu no foi capaz de requisitar corretamente um catálogo ao mestre e aplica-lo para concluir a execução Puppet.
 
-# Orquestrador de aplicacao
+# Orquestrador de aplicação
 
-Se você gerencia aplicacoes compostas de multiplos serviços distribuidos atraves de multiplos nos, você tambem sabe que a orquestracao de multiplos nos pode se apresentar alguns desafios especiais. Sua aplicacao tende a necessitar compartilhar informacao entre os nos involvidos e mudanças de configuração precisam ser feitas na ordem correta para garantir que seus componentes de aplicacao não fiquem fora de sincronia.
+Se você gerencia aplicações compostas de múltiplos serviços distribuidos atraves de múltiplos nos, você tambem sabe que a orquestracao de múltiplos nos pode se apresentar alguns desafios especiais. Sua aplicação tende a necessitar compartilhar informação entre os nos involvidos e mudanças de configuração precisam ser feitas na ordem correta para garantir que seus componentes de aplicação não fiquem fora de sincronia.
 
-O Orquestrador de Aplicacao do Puppet estende o poderoso modelo declarativo do nivel de um unico no para o de uma aplicacao complexa. Descreva sua aplicacao em código Puppet, e deixe o Orquestrador de Aplicacao cuidar da implementacao.
+O Orquestrador de aplicação do Puppet estende o poderoso modelo declarativo do nivel de um unico no para o de uma aplicação complexa. Descreva sua aplicação em código Puppet, e deixe o Orquestrador de aplicação cuidar da implementacao.
 
-__Atencao__: Antes de iniciar, você deve saber que essa quest vai ser um significantemente mais complexa das outras que vimos antes, tanto em termos de conceitos envolvidos, variedade de ferramentas e configuracoes com que você vai trabalhar. Entenda que o Orquestrador de Aplicacao e uma funcionalidade nova, e apesar de já ser uma ferramenta poderosa, ela continuara a ser estendida, refinada e integrada com o resto do ecossistema Puppet. Enquanto isso, seja paciente com os problemas que encontrar. Pode ser util pra ti se referir a documentacao do Orquestrador de Aplicacoes para suplementar a informacao dessa quest, aqui: https://docs.puppet.com/pe/latest/app_orchestration_overview.html
+__Atencao__: Antes de iniciar, você deve saber que essa quest vai ser um significantemente mais complexa das outras que vimos antes, tanto em termos de conceitos envolvidos, variedade de ferramentas e configuracoes com que você vai trabalhar. Entenda que o Orquestrador de aplicação e uma funcionalidade nova, e apesar de já ser uma ferramenta poderosa, ela continuara a ser estendida, refinada e integrada com o resto do ecossistema Puppet. Enquanto isso, seja paciente com os problemas que encontrar. Pode ser util pra ti se referir a documentacao do Orquestrador de aplicações para suplementar a informação dessa quest, aqui: https://docs.puppet.com/pe/latest/app_orchestration_overview.html
 
-Saiba tambem que a Instalação do `multi_node` para a quest anterior e um pre-requisito para essa. Como mencionado nela, a tecnologia _Docker_ que estamos utilizando para disponibilizar multiplos nos em uma unica VM vem com um certo custo sobre a performance e a estabilidade. Se você encontrar com qualquer problema, por favor contate learningvm@puppetlabs.com.
-
-
-__NOTA DO CHRIS__: Caso você esteja acompanhando esse guia somente pela minha adaptacao, tente ler essa quest no material oficial. Como havia como visualizar os grafos exportando na outra quest, as imagens do guia eram possiveis de serem emuladas. Essa quest tem alguns desenhos explicativos da aplicacao com que vamos trabalhar aqui.
+Saiba tambem que a Instalação do `multi_node` para a quest anterior e um pre-requisito para essa. Como mencionado nela, a tecnologia _Docker_ que estamos utilizando para disponibilizar múltiplos nos em uma unica VM vem com um certo custo sobre a performance e a estabilidade. Se você encontrar com qualquer problema, por favor contate learningvm@puppetlabs.com.
 
 
-# O Orquestrador de aplicacao
+__NOTA DO CHRIS__: Caso você esteja acompanhando esse guia somente pela minha adaptacao, tente ler essa quest no material oficial. Como havia como visualizar os grafos exportando na outra quest, as imagens do guia eram possiveis de serem emuladas. Essa quest tem alguns desenhos explicativos da aplicação com que vamos trabalhar aqui.
 
-Para entender como o Orquestrador de aplicacoes opera, vamos imaginar uma aplicacao web de duas camadas simples, com um balanceador de carga.
+
+# O Orquestrador de aplicação
+
+Para entender como o Orquestrador de aplicações opera, vamos imaginar uma aplicação web de duas camadas simples, com um balanceador de carga.
 
 __CORRE LA VER A IMAGEM, MO FI!__
 
 Temos um unico balanceador de carga, que a distribui entre três servidores web, que por sua vez conectam ao mesmo banco de dados.
 
-Cada um dos nos envolvidos nessa aplicacao vai ter algum tipo de configuração para coisas que não envolvem diretamente na aplicacao. Itens como `sshd` e `ntp` normalmente são  comuns a varios nos na sua infraestrutura e o Puppet não vai requisitar informacao especifica sobre a aplicacao em que o no esteja envolvido para configura-los corretamente. Alem dessas classes e recursos que são  independentes da aplicacao, cada no nesse exemplo contém algum componente da aplicacao: o servidor web, o banco de dados e o balanceador de carga alem de qualquer outro recurso necessario para suportar e configurar o conteúdo e servidos especificos da aplicacao.
+Cada um dos nos envolvidos nessa aplicação vai ter algum tipo de configuração para coisas que não envolvem diretamente na aplicação. Itens como `sshd` e `ntp` normalmente são  comuns a varios nos na sua infraestrutura e o Puppet não vai requisitar informação especifica sobre a aplicação em que o no esteja envolvido para configura-los corretamente. Alem dessas classes e recursos que são  independentes da aplicação, cada no nesse exemplo contém algum componente da aplicação: o servidor web, o banco de dados e o balanceador de carga alem de qualquer outro recurso necessario para suportar e configurar o conteúdo e servidos especificos da aplicação.
 
-Essa configuração especifica da aplicacao e chamada componente. No nosso exemplo nos definimos componentes para o banco de dados, o servidor web e o balanceador de carga. Cada um contém todas as classes e recursos necessarios para um no cumprir seu papel na aplicacao. Um componente e, geralmente, um _tipo de recurso definido_, apesar de que ele tambem pode ser uma classe ou um recurso unico. Um _tipo de recurso definido_ e flexivel o bastante para incluir varios recursos e subclasses, e diferente de uma classe ele pode ser declarado multiplas vezes dentro do mesmo escopo, permitindo que seu ambiente tenha varias instancias de, assim por dizer, um componente de servidor web.
-
-__CORRE LA VER A IMAGEM, MO FI!__
-
-Com todos os componentes definidos, a proxima coisa a definir são  os relacionamentos entre eles como uma aplicacao. Se sua aplicacao esta empacotada como um módulo, a definição dessa aplicacao geralmente vai no manifesto `init.pp`.
+Essa configuração especifica da aplicação e chamada componente. No nosso exemplo nos definimos componentes para o banco de dados, o servidor web e o balanceador de carga. Cada um contém todas as classes e recursos necessarios para um no cumprir seu papel na aplicação. Um componente e, geralmente, um _tipo de recurso definido_, apesar de que ele tambem pode ser uma classe ou um recurso unico. Um _tipo de recurso definido_ e flexivel o bastante para incluir varios recursos e subclasses, e diferente de uma classe ele pode ser declarado multiplas vezes dentro do mesmo escopo, permitindo que seu ambiente tenha varias instancias de, assim por dizer, um componente de servidor web.
 
 __CORRE LA VER A IMAGEM, MO FI!__
 
-A definição da aplicacao diz pra esses componentes como eles irao comunicar-se entre si e permite que o Orquestrador de Aplicacao a ordem das execucoes Puppet necessarias para implementar corretamente a aplicacao nos nos da sua infraestrutura.
+Com todos os componentes definidos, a proxima coisa a definir são  os relacionamentos entre eles como uma aplicação. Se sua aplicação esta empacotada como um módulo, a definição dessa aplicação geralmente vai no manifesto `init.pp`.
 
-Esse ordenamento de execucoes Puppet e um papel importante em como as ferramentas no orquestrador de aplicacoes trabalham. E requer um pouco mais de control direto sobre quando o agente do Puppet executa nos nos envolvidos na sua aplicacao .Se as execucoes Puppet ocorreram no intervalo padrão agendado de meia hora, não teriamos nenhuma maneira de garantir que os componentes de nossa aplicacao fossem configurados na ordem correta. Se, por exemplo, uma execucao Puppet em nosso servidor web disparasse antes da execucao no servidor de BD, uma mudanca no nome do BD quebraria nossa aplicacao. Nosso servidor web ainda tentaria conectar ao BD de uma configuração anterior, resultando em um erro quando aquela base estava indisponível.
+__CORRE LA VER A IMAGEM, MO FI!__
+
+A definição da aplicação diz pra esses componentes como eles irao comunicar-se entre si e permite que o Orquestrador de aplicação a ordem das execucoes Puppet necessarias para implementar corretamente a aplicação nos nos da sua infraestrutura.
+
+Esse ordenamento de execucoes Puppet e um papel importante em como as ferramentas no orquestrador de aplicações trabalham. E requer um pouco mais de control direto sobre quando o agente do Puppet executa nos nos envolvidos na sua aplicação .Se as execucoes Puppet ocorreram no intervalo padrão agendado de meia hora, não teriamos nenhuma maneira de garantir que os componentes de nossa aplicação fossem configurados na ordem correta. Se, por exemplo, uma execução Puppet em nosso servidor web disparasse antes da execução no servidor de BD, uma mudanca no nome do BD quebraria nossa aplicação. Nosso servidor web ainda tentaria conectar ao BD de uma configuração anterior, resultando em um erro quando aquela base estava indisponível.
   
 ### configuração de no
 
-Pra evitar esse tipo de mudanca descoordenada, você vai precisar configurar os nos para que utilizem uma versao em cache do catálogo quando o Puppet executar. Isso permite que o Puppet execute conforme agendado para evitar um desvio de configuração, mas só ira fazer mudanças no catálogo somente quando você reimplementar intencionalmente sua aplicacao. Tambem dessa maneira você deve desabilitar os plugins para que qualquer funcionalidade disponibilizada por plugins (ex.: funcoes ou provedores) não causem mudances descoordenadas aos nos da sua aplicacao.
+Pra evitar esse tipo de mudanca descoordenada, você vai precisar configurar os nos para que utilizem uma versao em cache do catálogo quando o Puppet executar. Isso permite que o Puppet execute conforme agendado para evitar um desvio de configuração, mas só ira fazer mudanças no catálogo somente quando você reimplementar intencionalmente sua aplicação. Tambem dessa maneira você deve desabilitar os plugins para que qualquer funcionalidade disponibilizada por plugins (ex.: funcoes ou provedores) não causem mudances descoordenadas aos nos da sua aplicação.
 
 ### Tarefa 1
 
@@ -2224,22 +2224,22 @@ Como queremos aplicar essas configuracoes tanto no no `webserver.learning.puppet
 
 ### Tarefa 2
 
-você pode disparar uma execucao Puppet nos dois nos atraves do console PE. Navegue ate o console atraves de `https://<IP DA VM>` no seu navegador. Utilize as seguintes credenciais:
+você pode disparar uma execução Puppet nos dois nos atraves do console PE. Navegue ate o console atraves de `https://<IP DA VM>` no seu navegador. Utilize as seguintes credenciais:
 
 * usuário: admin
 * senha: puppetlabs
 
-Va ate a secao __Nodes > Inventory__ no console. Clique no no `database.learning.puppetlabs.vm` e clique nos botoes `Run Puppet...` e depois em `Run` para iniciar. você não precisa aguardar que a execucao termine, retorne ate a secao __Inventory__ e faca o mesmo para o no `webserver.learning.puppetlabs.vm`. Enquanto essas execucoes acontecem fique a vontade para continuar o exercicio - vamos conferir o resultado das mesmas quando precisarmos aplicar código aos nos novamente.
+Va ate a secao __Nodes > Inventory__ no console. Clique no no `database.learning.puppetlabs.vm` e clique nos botoes `Run Puppet...` e depois em `Run` para iniciar. você não precisa aguardar que a execução termine, retorne ate a secao __Inventory__ e faca o mesmo para o no `webserver.learning.puppetlabs.vm`. Enquanto essas execucoes acontecem fique a vontade para continuar o exercicio - vamos conferir o resultado das mesmas quando precisarmos aplicar código aos nos novamente.
 
 ### configuração Master
 
-Antes que a gente saia escrevendo e implementando uma aplicacao, no entanto, tem alguns passos ate que tenhamos o Orquestrador de Aplicacoes do Puppet (_Puppet Application Orchestrator_) configurado corretamente.
+Antes que a gente saia escrevendo e implementando uma aplicação, no entanto, tem alguns passos ate que tenhamos o Orquestrador de aplicações do Puppet (_Puppet Application Orchestrator_) configurado corretamente.
 
-A ferramenta _Puppet Orchestrator_ que vamos utilizar nessa quest e uma interface de linha de comando que interage com o serviço de Orquestracao de Aplicacao no Puppet mestre. Nos habilitamos esse serviço por padrão na VM de aprendizagem, e ele sera habilitado por padrão em versoes futuras do PE. (Caso você queira habilitar no seu proprio Puppet mestre, as intrucoes estão  em: https://docs.puppet.com/pe/latest/orchestrator_install.html#enable-the-application-orchestration-service-and-orchestrator-client)
+A ferramenta _Puppet Orchestrator_ que vamos utilizar nessa quest e uma interface de linha de comando que interage com o serviço de Orquestracao de aplicação no Puppet mestre. Nos habilitamos esse serviço por padrão na VM de aprendizagem, e ele sera habilitado por padrão em versoes futuras do PE. (Caso você queira habilitar no seu proprio Puppet mestre, as intrucoes estão  em: https://docs.puppet.com/pe/latest/orchestrator_install.html#enable-the-application-orchestration-service-and-orchestrator-client)
 
 ### configuração do client e permissões
 
-Enquanto o serviço de Orquestracao de Aplicacoes roda no seu Puppet mestre, o cliente pode rodar em qualquer sistema com conexao de rede para o mestre. Isso significa que você pode gerenciar sua infraestrutura direto da sua maquina. Como não podemos assumir que o cliente ira rodar em um sistema com a configuração do Puppet apontando a URL e ambiente corretos, vamos ter que defini-los explicitamente. Apesar de que esses itens pudessem ser especificadas como _flags_ da linha de comando, criar um arquivo de configuração evita que você tenha que digita-las toda vez.
+Enquanto o serviço de Orquestracao de aplicações roda no seu Puppet mestre, o cliente pode rodar em qualquer sistema com conexao de rede para o mestre. Isso significa que você pode gerenciar sua infraestrutura direto da sua maquina. Como não podemos assumir que o cliente ira rodar em um sistema com a configuração do Puppet apontando a URL e ambiente corretos, vamos ter que defini-los explicitamente. Apesar de que esses itens pudessem ser especificadas como _flags_ da linha de comando, criar um arquivo de configuração evita que você tenha que digita-las toda vez.
 
 ### Tarefa 3
 
@@ -2267,7 +2267,7 @@ Agora o cliente do Orquestrador Puppet sabe onde esta o mestre, mas o mestre ain
 
 Volte ao console do PE e encontre a secao __Access control__ na barra de navegacao esquerda.
 
-Vamos criar um novo usuário `orchestrator` e atribuir permissões para utilizar o orquestrador de aplicacoes. Clique na secao __Users__ da barra de navegacao. Adicione um novo usuário com o nome completo _Orquestrador_ e login "orquestrador".
+Vamos criar um novo usuário `orchestrator` e atribuir permissões para utilizar o orquestrador de aplicações. Clique na secao __Users__ da barra de navegacao. Adicione um novo usuário com o nome completo _Orquestrador_ e login "orquestrador".
 
 Agora que esse usuário existe, precisamos definir a senha dele. Clique no nome do usuário para acertar os detalhes, e clique no link __Generate password reset__. Copie e cole a url fornecida na sua barra de endereco e defina a senha como `puppet`.
 
@@ -2291,17 +2291,17 @@ Quando solicitado, forneca o usuário e senha que você definiu no sistema RBAC 
 
 (Se receber uma mensagem de erro, confira se a URL esta correta)
 
-## Aplicacoes Puppetizadas
+## aplicações Puppetizadas
 
-Agora que você já instalou seus nos master e agent para o orquestrador de aplicacoes alem de configurar seu cliente, você esta pronto para definir sua aplicacao.
+Agora que você já instalou seus nos master e agent para o orquestrador de aplicações alem de configurar seu cliente, você esta pronto para definir sua aplicação.
 
-Assim como o código Puppet que você utilizou nas ultimas quests, uma definição de aplicacao e geralmente empacotada em um módulo Puppet. A aplicacao que você vai criar sera baseada no _stack pattern_ LAMP (Linux, Apache, MySQL e PHP).
+Assim como o código Puppet que você utilizou nas ultimas quests, uma definição de aplicação e geralmente empacotada em um módulo Puppet. A aplicação que você vai criar sera baseada no _stack pattern_ LAMP (Linux, Apache, MySQL e PHP).
 
-Antes que a gente se jogue no código, vamos revisar por um momento os planos pra essa aplicacao. O que a gente faz aqui vai ser um pouco mais simples que a aplicacao com balanceamento de carga que discutimos acima. A gente vai te poupar um pouco da escrita e ainda apresentar as principais caracteristicas do orquestrador de aplicacoes.
+Antes que a gente se jogue no código, vamos revisar por um momento os planos pra essa aplicação. O que a gente faz aqui vai ser um pouco mais simples que a aplicação com balanceamento de carga que discutimos acima. A gente vai te poupar um pouco da escrita e ainda apresentar as principais caracteristicas do orquestrador de aplicações.
 
 __CORRE LA VER A IMAGEM, MO FI!__
 
-Nos vamos definir dois componentes que serao aplicados a dois nos separados. Um vai definir a configuração do banco MySQL e sera aplicado ao no `database.learning.puppetlabs.vm`. O segundo vai definir a configuração pra um servidor web Apache e uma aplicacao PHP e sera aplicado ao no `webserver.learning.puppetlabs.vm`.
+Nos vamos definir dois componentes que serao aplicados a dois nos separados. Um vai definir a configuração do banco MySQL e sera aplicado ao no `database.learning.puppetlabs.vm`. O segundo vai definir a configuração pra um servidor web Apache e uma aplicação PHP e sera aplicado ao no `webserver.learning.puppetlabs.vm`.
 
 Podemos utilizar os módulos existentes pra configurar o MySQL e o Apache. Garanta que os seguintes módulos estejam instalados no mestre:
 
@@ -2311,20 +2311,20 @@ e
 
 `puppet module install puppetlabs-apache`
 
-então pra esses dois nos serem implementados corretamente, o que precisa acontecer? Primeiro, temos que garantir que os nos sejam implementados na ordem correta. Porque o no do nosso servidor web depende do nosso servidor MySQL, a gente precisa garantir que o Puppet rode nosso servidor de BD primeiro e nosso servidor Web depois. A gente tambem precisa de um metodo pra passar informações entre nossos nos. Porque a informacao que nosso servidor Web precisa para conectar na base de dados pode ser baseada em fatos `facter`, logica condicional ou funcoes no manifesto Puppet que define o componente, o Puppet não vai saber o que e ate que ele enfim gere o catálogo para o no de banco de dados. Assim que o Puppet tem essa informacao, ele precisa de um jeito para passa-la como parâmetros para o nosso componente de servidor Web.
+então pra esses dois nos serem implementados corretamente, o que precisa acontecer? Primeiro, temos que garantir que os nos sejam implementados na ordem correta. Porque o no do nosso servidor web depende do nosso servidor MySQL, a gente precisa garantir que o Puppet rode nosso servidor de BD primeiro e nosso servidor Web depois. A gente tambem precisa de um metodo pra passar informações entre nossos nos. Porque a informação que nosso servidor Web precisa para conectar na base de dados pode ser baseada em fatos `facter`, logica condicional ou funcoes no manifesto Puppet que define o componente, o Puppet não vai saber o que e ate que ele enfim gere o catálogo para o no de banco de dados. Assim que o Puppet tem essa informação, ele precisa de um jeito para passa-la como parâmetros para o nosso componente de servidor Web.
 
-Ambos os requisitos são  atendidos atraves de algo que chamamos _recurso de ambiente_. Diferente dos recursos especificos de um no (como um `user` ou um `file`) que dizem ao puppet como configurar uma unica maquina, recursos de ambiente carregam dados e definem relacionamentos entre multiplos nos em um ambiente. Nos vamos entrar mais no detalhe de como isso funciona a medida que implementamos nossa aplicacao.
+Ambos os requisitos são  atendidos atraves de algo que chamamos _recurso de ambiente_. Diferente dos recursos especificos de um no (como um `user` ou um `file`) que dizem ao puppet como configurar uma unica maquina, recursos de ambiente carregam dados e definem relacionamentos entre múltiplos nos em um ambiente. Nos vamos entrar mais no detalhe de como isso funciona a medida que implementamos nossa aplicação.
 
-então o primeiro passo ao criar uma aplicacao e determinar exatamente qual informacao precisa ser passada entre os componentes. Com o que se parece isso no caso da nossa aplicacao LAMP?
+então o primeiro passo ao criar uma aplicação e determinar exatamente qual informação precisa ser passada entre os componentes. Com o que se parece isso no caso da nossa aplicação LAMP?
 
 * __Host__: nosso servidor web precisa saber do nome de host do servidor de banco de dados
 * __Banco de dados__: a gente precisa do nome especifico do banco que devemos conectar
 * __usuário__: se a gente quer se conectar ao banco, vamos precisar do usuário
 * __Senha__: e vamos precisar tambem da senha pra esse usuário
 
-Essa lista especifica o que nosso servidor de BD _produz_ e o que o nosso servidor Web _consome_. Se passarmos essa informacao pro nosso servidor Web, ele vai ter tudo o que precisa pra se conectar ao BD hospedado no nosso servidor de banco de dados. 
+Essa lista especifica o que nosso servidor de BD _produz_ e o que o nosso servidor Web _consome_. Se passarmos essa informação pro nosso servidor Web, ele vai ter tudo o que precisa pra se conectar ao BD hospedado no nosso servidor de banco de dados. 
 
-Pra permitir que toda essa informacao seja produzida quando rodarmos o Puppet no servidor de banco de dados e consumida pelo nosso servidor Web, nos vamos criar um _tipo derecurso customizado_ chamado `sql`. Diferente de um recurso de no tipico, nosso recurso `sql` não vai especificar diretamente nenhuma mudanca nos nossos sistemas. você pode pensar nele como um recurso _dummy_, bobo. Uma vez que seus parâmetros são  definidos pelo componente de BD, ele só fica ali sentado para que aqueles parâmetros possam ser consumidos pelo componente do web Server. (Veja que recursos de ambiente podem incluir um código de sondagem mais complexo que permita ao Puppet aguardar ate que um serviço pre-requisito fique online antes de seguir para os componentes dependentes. Como isso requer um conhecimento mais aprofundado do Ruby, esta fora do escopo dessa quest)
+Pra permitir que toda essa informação seja produzida quando rodarmos o Puppet no servidor de banco de dados e consumida pelo nosso servidor Web, nos vamos criar um _tipo derecurso customizado_ chamado `sql`. Diferente de um recurso de no tipico, nosso recurso `sql` não vai especificar diretamente nenhuma mudanca nos nossos sistemas. você pode pensar nele como um recurso _dummy_, bobo. Uma vez que seus parâmetros são  definidos pelo componente de BD, ele só fica ali sentado para que aqueles parâmetros possam ser consumidos pelo componente do web Server. (Veja que recursos de ambiente podem incluir um código de sondagem mais complexo que permita ao Puppet aguardar ate que um serviço pre-requisito fique online antes de seguir para os componentes dependentes. Como isso requer um conhecimento mais aprofundado do Ruby, esta fora do escopo dessa quest)
 
 Ao contrario dos tipos de recurso definidos que podem ser escritos em código Puppet nativo, criar um tipo customizado requer uma rapida incursao ao Ruby. A sintaxe sera bem simples, então não se preocupe caso não seja familiarizado com a linguagem.
 
@@ -2408,7 +2408,7 @@ Verifique o manifesto com a ferramenta `puppet parser`. Como a orquestracao inse
 
 ### Tarefa 8
 
-Agora, crie um componente _webapp_ para configurar um servidor Apache e uma aplicacao PHP simples.
+Agora, crie um componente _webapp_ para configurar um servidor Apache e uma aplicação PHP simples.
 
 `vim lamp/manifests/webapp.pp`
 
@@ -2472,11 +2472,11 @@ Agora, verifique a sintaxe do seu manifesto
 
 ### Tarefa 9
 
-Temos todos nossos componentes prontos, então vamos definir nossa aplicacao. Como ela e o item principal do nosso módulo `lamp`, ela vai no manifesto `init.pp`
+Temos todos nossos componentes prontos, então vamos definir nossa aplicação. Como ela e o item principal do nosso módulo `lamp`, ela vai no manifesto `init.pp`
 
 `vim lamp/manifests.init.pp`
 
-Ja incluimos o trabalho pesado nos nossos componentes, então esse sera bem simples. A sintaxe de uma aplicacao e parecida com a de uma classe ou um _recurso de tipo definido_. A unica diferenca esta em utilizarmos a palavra `application` no lugar de `define` ou `class`.
+Ja incluimos o trabalho pesado nos nossos componentes, então esse sera bem simples. A sintaxe de uma aplicação e parecida com a de uma classe ou um _recurso de tipo definido_. A unica diferenca esta em utilizarmos a palavra `application` no lugar de `define` ou `class`.
 
 ```
   application lamp (
@@ -2497,7 +2497,7 @@ Ja incluimos o trabalho pesado nos nossos componentes, então esse sera bem simp
   }
 ```
 
-A aplicacao possui dois parâmetros, `db_user` e `db_password`. O corpo da aplicacao declara os componentes `lamp::webapp` e `lamp::mysql`. Nos passamos nossos parâmetros `db_user` e `db_password` atraves do componente `lamp::mysql`. E tambem nele onde utilizamos o metaparametro especial `export` para dizer ao Puppet que queremos que esse componente crie um recurso de ambiente `sql`, que podera ser consumido pelo componente `lamp::webapp`. Lembra-se do bloco `Lamp::Mysql produces Sql` que colocamos depois da definição de componente?
+A aplicação possui dois parâmetros, `db_user` e `db_password`. O corpo da aplicação declara os componentes `lamp::webapp` e `lamp::mysql`. Nos passamos nossos parâmetros `db_user` e `db_password` atraves do componente `lamp::mysql`. E tambem nele onde utilizamos o metaparametro especial `export` para dizer ao Puppet que queremos que esse componente crie um recurso de ambiente `sql`, que podera ser consumido pelo componente `lamp::webapp`. Lembra-se do bloco `Lamp::Mysql produces Sql` que colocamos depois da definição de componente?
 
 ```
   Lamp::Mysql produces Sql {
@@ -2521,7 +2521,7 @@ O bloco de _matching_ `Lamp::Webapp consumes sql` no manifesto `webapp.pp` diz a
   }
 ```
 
-Uma vez que tenha terminado a definição da aplicacao, valide sua sintaxe e faca qualquer correcao necessaria
+Uma vez que tenha terminado a definição da aplicação, valide sua sintaxe e faca qualquer correcao necessaria
 
 `puppet parser validate --app_management lamp/manifests/init.pp`
 
@@ -2547,11 +2547,11 @@ Seu módulo deve parecer com isso
 
 ### Tarefa 10
 
-Agora que sua aplicacao esta definida, o passo final e declara-la no manifesto `site.pp`
+Agora que sua aplicação esta definida, o passo final e declara-la no manifesto `site.pp`
 
 `vim /etc/puppetlabs/code/environments/production/manifests/site.pp`
 
-Ate agora, a maior parte da configuração feita no seu `site.pp` foi no contexto de blocos de nos. Uma aplicacao, entretanto, e aplicada ao seu ambiente independentemente de qualquer classificacao definida nos seus blocos de no ou no classificador de nos do PE. Para expressar essa distincao, declaramos a aplicacao com o bloco especial chamado `site`.
+Ate agora, a maior parte da configuração feita no seu `site.pp` foi no contexto de blocos de nos. Uma aplicação, entretanto, e aplicada ao seu ambiente independentemente de qualquer classificacao definida nos seus blocos de no ou no classificador de nos do PE. Para expressar essa distincao, declaramos a aplicação com o bloco especial chamado `site`.
 
 ```
   site { 
@@ -2566,11 +2566,11 @@ Ate agora, a maior parte da configuração feita no seu `site.pp` foi no context
   }
 ```
 
-A sintaxe para declarar uma aplicacao e similar a de uma classe ou recurso. Os parâmetros `db_user` e `db_password` são  definidos do mesmo jeito.
+A sintaxe para declarar uma aplicação e similar a de uma classe ou recurso. Os parâmetros `db_user` e `db_password` são  definidos do mesmo jeito.
 
-O parametro `nodes` e onde a magica da orquestracao acontece. Esse parametro toma um _hash_ de nos pareados com um ou mais componentes. No nosso caso, atribuimos o componente `Lamp::Mysql['app1']` a `database.learning.puppetlabs.vm` e `Lamp::Webapp['app1']` a `webserver.learning.puppetlabs.vm`. Quando o Orquestrador de Aplicacoes roda, ele usa os metaparâmetros `exports` e `consumes` na sua definição de aplicacao (em `lamp/manifests/init.pp`, por exemplo) para determinar a ordem correta de execucoes Puppet entre os nos da aplicacao.
+O parametro `nodes` e onde a magica da orquestracao acontece. Esse parametro toma um _hash_ de nos pareados com um ou mais componentes. No nosso caso, atribuimos o componente `Lamp::Mysql['app1']` a `database.learning.puppetlabs.vm` e `Lamp::Webapp['app1']` a `webserver.learning.puppetlabs.vm`. Quando o Orquestrador de aplicações roda, ele usa os metaparâmetros `exports` e `consumes` na sua definição de aplicação (em `lamp/manifests/init.pp`, por exemplo) para determinar a ordem correta de execucoes Puppet entre os nos da aplicação.
 
-Agora que a aplicacao esta declarada no nosso manifesto `site.pp`, podemos utilizar a ferramenta `puppet app` para visualiza-la
+Agora que a aplicação esta declarada no nosso manifesto `site.pp`, podemos utilizar a ferramenta `puppet app` para visualiza-la
 
 `puppet app show`
 
@@ -2586,13 +2586,13 @@ você deve ver um resultado parecido com esse
 
 ### Tarefa 11
 
-Utilize o comando `puppet job` para implementar a aplicacao.
+Utilize o comando `puppet job` para implementar a aplicação.
 
 `puppet job run Lamp['app1']`
 
-você pode verificar o estado de qualquer job executado ou em execucao com o comando `puppet job show`.
+você pode verificar o estado de qualquer job executado ou em execução com o comando `puppet job show`.
 
-Agora que seus nos estão  configurados com sua aplicacao nova, vamos parar para conferir os resultados. Primeiro, podemos logar no servidor de banco de dados e dar uma olhada na nossa instancia MySQL.
+Agora que seus nos estão  configurados com sua aplicação nova, vamos parar para conferir os resultados. Primeiro, podemos logar no servidor de banco de dados e dar uma olhada na nossa instancia MySQL.
 
 `docker exec -it database bash`
 
